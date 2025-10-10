@@ -13,7 +13,7 @@ config_version=5
 config/name="Bag of Bones"
 config/version="0.1.0"
 run/main_scene="uid://d2q1lx341c46b"
-config/features=PackedStringArray("4.5", "GL Compatibility")
+config/features=PackedStringArray("4.5", "C#", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [display]
@@ -73,12 +73,12 @@ action_jump={
 
 [layer_names]
 
-2d_render/layer_1="Environment"
-2d_render/layer_2="Environment (Hazard)"
-2d_render/layer_3="Player"
-2d_render/layer_4="Player (Ignored)"
-2d_render/layer_5="Enemy"
-2d_render/layer_6="Enemy (Ignored)"
+2d_physics/layer_1="Environment"
+2d_physics/layer_2="Environment (Hazar)"
+2d_physics/layer_3="Player"
+2d_physics/layer_4="Player (Alternative)"
+2d_physics/layer_5="Enemy"
+2d_physics/layer_6="Enemy (Alternative)"
 
 [rendering]
 
