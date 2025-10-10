@@ -1,0 +1,9 @@
+# Root
+.vscode/
+
+# Godot
+.godot/
+/android/
+
+# Assets are not uploaded to Git.
+assets/
