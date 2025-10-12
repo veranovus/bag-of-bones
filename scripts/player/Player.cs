@@ -45,7 +45,11 @@ public partial class Player : CharacterBody2D, IDamageable {
 
   public Vector2 CollectDirectionalInput() {
     var input = Input.GetVector("action_left", "action_right", "action_up", "action_down");
-    Direction = input;
+
+    Direction = new Vector2(
+      Mathf.IsZeroApprox(input.X) ? 0.5f * MathF.Sign(Direction.X) : input.X,
+      input.Y
+    );
 
     input.X = MathF.Sign(input.X);
     input.Y = MathF.Sign(input.Y);
@@ -63,14 +67,12 @@ public partial class Player : CharacterBody2D, IDamageable {
     }
 
     if (Attack != null) {
-      if (MathF.Abs(Direction.Y) > MathF.Abs(Direction.X)) {
-        var direction           = (Direction.Y != 0.0f) ? MathF.Sign(Direction.Y) : 1.0f;
+      if (MathF.Abs(Direction.Y) >= MathF.Abs(Direction.X)) {
         AttackPosition          = AttackPositions.GetValueOrDefault("Vertical");
-        AttackPosition.Position = new Vector2(0.0f, MathF.Abs(AttackPosition.Position.Y) * direction);
+        AttackPosition.Position = new Vector2(0.0f, MathF.Abs(AttackPosition.Position.Y) * MathF.Sign(Direction.Y));
       } else {
-        var direction           = (Direction.X != 0.0f) ? MathF.Sign(Direction.X) : 1.0f;
         AttackPosition          = AttackPositions.GetValueOrDefault("Horizontal");
-        AttackPosition.Position = new Vector2(MathF.Abs(AttackPosition.Position.X) * direction, 0.0f);
+        AttackPosition.Position = new Vector2(MathF.Abs(AttackPosition.Position.X) * MathF.Sign(Direction.X), 0.0f);
       }
       StateMachine.ChangeState("Attack");
     }
@@ -82,9 +84,9 @@ public partial class Player : CharacterBody2D, IDamageable {
   }
   
   public void SpawnProjectile() {
-    var instance = Projectile.Instantiate<Projectile>();
-    instance.SetDirection(AttackPosition.Position);
+    var instance      = Projectile.Instantiate<Projectile>();
     instance.Position = AttackPosition.GlobalPosition;
+    instance.SetDirection(instance.Position + AttackPosition.Position.Normalized());
     GetParent().AddChild(instance);
   }
 
@@ -98,7 +100,6 @@ public partial class Player : CharacterBody2D, IDamageable {
       CurrentHealth = 0;
       Alive         = false;
     }
-
     return Alive;
   }
 
