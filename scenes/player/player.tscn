@@ -1,9 +1,11 @@
-[gd_scene load_steps=8 format=3 uid="uid://b1q31wmgvmp0n"]
+[gd_scene load_steps=10 format=3 uid="uid://b1q31wmgvmp0n"]
 
 [ext_resource type="Script" uid="uid://c6rkyr3888wwx" path="res://scripts/player/Player.cs" id="1_8afob"]
 [ext_resource type="Texture2D" uid="uid://c8w5mk0vbpgcj" path="res://icon.svg" id="2_lvxji"]
 [ext_resource type="Script" uid="uid://c4picln4olqp0" path="res://scripts/player/state/Move.cs" id="3_gmlin"]
 [ext_resource type="Script" uid="uid://d1pqxqmqt77cx" path="res://scripts/player/StateMachine.cs" id="3_lvxji"]
+[ext_resource type="Script" uid="uid://dkk20kqajkgqx" path="res://scripts/player/state/Jump.cs" id="5_p47bc"]
+[ext_resource type="Script" uid="uid://v3kwrroueyq" path="res://scripts/player/state/Fall.cs" id="6_75vfm"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_p47bc"]
 atlas = ExtResource("2_lvxji")
@@ -11,12 +13,47 @@ region = Rect2(0, 0, 128, 128)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_gmlin"]
 animations = [{
+"frames": [],
+"loop": true,
+"name": &"ActionPrimary",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"ActionSecondary",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"Damage",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"Death",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"Fall",
+"speed": 5.0
+}, {
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_p47bc")
 }],
 "loop": true,
 "name": &"Idle",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"Jump",
+"speed": 5.0
+}, {
+"frames": [],
+"loop": true,
+"name": &"Move",
 "speed": 5.0
 }]
 
@@ -28,6 +65,8 @@ collision_layer = 4
 collision_mask = 3
 slide_on_ceiling = false
 script = ExtResource("1_8afob")
+Speed = 250.0
+JumpSpeed = 300.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_gmlin")
@@ -44,3 +83,9 @@ initialState = NodePath("Move")
 
 [node name="Move" type="Node" parent="StateMachine"]
 script = ExtResource("3_gmlin")
+
+[node name="Jump" type="Node" parent="StateMachine"]
+script = ExtResource("5_p47bc")
+
+[node name="Fall" type="Node" parent="StateMachine"]
+script = ExtResource("6_75vfm")

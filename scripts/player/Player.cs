@@ -6,6 +6,9 @@ public partial class Player : CharacterBody2D {
   public AnimationPlayer  AnimationPlayer { get; private set; }
   public StateMachine     StateMachine    { get; private set; }
 
+  [Export] public float Speed     { get; private set; }
+  [Export] public float JumpSpeed { get; private set; }
+
   public Vector2 Direction { get; private set; }
 
   private float gravity;

@@ -2,4 +2,60 @@ using Godot;
 using System;
 
 public partial class Jump : State<Player> {
+  private Timer waitTimer;
+  private Timer jumpTimer;
+  private bool  wait;
+  private bool  jump;
+
+  private const float WAIT_TIME = 0.1f;
+  private const float JUMP_TIME = 0.4f;
+
+  public override void _Ready() {
+    waitTimer = new Timer {
+      Name     = "WaitTimer",
+      WaitTime = WAIT_TIME,
+      OneShot  = true,
+    };
+    waitTimer.Timeout += () => { wait = false; };
+    AddChild(waitTimer);
+
+    jumpTimer = new Timer {
+      Name     = "JumpTimer",
+      WaitTime = JUMP_TIME,
+      OneShot  = true,
+    };
+    jumpTimer.Timeout += () => { jump = false; };
+    AddChild(jumpTimer);
+  }
+
+  public override void OnEnter() {
+    wait = true;
+    jump = true;
+
+    waitTimer.Start();
+    jumpTimer.Start();
+  }
+
+  public override void OnProcess(double delta) {
+    if (Input.IsActionJustReleased("action_up")) {
+      jump = false;
+    }
+
+    if (!wait) {
+      if (!jump) {
+        StateMachine.ChangeState("Fall");
+      } 
+      if (Parent.IsOnFloor()) {
+        StateMachine.ChangeState("Move");
+      }
+    }
+  }
+
+  public override void OnPhysicsProcess(double delta) {
+    var input       = Parent.CollectDirectionalInput();
+    Parent.Velocity = new Vector2(
+      input.X * Parent.Speed,
+      -1.0f   * Parent.JumpSpeed
+    );
+  }
 }
