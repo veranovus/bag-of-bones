@@ -37,7 +37,7 @@ public partial class Jump : State<Player> {
   }
 
   public override void OnProcess(double delta) {
-    if (Input.IsActionJustReleased("action_up")) {
+    if (!Input.IsActionPressed("action_jump")) {
       jump = false;
     }
 

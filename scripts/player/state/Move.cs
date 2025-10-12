@@ -3,7 +3,7 @@ using System;
 
 public partial class Move : State<Player> {
   public override void OnProcess(double delta) {
-    if (Input.IsActionJustPressed("action_up")) {
+    if (Input.IsActionJustPressed("action_jump")) {
       StateMachine.ChangeState("Jump");
     }
   }
