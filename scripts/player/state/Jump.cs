@@ -7,13 +7,13 @@ public partial class Jump : State<Player> {
   private bool  wait;
   private bool  jump;
 
-  private const float WAIT_TIME = 0.1f;
-  private const float JUMP_TIME = 0.4f;
+  private const float WaitTime = 0.1f;
+  private const float JumpTime = 0.35f;
 
   public override void _Ready() {
     waitTimer = new Timer {
       Name     = "WaitTimer",
-      WaitTime = WAIT_TIME,
+      WaitTime = WaitTime,
       OneShot  = true,
     };
     waitTimer.Timeout += () => { wait = false; };
@@ -21,7 +21,7 @@ public partial class Jump : State<Player> {
 
     jumpTimer = new Timer {
       Name     = "JumpTimer",
-      WaitTime = JUMP_TIME,
+      WaitTime = JumpTime,
       OneShot  = true,
     };
     jumpTimer.Timeout += () => { jump = false; };
@@ -44,10 +44,13 @@ public partial class Jump : State<Player> {
     if (!wait) {
       if (!jump) {
         StateMachine.ChangeState("Fall");
+        return;
       } 
       if (Parent.IsOnFloor()) {
         StateMachine.ChangeState("Move");
+        return;
       }
+      Parent.CollectAttackInput();
     }
   }
 

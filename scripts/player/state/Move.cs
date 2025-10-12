@@ -5,7 +5,9 @@ public partial class Move : State<Player> {
   public override void OnProcess(double delta) {
     if (Input.IsActionJustPressed("action_jump")) {
       StateMachine.ChangeState("Jump");
+      return;
     }
+    Parent.CollectAttackInput();
   }
 
   public override void OnPhysicsProcess(double delta) {

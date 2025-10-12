@@ -5,7 +5,9 @@ public partial class Fall : State<Player> {
   public override void OnProcess(double delta) {
     if (Parent.IsOnFloor()) {
       StateMachine.ChangeState("Move");
+      return;
     }
+    Parent.CollectAttackInput();
   }
 
   public override void OnPhysicsProcess(double delta) {
