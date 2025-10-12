@@ -7,7 +7,7 @@ public partial class Jump : State<Player> {
   private bool  wait;
   private bool  jump;
 
-  private const float WaitTime = 0.1f;
+  private const float WaitTime = 0.05f;
   private const float JumpTime = 0.35f;
 
   public override void _Ready() {
@@ -34,6 +34,8 @@ public partial class Jump : State<Player> {
 
     waitTimer.Start();
     jumpTimer.Start();
+
+    Parent.SetJump(false);
   }
 
   public override void OnProcess(double delta) {

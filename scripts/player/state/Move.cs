@@ -3,10 +3,18 @@ using System;
 
 public partial class Move : State<Player> {
   public override void OnProcess(double delta) {
-    if (Input.IsActionJustPressed("action_jump")) {
+    if (Input.IsActionJustPressed("action_jump") && Parent.Jump) {
       StateMachine.ChangeState("Jump");
       return;
     }
+
+    if (Parent.IsOnFloor()) {
+      Parent.SetJump(true);
+    } else {
+      StateMachine.ChangeState("Fall");
+      return;
+    }
+
     Parent.CollectAttackInput();
   }
 

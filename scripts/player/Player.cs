@@ -11,9 +11,12 @@ public partial class Player : CharacterBody2D {
   [Export] public float Speed     { get; private set; }
   [Export] public float JumpSpeed { get; private set; }
 
-  public Vector2  Direction      { get; private set; }
+  public bool     Jump           { get; private set; } = true;
+  public Vector2  Direction      { get; private set; } = Vector2.Right;
   public Marker2D AttackPosition { get; private set; }
+  #pragma warning disable
   public string?  Attack         { get; private set; }
+  #pragma warning restore
 
   private readonly float                        Gravity         = 980.0f;
   private readonly Dictionary<String, Marker2D> AttackPositions = [];
@@ -66,13 +69,17 @@ public partial class Player : CharacterBody2D {
     }
   }
 
-  public void SetCollider(bool value) {
+  public void DisableCollider(bool value) {
     var collider      = (CollisionShape2D)AttackPosition.GetChild(0).GetChild(0);
     collider.Disabled = value;
   }
   
   public void SpawnProjectile() {
     throw new NotImplementedException();
+  }
+
+  public void SetJump(bool value) {
+    Jump = value;
   }
 
   private void ApplyGravity(double delta) {
