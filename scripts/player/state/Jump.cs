@@ -8,7 +8,7 @@ public partial class Jump : State<Player> {
   private bool  jump;
 
   private const float WaitTime = 0.05f;
-  private const float JumpTime = 0.35f;
+  private const float JumpTime = 0.30f;
 
   public override void _Ready() {
     waitTimer = new Timer {

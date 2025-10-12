@@ -37,8 +37,6 @@ public partial class StateMachine<T> : Node where T: Node {
 
     PreviousState.OnExit();
     CurrentState.OnEnter();
-
-    GD.Print($"State: {CurrentState.Name}");
   }
 
   private void RegisterStates() {

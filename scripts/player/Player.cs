@@ -2,14 +2,16 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public partial class Player : CharacterBody2D {
+public partial class Player : CharacterBody2D, IDamageable {
   public AnimatedSprite2D Sprite2D        { get; private set; }
   public AnimationPlayer  AnimationPlayer { get; private set; }
   public StateMachine     StateMachine    { get; private set; }
   public Node2D           AttacksRoot     { get; private set; }
 
-  [Export] public float Speed     { get; private set; }
-  [Export] public float JumpSpeed { get; private set; }
+  [Export] public float       Speed      { get; private set; }
+  [Export] public float       JumpSpeed  { get; private set; }
+  [Export] public float       Health     { get; private set; }
+  [Export] public PackedScene Projectile { get; private set; }
 
   public bool     Jump           { get; private set; } = true;
   public Vector2  Direction      { get; private set; } = Vector2.Right;
@@ -17,6 +19,8 @@ public partial class Player : CharacterBody2D {
   #pragma warning disable
   public string?  Attack         { get; private set; }
   #pragma warning restore
+  public int      CurrentHealth  { get; private set; }
+  public bool     Alive          { get; private set; }
 
   private readonly float                        Gravity         = 980.0f;
   private readonly Dictionary<String, Marker2D> AttackPositions = [];
@@ -41,29 +45,32 @@ public partial class Player : CharacterBody2D {
 
   public Vector2 CollectDirectionalInput() {
     var input = Input.GetVector("action_left", "action_right", "action_up", "action_down");
-    input.X   = MathF.Sign(input.X);
-    input.Y   = MathF.Sign(input.Y);
-
     Direction = input;
+
+    input.X = MathF.Sign(input.X);
+    input.Y = MathF.Sign(input.Y);
+
     return input;
   }
 
   public void CollectAttackInput() {
     if        (Input.IsActionJustPressed("action_primary")) {
       Attack = "Primary";
-    } else if (Input.IsActionJustPressed("action_primary")) {
+    } else if (Input.IsActionJustPressed("action_secondary")) {
       Attack = "Secondary";
     } else {
       Attack = null;
     }
 
     if (Attack != null) {
-      if (Direction.Y != 0) {
-        AttackPosition          = AttackPositions.GetValueOrDefault("Vertical")!;
-        AttackPosition.Position = new Vector2(0.0f, Mathf.Abs(AttackPosition.Position.Y) * Direction.Y);
+      if (MathF.Abs(Direction.Y) > MathF.Abs(Direction.X)) {
+        var direction           = (Direction.Y != 0.0f) ? MathF.Sign(Direction.Y) : 1.0f;
+        AttackPosition          = AttackPositions.GetValueOrDefault("Vertical");
+        AttackPosition.Position = new Vector2(0.0f, MathF.Abs(AttackPosition.Position.Y) * direction);
       } else {
-        AttackPosition          = AttackPositions.GetValueOrDefault("Horizontal")!;
-        AttackPosition.Position = new Vector2(Mathf.Abs(AttackPosition.Position.X) * Direction.X, 0.0f);
+        var direction           = (Direction.X != 0.0f) ? MathF.Sign(Direction.X) : 1.0f;
+        AttackPosition          = AttackPositions.GetValueOrDefault("Horizontal");
+        AttackPosition.Position = new Vector2(MathF.Abs(AttackPosition.Position.X) * direction, 0.0f);
       }
       StateMachine.ChangeState("Attack");
     }
@@ -75,7 +82,24 @@ public partial class Player : CharacterBody2D {
   }
   
   public void SpawnProjectile() {
-    throw new NotImplementedException();
+    var instance = Projectile.Instantiate<Projectile>();
+    instance.SetDirection(AttackPosition.Position);
+    instance.Position = AttackPosition.GlobalPosition;
+    GetParent().AddChild(instance);
+  }
+
+  public bool TakeDamage(int damage, Vector2 direction) {
+    if (!Alive) {
+      return false;
+    }
+
+    CurrentHealth -= damage;
+    if (CurrentHealth <= 0) {
+      CurrentHealth = 0;
+      Alive         = false;
+    }
+
+    return Alive;
   }
 
   public void SetJump(bool value) {
