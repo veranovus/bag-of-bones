@@ -1,6 +1,27 @@
-[gd_scene load_steps=2 format=3 uid="uid://b1q31wmgvmp0n"]
+[gd_scene load_steps=8 format=3 uid="uid://b1q31wmgvmp0n"]
 
 [ext_resource type="Script" uid="uid://c6rkyr3888wwx" path="res://scripts/player/Player.cs" id="1_8afob"]
+[ext_resource type="Texture2D" uid="uid://c8w5mk0vbpgcj" path="res://icon.svg" id="2_lvxji"]
+[ext_resource type="Script" uid="uid://c4picln4olqp0" path="res://scripts/player/state/Move.cs" id="3_gmlin"]
+[ext_resource type="Script" uid="uid://d1pqxqmqt77cx" path="res://scripts/player/StateMachine.cs" id="3_lvxji"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p47bc"]
+atlas = ExtResource("2_lvxji")
+region = Rect2(0, 0, 128, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_gmlin"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p47bc")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_lvxji"]
+size = Vector2(128, 128)
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 4
@@ -9,7 +30,17 @@ slide_on_ceiling = false
 script = ExtResource("1_8afob")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_gmlin")
+animation = &"Idle"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_lvxji")
+
+[node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initialState")]
+script = ExtResource("3_lvxji")
+initialState = NodePath("Move")
+
+[node name="Move" type="Node" parent="StateMachine"]
+script = ExtResource("3_gmlin")

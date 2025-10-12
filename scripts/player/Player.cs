@@ -4,6 +4,7 @@ using System;
 public partial class Player : CharacterBody2D {
   public AnimatedSprite2D Sprite2D        { get; private set; }
   public AnimationPlayer  AnimationPlayer { get; private set; }
+  public StateMachine     StateMachine    { get; private set; }
 
   public Vector2 Direction { get; private set; }
 
@@ -12,6 +13,7 @@ public partial class Player : CharacterBody2D {
   public override void _Ready() {
     Sprite2D        = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
     AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+    StateMachine    = GetNode<StateMachine>("StateMachine");
 
     gravity = (float)ProjectSettings.GetSetting("physics/2d/default_gravity");
   }

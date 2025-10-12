@@ -2,24 +2,30 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public partial class StateMachine : Node {
-  public State CurrentState  { get; private set; }
-  public State PreviousState { get; private set; }
+public partial class StateMachine<T> : Node where T: Node {
+  public State<T> CurrentState  { get; private set; }
+  public State<T> PreviousState { get; private set; }
 
-  [Export] private State initialState;
+  [Export] private State<T> initialState;
 
-  private Dictionary<String, State> states;
+  private readonly Dictionary<String, State<T>> states = [];
 
   public override void _EnterTree() {
+    if (initialState == null) {
+      throw new NullReferenceException();
+    }
+    CurrentState = initialState;
+    CurrentState.OnEnter();
+
     RegisterStates();
   }
 
   public override void _Process(double delta) {
-    CurrentState.Process(delta);
+    CurrentState.OnProcess(delta);
   }
 
   public override void _PhysicsProcess(double delta) {
-    CurrentState.PhysicsProcess(delta);
+    CurrentState.OnPhysicsProcess(delta);
   }
 
   public void ChangeState(String name) {
@@ -30,14 +36,14 @@ public partial class StateMachine : Node {
     PreviousState = CurrentState;
     CurrentState  = states.GetValueOrDefault(name)!;
 
-    PreviousState.Exit();
-    CurrentState.Enter();
+    PreviousState.OnExit();
+    CurrentState.OnEnter();
   }
 
   private void RegisterStates() {
     var parent = GetParent();
     foreach (Node child in GetChildren()) {
-      if (child is not State state) {
+      if (child is not State<T> state) {
         throw new InvalidCastException();
       }
 
