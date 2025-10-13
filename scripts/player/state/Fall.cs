@@ -32,10 +32,17 @@ public partial class Fall : State<Player> {
       return;
     }
     Parent.CollectAttackInput();
+    SetAnimation();
   }
 
   public override void OnPhysicsProcess(double delta) {
     var input       = Parent.CollectDirectionalInput();
     Parent.Velocity = Parent.Velocity with { X = input.X * Parent.Speed };
+  }
+
+  private void SetAnimation() {
+    if (Parent.Velocity.Y >= 0.0f) {
+      Parent.Sprite2D.Play("Fall");
+    }
   }
 }

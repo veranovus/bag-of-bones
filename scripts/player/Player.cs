@@ -78,6 +78,14 @@ public partial class Player : CharacterBody2D, IDamageable {
     }
   }
 
+  public void PlayAttackAnimation() {
+    var animation = Attack;
+    if (MathF.Abs(Direction.Y) >= MathF.Abs(Direction.X)) {
+      animation += (Direction.Y > 0.0f) ? "Down" : "Up";
+    }
+    Sprite2D.Play(animation);
+  }
+
   public void DisableCollider(bool value) {
     var collider      = (CollisionShape2D)AttackPosition.GetChild(0).GetChild(0);
     collider.Disabled = value;

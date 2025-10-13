@@ -36,6 +36,7 @@ public partial class Jump : State<Player> {
     jumpTimer.Start();
 
     Parent.SetJump(false);
+    Parent.Sprite2D.Play("Jump");
   }
 
   public override void OnProcess(double delta) {
