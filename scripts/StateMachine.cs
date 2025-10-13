@@ -11,11 +11,6 @@ public partial class StateMachine<T> : Node where T: Node {
   private readonly Dictionary<String, State<T>> states = [];
 
   public override void _EnterTree() {
-    if (initialState == null) {
-      throw new NullReferenceException();
-    }
-    CurrentState = initialState;
-
     RegisterStates();
   }
 
@@ -25,6 +20,14 @@ public partial class StateMachine<T> : Node where T: Node {
 
   public override void _PhysicsProcess(double delta) {
     CurrentState.OnPhysicsProcess(delta);
+  }
+
+  public void InitialStateOnReady() {
+    if (initialState == null) {
+      throw new NullReferenceException();
+    }
+    CurrentState = initialState;
+    CurrentState.OnEnter();
   }
 
   public void ChangeState(String name) {

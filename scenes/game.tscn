@@ -1,7 +1,8 @@
-[gd_scene load_steps=4 format=3 uid="uid://rqdcp4a3qtdv"]
+[gd_scene load_steps=5 format=3 uid="uid://rqdcp4a3qtdv"]
 
 [ext_resource type="PackedScene" uid="uid://b1q31wmgvmp0n" path="res://scenes/player/player.tscn" id="1_uwrxv"]
 [ext_resource type="Texture2D" uid="uid://c8w5mk0vbpgcj" path="res://icon.svg" id="1_yqjtg"]
+[ext_resource type="PackedScene" uid="uid://c4yyor6h0aybc" path="res://scenes/enemy/crawler.tscn" id="3_lnu2h"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8cj0n"]
 size = Vector2(880, 72)
@@ -19,4 +20,7 @@ scale = Vector2(6.85, 0.56)
 texture = ExtResource("1_yqjtg")
 
 [node name="Player" parent="." instance=ExtResource("1_uwrxv")]
-position = Vector2(640, 360)
+position = Vector2(332, 441)
+
+[node name="Crawler" parent="." instance=ExtResource("3_lnu2h")]
+position = Vector2(864, 439)

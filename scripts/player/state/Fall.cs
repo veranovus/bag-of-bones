@@ -35,7 +35,7 @@ public partial class Fall : State<Player> {
   }
 
   private void SetAnimation() {
-    if (Parent.Velocity.Y >= 0.0f) {
+    if (Parent.Velocity.Y > 0.0f) {
       Parent.Sprite2D.Play("Fall");
     }
   }

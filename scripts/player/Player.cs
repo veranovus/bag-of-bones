@@ -3,10 +3,10 @@ using System;
 using System.Collections.Generic;
 
 public partial class Player : CharacterBody2D, IDamageable {
-  public AnimatedSprite2D Sprite2D        { get; private set; }
-  public AnimationPlayer  AnimationPlayer { get; private set; }
-  public StateMachine     StateMachine    { get; private set; }
-  public Node2D           AttacksRoot     { get; private set; }
+  public AnimatedSprite2D   Sprite2D        { get; private set; }
+  public AnimationPlayer    AnimationPlayer { get; private set; }
+  public PlayerStateMachine StateMachine    { get; private set; }
+  public Node2D             AttacksRoot     { get; private set; }
 
   [Export] public float       Speed      { get; private set; }
   [Export] public float       JumpSpeed  { get; private set; }
@@ -28,10 +28,11 @@ public partial class Player : CharacterBody2D, IDamageable {
   public override void _Ready() {
     Sprite2D        = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
     AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
-    StateMachine    = GetNode<StateMachine>("StateMachine");
+    StateMachine    = GetNode<PlayerStateMachine>("StateMachine");
     AttacksRoot     = GetNode<Node2D>("Actions");
 
     RegisterAttackPositions();
+    StateMachine.InitialStateOnReady();
   }
 
   public override void _Process(double delta) {

@@ -1,0 +1,65 @@
+[gd_scene load_steps=10 format=3 uid="uid://c4yyor6h0aybc"]
+
+[ext_resource type="PackedScene" uid="uid://bx41whqpcavj3" path="res://scenes/enemy/enemy.tscn" id="1_x13pp"]
+[ext_resource type="Texture2D" uid="uid://c5vc1p5tyfb00" path="res://assets/image/enemy/crawler/crawler-walk.png" id="2_wc2fe"]
+[ext_resource type="Script" uid="uid://1cfjx1vfq41j" path="res://scripts/enemy/state/Wander.cs" id="3_jnv0e"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jnv0e"]
+atlas = ExtResource("2_wc2fe")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hxeoq"]
+atlas = ExtResource("2_wc2fe")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6pvkt"]
+atlas = ExtResource("2_wc2fe")
+region = Rect2(0, 512, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vj2hw"]
+atlas = ExtResource("2_wc2fe")
+region = Rect2(512, 512, 512, 512)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_cbt1e"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jnv0e")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hxeoq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6pvkt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vj2hw")
+}],
+"loop": true,
+"name": &"Wander",
+"speed": 12.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wc2fe"]
+radius = 44.0
+height = 144.0
+
+[node name="Crawler" instance=ExtResource("1_x13pp")]
+Speed = 200.0
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+sprite_frames = SubResource("SpriteFrames_cbt1e")
+animation = &"Wander"
+
+[node name="CollisionShape2D" parent="." index="1"]
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_wc2fe")
+
+[node name="VisibleOnScreenEnabler2D" parent="." index="2"]
+rect = Rect2(-80, -70, 160, 140)
+
+[node name="StateMachine" parent="." index="3" node_paths=PackedStringArray("initialState")]
+initialState = NodePath("Wander")
+
+[node name="Wander" type="Node" parent="StateMachine" index="0"]
+script = ExtResource("3_jnv0e")

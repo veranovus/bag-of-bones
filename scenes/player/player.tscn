@@ -4,7 +4,6 @@
 [ext_resource type="PackedScene" uid="uid://dspp5kp3xjtpl" path="res://scenes/player/projectile.tscn" id="2_qek5x"]
 [ext_resource type="Script" uid="uid://c4picln4olqp0" path="res://scripts/player/state/Move.cs" id="3_gmlin"]
 [ext_resource type="Texture2D" uid="uid://cj881o5qm388j" path="res://assets/image/player/player-damage.png" id="3_lgqa7"]
-[ext_resource type="Script" uid="uid://d1pqxqmqt77cx" path="res://scripts/player/StateMachine.cs" id="3_lvxji"]
 [ext_resource type="Texture2D" uid="uid://b2drfqbkaru0h" path="res://assets/image/player/player-idle.png" id="3_qek5x"]
 [ext_resource type="Texture2D" uid="uid://co4lnvohp8jgq" path="res://assets/image/player/player-death.png" id="4_8ydkj"]
 [ext_resource type="Texture2D" uid="uid://bk0u2fiu2hgcb" path="res://assets/image/player/player-fall.png" id="5_3j4b4"]
@@ -19,6 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://dt821y5qsm3xc" path="res://assets/image/player/player-secondary-horizontal.png" id="12_j4nxn"]
 [ext_resource type="Texture2D" uid="uid://du1urpa50hx8y" path="res://assets/image/player/player-secondary-down.png" id="13_28m0y"]
 [ext_resource type="Texture2D" uid="uid://cnucjcosx1y7" path="res://assets/image/player/player-secondary-up.png" id="14_uniwh"]
+[ext_resource type="Script" uid="uid://dwp1cjpaku4vm" path="res://scripts/player/PlayerStateMachine.cs" id="15_lgqa7"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_iqsei"]
 atlas = ExtResource("3_lgqa7")
@@ -548,8 +548,9 @@ _data = {
 &"Secondary": SubResource("Animation_qek5x")
 }
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_lvxji"]
-size = Vector2(96, 128)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8ydkj"]
+radius = 48.0
+height = 128.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lgqa7"]
 radius = 24.0
@@ -577,7 +578,7 @@ libraries = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_lvxji")
+shape = SubResource("CapsuleShape2D_8ydkj")
 
 [node name="Actions" type="Node2D" parent="."]
 
@@ -607,7 +608,7 @@ shape = SubResource("CapsuleShape2D_lgqa7")
 disabled = true
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initialState")]
-script = ExtResource("3_lvxji")
+script = ExtResource("15_lgqa7")
 initialState = NodePath("Move")
 
 [node name="Move" type="Node" parent="StateMachine"]
