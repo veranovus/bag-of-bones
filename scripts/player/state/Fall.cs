@@ -8,18 +8,11 @@ public partial class Fall : State<Player> {
   private readonly float CayoteeTime = 0.25f;
 
   public override void _Ready() {
-    cayoteeTimer = new Timer {
-      Name     = "CayoteeTimer",
-      WaitTime = CayoteeTime,
-      OneShot  = true,
-    };
-    cayoteeTimer.Timeout += () => { cayotee = false; };
-    AddChild(cayoteeTimer);
+    SpawnTimer();
   }
 
   public override void OnEnter() {
-    cayotee = Parent.Jump;
-    cayoteeTimer.Start();
+    StartTimer();
   }
 
   public override void OnProcess(double delta) {
@@ -32,6 +25,7 @@ public partial class Fall : State<Player> {
       return;
     }
     Parent.CollectAttackInput();
+
     SetAnimation();
   }
 
@@ -44,5 +38,20 @@ public partial class Fall : State<Player> {
     if (Parent.Velocity.Y >= 0.0f) {
       Parent.Sprite2D.Play("Fall");
     }
+  }
+
+  private void SpawnTimer() {
+    cayoteeTimer = new Timer {
+      Name     = "CayoteeTimer",
+      WaitTime = CayoteeTime,
+      OneShot  = true,
+    };
+    cayoteeTimer.Timeout += () => { cayotee = false; };
+    AddChild(cayoteeTimer);
+  }
+
+  private void StartTimer() {
+    cayotee = true;
+    cayoteeTimer.Start();
   }
 }

@@ -14,6 +14,7 @@ public partial class Move : State<Player> {
       return;
     }
     Parent.CollectAttackInput();
+
     SetAnimation();
   }
 

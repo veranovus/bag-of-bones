@@ -11,29 +11,11 @@ public partial class Jump : State<Player> {
   private const float JumpTime = 0.30f;
 
   public override void _Ready() {
-    waitTimer = new Timer {
-      Name     = "WaitTimer",
-      WaitTime = WaitTime,
-      OneShot  = true,
-    };
-    waitTimer.Timeout += () => { wait = false; };
-    AddChild(waitTimer);
-
-    jumpTimer = new Timer {
-      Name     = "JumpTimer",
-      WaitTime = JumpTime,
-      OneShot  = true,
-    };
-    jumpTimer.Timeout += () => { jump = false; };
-    AddChild(jumpTimer);
+    SpawnTimers();
   }
 
   public override void OnEnter() {
-    wait = true;
-    jump = true;
-
-    waitTimer.Start();
-    jumpTimer.Start();
+    StartTimers();
 
     Parent.SetJump(false);
     Parent.Sprite2D.Play("Jump");
@@ -63,5 +45,31 @@ public partial class Jump : State<Player> {
       input.X * Parent.Speed,
       -1.0f   * Parent.JumpSpeed
     );
+  }
+
+  private void SpawnTimers() {
+    waitTimer = new Timer {
+      Name     = "WaitTimer",
+      WaitTime = WaitTime,
+      OneShot  = true,
+    };
+    waitTimer.Timeout += () => { wait = false; };
+    AddChild(waitTimer);
+
+    jumpTimer = new Timer {
+      Name     = "JumpTimer",
+      WaitTime = JumpTime,
+      OneShot  = true,
+    };
+    jumpTimer.Timeout += () => { jump = false; };
+    AddChild(jumpTimer);
+  }
+
+  private void StartTimers() {
+    wait = true;
+    jump = true;
+
+    waitTimer.Start();
+    jumpTimer.Start();
   }
 }
