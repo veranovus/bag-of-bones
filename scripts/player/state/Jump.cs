@@ -48,21 +48,20 @@ public partial class Jump : State<Player> {
   }
 
   private void SpawnTimers() {
-    waitTimer = new Timer {
-      Name     = "WaitTimer",
-      WaitTime = WaitTime,
-      OneShot  = true,
-    };
-    waitTimer.Timeout += () => { wait = false; };
-    AddChild(waitTimer);
+    Timer spawnTimer(string name, float waitTime) {
+      var timer = new Timer {
+        Name     = name,
+        WaitTime = waitTime,
+        OneShot  = true,
+      };
+      AddChild(timer);
+      return timer;
+    }
 
-    jumpTimer = new Timer {
-      Name     = "JumpTimer",
-      WaitTime = JumpTime,
-      OneShot  = true,
-    };
+    waitTimer = spawnTimer("WaitTimer", WaitTime);
+    waitTimer.Timeout += () => { wait = false; };
+    jumpTimer = spawnTimer("JumpTimer", JumpTime);
     jumpTimer.Timeout += () => { jump = false; };
-    AddChild(jumpTimer);
   }
 
   private void StartTimers() {

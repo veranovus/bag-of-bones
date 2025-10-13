@@ -2,7 +2,7 @@ using Godot;
 using System;
 
 public interface IDamageable {
-  bool TakeDamage(int damage, Vector2 direction);
+  bool TakeDamage(int damage, Vector2 position);
 }
 
 public partial class Projectile : Area2D {
