@@ -10,6 +10,7 @@ public partial class Enemy : CharacterBody2D, IDamageable {
 
   [Export] public int   Health { get; private set; }
   [Export] public float Speed  { get; private set; }
+  [Export] public bool  Fly    { get; private set; }
   [Export] public int   Damage { get; private set; }
 
   public int     CurrentHealth { get; private set; }
@@ -92,6 +93,9 @@ public partial class Enemy : CharacterBody2D, IDamageable {
   }
 
   private void ApplyGravity(double delta) {
+    if (Fly) {
+      return;
+    }
     Velocity = Velocity with { Y = Velocity.Y + (Gravity * (float)delta) }; 
   }
 

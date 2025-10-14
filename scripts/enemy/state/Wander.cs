@@ -15,11 +15,13 @@ public partial class Wander : State<Enemy> {
   }
 
   private void SwitchDirection() {
-    if (!Parent.Raycasts[0].IsColliding() && Parent.Direction.X < 0.0f) {
-      Parent.SetDirection(Vector2.Right);
-    }
-    if (!Parent.Raycasts[1].IsColliding() && Parent.Direction.X > 0.0f) {
-      Parent.SetDirection(Vector2.Left);
+    if (Parent.IsOnFloor()) {
+      if (!Parent.Raycasts[0].IsColliding() && Parent.Direction.X < 0.0f) {
+        Parent.SetDirection(Vector2.Right);
+      }
+      if (!Parent.Raycasts[1].IsColliding() && Parent.Direction.X > 0.0f) {
+        Parent.SetDirection(Vector2.Left);
+      }
     }
   }
 }

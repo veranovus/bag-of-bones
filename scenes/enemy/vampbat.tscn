@@ -1,0 +1,182 @@
+[gd_scene load_steps=17 format=3 uid="uid://vpouejhkxf35"]
+
+[ext_resource type="PackedScene" uid="uid://bx41whqpcavj3" path="res://scenes/enemy/enemy.tscn" id="1_jo14l"]
+[ext_resource type="Texture2D" uid="uid://bhb6fbxt8lfkn" path="res://assets/image/enemy/vampbat/vampbat-attack.png" id="2_wwhr5"]
+[ext_resource type="Texture2D" uid="uid://6q3mwfvphl2s" path="res://assets/image/enemy/vampbat/vampbat-death.png" id="3_lwun1"]
+[ext_resource type="Texture2D" uid="uid://cg04y3wth1bol" path="res://assets/image/enemy/vampbat/vampbat-move.png" id="4_51cw2"]
+[ext_resource type="Script" uid="uid://cuaw533er51wj" path="res://scripts/enemy/state/Fly.cs" id="5_51cw2"]
+[ext_resource type="Script" uid="uid://bvn1komg5o8xh" path="res://scripts/enemy/state/EnemyHurt.cs" id="6_4u3j8"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4u3j8"]
+atlas = ExtResource("2_wwhr5")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2bxtl"]
+atlas = ExtResource("4_51cw2")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pqnly"]
+atlas = ExtResource("4_51cw2")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0kcci"]
+atlas = ExtResource("4_51cw2")
+region = Rect2(0, 512, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_leeps"]
+atlas = ExtResource("4_51cw2")
+region = Rect2(512, 512, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_evoin"]
+atlas = ExtResource("3_lwun1")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_jo14l"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4u3j8")
+}],
+"loop": false,
+"name": &"Attack",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2bxtl")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pqnly")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0kcci")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_leeps")
+}],
+"loop": true,
+"name": &"Fly",
+"speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_evoin")
+}],
+"loop": false,
+"name": &"Hurt",
+"speed": 12.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_51cw2"]
+radius = 39.45884
+
+[sub_resource type="Animation" id="Animation_wwhr5"]
+resource_name = "Hurt"
+length = 0.3
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"Hurt", 1.0, false],
+"method": &"play"
+}]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [true],
+"method": &"SetInvincible"
+}, {
+"args": [false],
+"method": &"SetInvincible"
+}]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"values": [{
+"args": [true],
+"method": &"SetShaderActive"
+}, {
+"args": [false],
+"method": &"SetShaderActive"
+}, {
+"args": [true],
+"method": &"SetShaderActive"
+}, {
+"args": [false],
+"method": &"SetShaderActive"
+}]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("StateMachine")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": ["Fly"],
+"method": &"ChangeState"
+}]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_lwun1"]
+_data = {
+&"Hurt": SubResource("Animation_wwhr5")
+}
+
+[node name="Vampbat" instance=ExtResource("1_jo14l")]
+Health = 1
+Speed = 300.0
+Fly = true
+Damage = 1
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+sprite_frames = SubResource("SpriteFrames_jo14l")
+animation = &"Fly"
+frame_progress = 0.5129674
+
+[node name="CollisionShape2D" parent="." index="1"]
+shape = SubResource("CircleShape2D_51cw2")
+
+[node name="AnimationPlayer" parent="." index="2"]
+libraries = {
+&"": SubResource("AnimationLibrary_lwun1")
+}
+
+[node name="VisibleOnScreenEnabler2D" parent="." index="3"]
+rect = Rect2(-50, -60, 100, 120)
+
+[node name="CollisionShape2D" parent="Area2D" index="0"]
+shape = SubResource("CircleShape2D_51cw2")
+
+[node name="StateMachine" parent="." index="5" node_paths=PackedStringArray("initialState")]
+initialState = NodePath("Fly")
+
+[node name="Fly" type="Node" parent="StateMachine" index="0"]
+script = ExtResource("5_51cw2")
+
+[node name="Hurt" type="Node" parent="StateMachine" index="1"]
+script = ExtResource("6_4u3j8")

@@ -33,7 +33,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_cbt1e")
 }],
 "loop": false,
-"name": &"Death",
+"name": &"Hurt",
 "speed": 12.0
 }, {
 "frames": [{
@@ -71,7 +71,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "values": [{
-"args": [&"Death", 1.0, false],
+"args": [&"Hurt", 1.0, false],
 "method": &"play"
 }]
 }
@@ -146,7 +146,7 @@ Damage = 1
 
 [node name="AnimatedSprite2D" parent="." index="0"]
 sprite_frames = SubResource("SpriteFrames_cbt1e")
-animation = &"Death"
+animation = &"Hurt"
 
 [node name="CollisionShape2D" parent="." index="1"]
 rotation = 1.5707964
