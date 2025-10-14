@@ -11,15 +11,18 @@ public partial class Player : CharacterBody2D, IDamageable {
   [Export] public float       JumpSpeed  { get; private set; }
   [Export] public int         Health     { get; private set; }
   [Export] public PackedScene Projectile { get; private set; }
+  [Export] public int         Damage     { get; private set; }
 
   public bool     Jump           { get; private set; }
   public Vector2  Direction      { get; private set; }
+  public Vector2  HurtDirection  { get; private set; }
   public Marker2D AttackPosition { get; private set; }
   #pragma warning disable
   public string?  Attack         { get; private set; }
   #pragma warning restore
   public int      CurrentHealth  { get; private set; }
   public bool     Alive          { get; private set; }
+  public bool     Invincible     { get; private set; }
 
   private readonly float      Gravity         = 980.0f;
   private readonly Marker2D[] AttackPositions = new Marker2D[2];
@@ -46,6 +49,7 @@ public partial class Player : CharacterBody2D, IDamageable {
   public void SetDefaultStats() {
     CurrentHealth = Health;
     Alive         = true;
+    Invincible    = false;
     Jump          = true;
     Direction     = Vector2.Right;
   }
@@ -109,13 +113,28 @@ public partial class Player : CharacterBody2D, IDamageable {
     if (!Alive) {
       return false;
     }
+    if (Invincible) {
+      return true;
+    }
 
     CurrentHealth -= damage;
     if (CurrentHealth <= 0) {
       CurrentHealth = 0;
       SetAlive(false);
     }
+    HurtDirection = (GlobalPosition - position).Normalized();
+    StateMachine.ChangeState("Hurt");
+
     return Alive;
+  }
+
+  public void SetShaderActive(bool value) {
+    var material = (ShaderMaterial)Sprite2D.Material;
+    material.SetShaderParameter("active", value);
+  }
+
+  public void SetInvincible(bool value) {
+    Invincible = value;
   }
 
   public void SetJump(bool value) {
@@ -125,8 +144,6 @@ public partial class Player : CharacterBody2D, IDamageable {
   private void SetAlive(bool value) {
     if (Alive = value) {
       SetDefaultStats();
-    } else {
-      QueueFree();
     }
   }
 
@@ -141,7 +158,7 @@ public partial class Player : CharacterBody2D, IDamageable {
   private void RegisterAttackPositions() {
     void onCollision(Node2D node) {
       if (node is IDamageable damageable) {
-        damageable.TakeDamage(1, GlobalPosition);
+        damageable.TakeDamage(Damage, GlobalPosition);
       }
     }
 

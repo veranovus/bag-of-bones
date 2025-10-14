@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Hurt : State<Enemy> {
+public partial class EnemyHurt : State<Enemy> {
   private const float ForceHorizontal = 300.0f;
   private const float ForceVertical   = 300.0f;
 
@@ -21,7 +21,7 @@ public partial class Hurt : State<Enemy> {
   private void PlayHurtAnimation() {
     Parent.AnimationPlayer.Connect(
       AnimationPlayer.SignalName.AnimationFinished,
-      Callable.From<String>((name) => { Parent.SetInvincible(false); StateMachine.ChangeState("Wander"); }),
+      Callable.From<String>((name) => { if(!Parent.Alive) { Parent.QueueFree(); } }),
       (uint)ConnectFlags.OneShot
     );
     Parent.AnimationPlayer.Play("Hurt"); 

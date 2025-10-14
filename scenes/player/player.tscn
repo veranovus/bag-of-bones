@@ -1,7 +1,8 @@
-[gd_scene load_steps=82 format=3 uid="uid://b1q31wmgvmp0n"]
+[gd_scene load_steps=86 format=3 uid="uid://b1q31wmgvmp0n"]
 
 [ext_resource type="Script" uid="uid://c6rkyr3888wwx" path="res://scripts/player/Player.cs" id="1_8afob"]
 [ext_resource type="PackedScene" uid="uid://dspp5kp3xjtpl" path="res://scenes/player/projectile.tscn" id="2_qek5x"]
+[ext_resource type="Shader" uid="uid://bhg8d7bncastc" path="res://resources/shader/entity.gdshader" id="3_3j4b4"]
 [ext_resource type="Script" uid="uid://c4picln4olqp0" path="res://scripts/player/state/Move.cs" id="3_gmlin"]
 [ext_resource type="Texture2D" uid="uid://cj881o5qm388j" path="res://assets/image/player/player-damage.png" id="3_lgqa7"]
 [ext_resource type="Texture2D" uid="uid://b2drfqbkaru0h" path="res://assets/image/player/player-idle.png" id="3_qek5x"]
@@ -19,6 +20,12 @@
 [ext_resource type="Texture2D" uid="uid://du1urpa50hx8y" path="res://assets/image/player/player-secondary-down.png" id="13_28m0y"]
 [ext_resource type="Texture2D" uid="uid://cnucjcosx1y7" path="res://assets/image/player/player-secondary-up.png" id="14_uniwh"]
 [ext_resource type="Script" uid="uid://dwp1cjpaku4vm" path="res://scripts/player/PlayerStateMachine.cs" id="15_lgqa7"]
+[ext_resource type="Script" uid="uid://bkm7hqa0qni1h" path="res://scripts/player/state/PlayerHurt.cs" id="20_8ydkj"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yj68g"]
+shader = ExtResource("3_3j4b4")
+shader_parameter/vfx_color = Color(1, 1, 1, 1)
+shader_parameter/active = false
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4hvnv"]
 atlas = ExtResource("4_8ydkj")
@@ -542,8 +549,87 @@ tracks/1/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_8ydkj"]
+resource_name = "Hurt"
+length = 0.5
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"Hurt", 1.0, false],
+"method": &"play"
+}]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [true],
+"method": &"SetInvincible"
+}, {
+"args": [false],
+"method": &"SetInvincible"
+}]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
+"values": [{
+"args": [true],
+"method": &"SetShaderActive"
+}, {
+"args": [false],
+"method": &"SetShaderActive"
+}, {
+"args": [true],
+"method": &"SetShaderActive"
+}, {
+"args": [false],
+"method": &"SetShaderActive"
+}, {
+"args": [true],
+"method": &"SetShaderActive"
+}, {
+"args": [false],
+"method": &"SetShaderActive"
+}]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("StateMachine")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": ["Move"],
+"method": &"ChangeState"
+}]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qek5x"]
 _data = {
+&"Hurt": SubResource("Animation_8ydkj"),
 &"Primary": SubResource("Animation_0owmy"),
 &"Secondary": SubResource("Animation_qek5x")
 }
@@ -565,11 +651,15 @@ Speed = 300.0
 JumpSpeed = 400.0
 Health = 5
 Projectile = ExtResource("2_qek5x")
+Damage = 1
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_yj68g")
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_gmlin")
 animation = &"Hurt"
+frame = 3
+frame_progress = 1.0
 flip_h = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -622,3 +712,6 @@ script = ExtResource("6_75vfm")
 
 [node name="Attack" type="Node" parent="StateMachine"]
 script = ExtResource("7_0owmy")
+
+[node name="Hurt" type="Node" parent="StateMachine"]
+script = ExtResource("20_8ydkj")

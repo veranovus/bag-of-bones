@@ -1,7 +1,13 @@
-[gd_scene load_steps=3 format=3 uid="uid://bx41whqpcavj3"]
+[gd_scene load_steps=5 format=3 uid="uid://bx41whqpcavj3"]
 
 [ext_resource type="Script" uid="uid://cll7ukfum6osi" path="res://scripts/enemy/Enemy.cs" id="1_4a83h"]
+[ext_resource type="Shader" uid="uid://bhg8d7bncastc" path="res://resources/shader/entity.gdshader" id="2_40wdo"]
 [ext_resource type="Script" uid="uid://dbfpyxc3gwdib" path="res://scripts/enemy/EnemyStateMachine.cs" id="2_a3pup"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_40wdo"]
+shader = ExtResource("2_40wdo")
+shader_parameter/vfx_color = Color(1, 1, 1, 1)
+shader_parameter/active = false
 
 [node name="Enemy" type="CharacterBody2D"]
 collision_layer = 16
@@ -9,6 +15,7 @@ collision_mask = 3
 script = ExtResource("1_4a83h")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_40wdo")
 scale = Vector2(0.5, 0.5)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -17,5 +24,13 @@ scale = Vector2(0.5, 0.5)
 
 [node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
 
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 32
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("2_a3pup")
+
+[connection signal="body_entered" from="Area2D" to="." method="DealDamage"]

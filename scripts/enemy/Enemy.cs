@@ -10,6 +10,7 @@ public partial class Enemy : CharacterBody2D, IDamageable {
 
   [Export] public int   Health { get; private set; }
   [Export] public float Speed  { get; private set; }
+  [Export] public int   Damage { get; private set; }
 
   public int     CurrentHealth { get; private set; }
   public bool    Alive         { get; private set; }
@@ -58,13 +59,22 @@ public partial class Enemy : CharacterBody2D, IDamageable {
     if (CurrentHealth <= 0) {
       CurrentHealth = 0;
       SetAlive(false);
-    } else {
-      Invincible    = true;
-      HurtDirection = (GlobalPosition - position).Normalized();
-      StateMachine.ChangeState("Hurt");
     }
+    HurtDirection = (GlobalPosition - position).Normalized();
+    StateMachine.ChangeState("Hurt");
 
     return Alive;
+  }
+
+  public void DealDamage(Node2D node) {
+    if (node is IDamageable damageable) {
+      damageable.TakeDamage(Damage, GlobalPosition);
+    }
+  }
+
+  public void SetShaderActive(bool value) {
+    var material = (ShaderMaterial)Sprite2D.Material;
+    material.SetShaderParameter("active", value);
   }
 
   public void SetInvincible(bool value) {
@@ -78,8 +88,6 @@ public partial class Enemy : CharacterBody2D, IDamageable {
   private void SetAlive(bool value) {
     if (Alive = value) {
       SetDefaultStats();
-    } else {
-      QueueFree();
     }
   }
 
