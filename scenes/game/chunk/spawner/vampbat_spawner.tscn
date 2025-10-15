@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://dl42rgapk2khf"]
+
+[ext_resource type="PackedScene" uid="uid://wqy7m33dn5ky" path="res://scenes/game/chunk/spawner/spawner.tscn" id="1_8x6pe"]
+[ext_resource type="PackedScene" uid="uid://vpouejhkxf35" path="res://scenes/enemy/vampbat/vampbat.tscn" id="2_7330b"]
+
+[node name="VampbatSpawner" instance=ExtResource("1_8x6pe")]
+enemy = ExtResource("2_7330b")

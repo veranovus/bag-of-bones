@@ -1,0 +1,7 @@
+[gd_scene load_steps=3 format=3 uid="uid://c1ffqy16sbtb8"]
+
+[ext_resource type="PackedScene" uid="uid://wqy7m33dn5ky" path="res://scenes/game/chunk/spawner/spawner.tscn" id="1_c6ydd"]
+[ext_resource type="PackedScene" uid="uid://c4yyor6h0aybc" path="res://scenes/enemy/crawler/crawler.tscn" id="2_h2xrj"]
+
+[node name="CrawlerSpawner" instance=ExtResource("1_c6ydd")]
+enemy = ExtResource("2_h2xrj")

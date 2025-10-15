@@ -1,0 +1,24 @@
+[gd_scene load_steps=4 format=4 uid="uid://b76s0apjhteol"]
+
+[ext_resource type="PackedScene" uid="uid://360ho0j87cnx" path="res://scenes/game/chunk/tile_map.tscn" id="1_ad1of"]
+[ext_resource type="Script" uid="uid://dmg1xyusr5bn6" path="res://scripts/game/Chunk.cs" id="1_y60rg"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_oxauc"]
+size = Vector2(1920, 108)
+
+[node name="Chunk" type="Node2D"]
+script = ExtResource("1_y60rg")
+
+[node name="TileMap" parent="." instance=ExtResource("1_ad1of")]
+tile_map_data = PackedByteArray("AAD//wAAAAADAAAAAAD//wEAAAADAAAAAAD//wIAAAADAAAAAAD//wMAAAADAAAAAAD//wQAAAADAAAAAAD//wYAAAADAAAAAAD//wcAAAADAAAAAAD//wgAAAADAAAAAAD//wkAAAADAAAAAAAHAAAAAAACAAEAAAAHAAEAAAACAAEAAAAHAAIAAAACAAEAAAAHAAMAAAACAAEAAAAHAAQAAAACAAEAAAAHAAUAAAACAAEAAAAHAAgAAAACAAEAAAAHAAkAAAACAAEAAAD//wUAAAADAAAAAAAHAAcAAAACAAEAAAAHAAYAAAACAAEAAAA=")
+
+[node name="HalfwayArea" type="Area2D" parent="."]
+visible = false
+position = Vector2(896, 1280)
+collision_layer = 0
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HalfwayArea"]
+shape = SubResource("RectangleShape2D_oxauc")
+
+[connection signal="body_entered" from="HalfwayArea" to="." method="OnHalfwayAreaBodyEntered" flags=6]

@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://wqy7m33dn5ky"]
+
+[ext_resource type="Script" uid="uid://ctixdjb1op6v4" path="res://scripts/game/EnemySpawner.cs" id="1_vps43"]
+
+[node name="Spawner" type="Marker2D"]
+gizmo_extents = 256.0
+script = ExtResource("1_vps43")
