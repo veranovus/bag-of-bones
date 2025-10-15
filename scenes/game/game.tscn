@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://rqdcp4a3qtdv"]
 
-[ext_resource type="Script" uid="uid://cpgswdk08wck7" path="res://scripts/game/Camera.cs" id="1_0sr1o"]
 [ext_resource type="PackedScene" uid="uid://b1q31wmgvmp0n" path="res://scenes/player/player.tscn" id="1_kelw5"]
 [ext_resource type="PackedScene" uid="uid://cu3xrh334bnii" path="res://scenes/game/level/level#00.tscn" id="2_7h61r"]
+[ext_resource type="PackedScene" uid="uid://bhe12151h11oi" path="res://scenes/game/camera.tscn" id="3_0sr1o"]
 
 [node name="Game" type="Node2D" groups=["Game"]]
 
@@ -13,6 +13,5 @@
 [node name="Player" parent="." instance=ExtResource("1_kelw5")]
 position = Vector2(896, 384)
 
-[node name="Camera2D" type="Camera2D" parent="."]
+[node name="Camera" parent="." instance=ExtResource("3_0sr1o")]
 position = Vector2(896, 540)
-script = ExtResource("1_0sr1o")
