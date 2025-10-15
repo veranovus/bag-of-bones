@@ -679,7 +679,7 @@ slide_on_ceiling = false
 script = ExtResource("1_8afob")
 Speed = 450.0
 JumpSpeed = 600.0
-Health = 5
+Health = 100
 Projectile = ExtResource("2_qek5x")
 Damage = 1
 
@@ -729,6 +729,10 @@ shape = SubResource("CapsuleShape2D_lgqa7")
 disabled = true
 
 [node name="AttackTimer" type="Timer" parent="."]
+
+[node name="RegenTimer" type="Timer" parent="."]
+
+[node name="RegenStartTimer" type="Timer" parent="."]
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initialState")]
 script = ExtResource("15_lgqa7")

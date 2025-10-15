@@ -8,6 +8,8 @@ public partial class Player : CharacterBody2D, IDamageable {
   public AnimationPlayer    AnimationPlayer { get; private set; }
   public PlayerStateMachine StateMachine    { get; private set; }
   public Timer              AttackTimer     { get; private set; }
+  public Timer              RegenTimer      { get; private set; }
+  public Timer              RegenStartTimer { get; private set; }
   public PlayerUI           PlayerUI        { get; private set; }
 
   [Export] public float       Speed      { get; private set; }
@@ -29,6 +31,10 @@ public partial class Player : CharacterBody2D, IDamageable {
   public bool     CanAttack      { get; private set; }
 
   private const    float      Gravity         = 980.0f;
+  private const    float      RegenStartTime  = 3.0f;
+  private const    float      RegenTime       = 0.2f;
+  private const    int        RegenAmount     = 1;
+  private const    int        AttackCost      = 5;
   private const    float      AttackTime      = 0.1f;
   private readonly Marker2D[] AttackPositions = new Marker2D[2];
 
@@ -37,10 +43,14 @@ public partial class Player : CharacterBody2D, IDamageable {
     AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
     StateMachine    = GetNode<PlayerStateMachine>("StateMachine");
     AttackTimer     = GetNode<Timer>("AttackTimer");
+    RegenTimer      = GetNode<Timer>("RegenTimer");
+    RegenStartTimer = GetNode<Timer>("RegenStartTimer");
     PlayerUI        = GetNode<PlayerUI>("PlayerUI");
 
     RegisterAttackPositions();
     SetAttackTimer();
+    SetRegenTimer();
+    SetRegenStartTimer();
     StateMachine.InitialStateOnReady();
     SetDefaultStats();
   }
@@ -93,6 +103,11 @@ public partial class Player : CharacterBody2D, IDamageable {
     }
 
     if (Attack != null) {
+      // TODO: Play an animation on healthbar and a sound effect here.
+      if (!PayAttackCost(AttackCost)) {
+        return;
+      }
+
       if (MathF.Abs(Direction.Y) >= MathF.Abs(Direction.X)) {
         AttackPosition          = AttackPositions[1];
         AttackPosition.Position = new Vector2(0.0f, MathF.Abs(AttackPosition.Position.Y) * MathF.Sign(Direction.Y));
@@ -138,8 +153,13 @@ public partial class Player : CharacterBody2D, IDamageable {
       CurrentHealth = 0;
       SetAlive(false);
     }
+
+    RegenTimer.Stop();
+    RegenStartTimer.Start();
+
     PlayerUI.UpdateHealthbar();
     PlayerUI.PlayAnimation("Hurt");
+
     HurtDirection = (GlobalPosition - position).Normalized();
     StateMachine.ChangeState("Hurt");
 
@@ -171,6 +191,31 @@ public partial class Player : CharacterBody2D, IDamageable {
     }
   }
 
+  private void Regenerate() {
+    if (!Alive || !CanAttack) {
+      return;
+    }
+    CurrentHealth += RegenAmount;
+    if (CurrentHealth > Health) {
+      CurrentHealth = Health;
+    }
+    PlayerUI.UpdateHealthbar();
+  }
+
+  private bool PayAttackCost(int value) {
+    if (CurrentHealth - value < 1) {
+      return false;
+    }
+
+    CurrentHealth -= value;
+    PlayerUI.UpdateHealthbar();
+
+    RegenTimer.Stop();
+    RegenStartTimer.Start();
+
+    return true;
+  }
+
   private void ApplyGravity(double delta) {
     Velocity = Velocity with { Y = Velocity.Y + (Gravity * (float)delta) }; 
   }
@@ -197,5 +242,17 @@ public partial class Player : CharacterBody2D, IDamageable {
     AttackTimer.WaitTime = AttackTime;
     AttackTimer.OneShot  = true;
     AttackTimer.Timeout += () => { CanAttack = true; };
+  }
+
+  private void SetRegenTimer() {
+    RegenTimer.WaitTime = RegenTime;
+    RegenTimer.OneShot  = false;
+    RegenTimer.Timeout += Regenerate;
+  }
+
+  private void SetRegenStartTimer() {
+    RegenStartTimer.WaitTime = RegenStartTime;
+    RegenStartTimer.OneShot  = true;
+    RegenStartTimer.Timeout += () => { RegenTimer.Start(); };
   }
 }
