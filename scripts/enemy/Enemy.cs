@@ -91,6 +91,9 @@ public partial class Enemy : CharacterBody2D, IDamageable {
   }
 
   public void DealDamage(Node2D node) {
+    if (Invincible) {
+      return;
+    }
     if (node is IDamageable damageable) {
       damageable.TakeDamage(Damage, GlobalPosition);
     }
