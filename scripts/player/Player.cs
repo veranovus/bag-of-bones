@@ -29,6 +29,7 @@ public partial class Player : CharacterBody2D, IDamageable {
   public bool     Alive          { get; private set; }
   public bool     Invincible     { get; private set; }
   public bool     CanAttack      { get; private set; }
+  public int      Score          { get; private set; }
 
   private const    float      Gravity         = 980.0f;
   private const    float      RegenStartTime  = 3.0f;
@@ -168,8 +169,16 @@ public partial class Player : CharacterBody2D, IDamageable {
 
   public void DealDamage(Node2D node) {
     if (node is IDamageable damageable) {
-      damageable.TakeDamage(Damage, GlobalPosition);
+      if (!damageable.TakeDamage(Damage, GlobalPosition)) {
+        AddScore();
+      }
     }
+  }
+
+  public void AddScore(int value = 1) {
+    Score += value;
+    PlayerUI.UpdateScore();
+    PlayerUI.PlayAnimation("ScoreUp");
   }
 
   public void SetShaderActive(bool value) {

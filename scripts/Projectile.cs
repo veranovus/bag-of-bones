@@ -9,10 +9,12 @@ public partial class Projectile : Area2D {
   [Export] private int   Damage;
   [Export] private float Speed;
 
+  private Player           player;
   private AnimatedSprite2D sprite2D;
   private Vector2          direction;
 
   public override void _Ready() {
+    player   = (Player)GetTree().GetFirstNodeInGroup("Player");
     sprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
     sprite2D.Play("Default");
   }
@@ -31,7 +33,9 @@ public partial class Projectile : Area2D {
 
   private void OnCollision(Node2D node) {
     if (node is IDamageable damageable) {
-      damageable.TakeDamage(Damage, GlobalPosition);
+      if (!damageable.TakeDamage(Damage, GlobalPosition) && GetCollisionLayerValue(4)) {
+        player.AddScore(); 
+      }
     }
     QueueFree();
   }
