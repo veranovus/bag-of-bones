@@ -1,10 +1,16 @@
-[gd_scene load_steps=16 format=3 uid="uid://c4yyor6h0aybc"]
+[gd_scene load_steps=18 format=3 uid="uid://c4yyor6h0aybc"]
 
 [ext_resource type="PackedScene" uid="uid://bx41whqpcavj3" path="res://scenes/enemy/enemy.tscn" id="1_x13pp"]
 [ext_resource type="Texture2D" uid="uid://ci1cl5ebdv6gb" path="res://assets/image/enemy/crawler/crawler-death.png" id="2_6pvkt"]
+[ext_resource type="Shader" uid="uid://bhg8d7bncastc" path="res://resources/shader/entity.gdshader" id="2_vk8an"]
 [ext_resource type="Texture2D" uid="uid://c5vc1p5tyfb00" path="res://assets/image/enemy/crawler/crawler-walk.png" id="2_wc2fe"]
 [ext_resource type="Script" uid="uid://1cfjx1vfq41j" path="res://scripts/enemy/state/Wander.cs" id="3_jnv0e"]
 [ext_resource type="Script" uid="uid://bvn1komg5o8xh" path="res://scripts/enemy/state/EnemyHurt.cs" id="5_6pvkt"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0himp"]
+shader = ExtResource("2_vk8an")
+shader_parameter/vfx_color = Color(1, 1, 1, 1)
+shader_parameter/active = false
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_cbt1e"]
 atlas = ExtResource("2_6pvkt")
@@ -145,6 +151,7 @@ Speed = 200.0
 Damage = 1
 
 [node name="AnimatedSprite2D" parent="." index="0"]
+material = SubResource("ShaderMaterial_0himp")
 sprite_frames = SubResource("SpriteFrames_cbt1e")
 animation = &"Hurt"
 

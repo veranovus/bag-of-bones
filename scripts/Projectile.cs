@@ -9,7 +9,13 @@ public partial class Projectile : Area2D {
   [Export] private int   Damage;
   [Export] private float Speed;
 
-  private Vector2 direction;
+  private AnimatedSprite2D sprite2D;
+  private Vector2          direction;
+
+  public override void _Ready() {
+    sprite2D = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+    sprite2D.Play("Default");
+  }
 
   public override void _PhysicsProcess(double delta) {
     Position = new Vector2(

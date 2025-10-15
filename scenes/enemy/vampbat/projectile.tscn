@@ -1,0 +1,61 @@
+[gd_scene load_steps=9 format=3 uid="uid://3n0hgv6c2gn3"]
+
+[ext_resource type="PackedScene" uid="uid://dcljnkryfekuu" path="res://scenes/projectile.tscn" id="1_ogw1s"]
+[ext_resource type="Texture2D" uid="uid://d33qymvd5c1y5" path="res://assets/image/enemy/vampbat/vampbat-projectile.png" id="2_uyfip"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ild85"]
+atlas = ExtResource("2_uyfip")
+region = Rect2(0, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_50xbe"]
+atlas = ExtResource("2_uyfip")
+region = Rect2(256, 0, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_crqn7"]
+atlas = ExtResource("2_uyfip")
+region = Rect2(0, 256, 256, 256)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_28iio"]
+atlas = ExtResource("2_uyfip")
+region = Rect2(256, 256, 256, 256)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_uxxf3"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ild85")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_50xbe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_crqn7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_28iio")
+}],
+"loop": true,
+"name": &"Default",
+"speed": 12.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ogw1s"]
+radius = 20.0
+
+[node name="Projectile" instance=ExtResource("1_ogw1s")]
+collision_layer = 32
+collision_mask = 4
+Damage = 1
+Speed = 600.0
+
+[node name="AnimatedSprite2D" parent="." index="0"]
+sprite_frames = SubResource("SpriteFrames_uxxf3")
+animation = &"Default"
+frame = 3
+
+[node name="CollisionShape2D" parent="." index="1"]
+position = Vector2(36, 0)
+shape = SubResource("CircleShape2D_ogw1s")
+
+[node name="VisibleOnScreenNotifier2D" parent="." index="2"]
+rect = Rect2(-64, -24, 128, 48)

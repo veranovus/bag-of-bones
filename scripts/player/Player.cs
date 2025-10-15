@@ -1,11 +1,13 @@
 using Godot;
 using System;
 using System.Collections.Generic;
+using System.Security;
 
 public partial class Player : CharacterBody2D, IDamageable {
   public AnimatedSprite2D   Sprite2D        { get; private set; }
   public AnimationPlayer    AnimationPlayer { get; private set; }
   public PlayerStateMachine StateMachine    { get; private set; }
+  public Timer              AttackTimer     { get; private set; }
 
   [Export] public float       Speed      { get; private set; }
   [Export] public float       JumpSpeed  { get; private set; }
@@ -23,16 +25,20 @@ public partial class Player : CharacterBody2D, IDamageable {
   public int      CurrentHealth  { get; private set; }
   public bool     Alive          { get; private set; }
   public bool     Invincible     { get; private set; }
+  public bool     CanAttack      { get; private set; }
 
   private readonly float      Gravity         = 980.0f;
   private readonly Marker2D[] AttackPositions = new Marker2D[2];
+  private readonly float      AttackTime      = 0.2f;
 
   public override void _Ready() {
     Sprite2D        = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
     AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
     StateMachine    = GetNode<PlayerStateMachine>("StateMachine");
+    AttackTimer     = GetNode<Timer>("AttackTimer");
 
     RegisterAttackPositions();
+    SetAttackTimer();
     StateMachine.InitialStateOnReady();
     SetDefaultStats();
   }
@@ -52,6 +58,7 @@ public partial class Player : CharacterBody2D, IDamageable {
     Invincible    = false;
     Jump          = true;
     Direction     = Vector2.Right;
+    CanAttack     = true;
   }
 
   public Vector2 CollectDirectionalInput() {
@@ -69,6 +76,10 @@ public partial class Player : CharacterBody2D, IDamageable {
   }
 
   public void CollectAttackInput() {
+    if (!CanAttack) {
+      return;
+    }
+
     if        (Input.IsActionJustPressed("action_primary")) {
       Attack = "Primary";
     } else if (Input.IsActionJustPressed("action_secondary")) {
@@ -85,6 +96,7 @@ public partial class Player : CharacterBody2D, IDamageable {
         AttackPosition          = AttackPositions[0];
         AttackPosition.Position = new Vector2(MathF.Abs(AttackPosition.Position.X) * MathF.Sign(Direction.X), 0.0f);
       }
+      CanAttack = false;
       StateMachine.ChangeState("Attack");
     }
   }
@@ -128,6 +140,12 @@ public partial class Player : CharacterBody2D, IDamageable {
     return Alive;
   }
 
+  public void DealDamage(Node2D node) {
+    if (node is IDamageable damageable) {
+      damageable.TakeDamage(Damage, GlobalPosition);
+    }
+  }
+
   public void SetShaderActive(bool value) {
     var material = (ShaderMaterial)Sprite2D.Material;
     material.SetShaderParameter("active", value);
@@ -156,12 +174,6 @@ public partial class Player : CharacterBody2D, IDamageable {
   }
 
   private void RegisterAttackPositions() {
-    void onCollision(Node2D node) {
-      if (node is IDamageable damageable) {
-        damageable.TakeDamage(Damage, GlobalPosition);
-      }
-    }
-
     var children = GetNode("Actions").GetChildren();
     for (int i = 0; i < AttackPositions.Length; ++i) {
       var child = children[i];
@@ -170,8 +182,14 @@ public partial class Player : CharacterBody2D, IDamageable {
       }
 
       var area           = (Area2D)marker.GetChild(0);
-      area.BodyEntered  += onCollision;
+      area.BodyEntered  += DealDamage;
       AttackPositions[i] = marker;
     }
+  }
+
+  private void SetAttackTimer() {
+    AttackTimer.WaitTime = AttackTime;
+    AttackTimer.OneShot  = true;
+    AttackTimer.Timeout += () => { CanAttack = true; };
   }
 }

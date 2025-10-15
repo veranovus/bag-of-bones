@@ -2,8 +2,8 @@
 
 [ext_resource type="PackedScene" uid="uid://b1q31wmgvmp0n" path="res://scenes/player/player.tscn" id="1_uwrxv"]
 [ext_resource type="Texture2D" uid="uid://c8w5mk0vbpgcj" path="res://icon.svg" id="1_yqjtg"]
-[ext_resource type="PackedScene" uid="uid://c4yyor6h0aybc" path="res://scenes/enemy/crawler.tscn" id="3_lnu2h"]
-[ext_resource type="PackedScene" uid="uid://vpouejhkxf35" path="res://scenes/enemy/vampbat.tscn" id="4_lbhrr"]
+[ext_resource type="PackedScene" uid="uid://c4yyor6h0aybc" path="res://scenes/enemy/crawler/crawler.tscn" id="3_lnu2h"]
+[ext_resource type="PackedScene" uid="uid://vpouejhkxf35" path="res://scenes/enemy/vampbat/vampbat.tscn" id="4_lbhrr"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8cj0n"]
 size = Vector2(880, 72)

@@ -2,32 +2,45 @@ using Godot;
 using System;
 
 public partial class Enemy : CharacterBody2D, IDamageable {
-  public AnimatedSprite2D  Sprite2D        { get; private set; }
-  public CollisionShape2D  Collider        { get; private set; }
-  public EnemyStateMachine StateMachine    { get; private set; }
-  public AnimationPlayer   AnimationPlayer { get; private set; }
-  public RayCast2D[]       Raycasts        { get; private set; } = new RayCast2D[2];
+  public AnimatedSprite2D  Sprite2D         { get; private set; }
+  public CollisionShape2D  Collider         { get; private set; }
+  public EnemyStateMachine StateMachine     { get; private set; }
+  public AnimationPlayer   AnimationPlayer  { get; private set; }
+  public Player            Player           { get; private set; }
+  public RayCast2D[]       Raycasts         { get; private set; } = new RayCast2D[2];
+  public Marker2D          ProjectileMarker { get; private set; }
+  public Timer             AttackTimer      { get; private set; }
 
-  [Export] public int   Health { get; private set; }
-  [Export] public float Speed  { get; private set; }
-  [Export] public bool  Fly    { get; private set; }
-  [Export] public int   Damage { get; private set; }
+  [Export] public int         Health     { get; private set; }
+  [Export] public float       Speed      { get; private set; }
+  [Export] public bool        Fly        { get; private set; }
+  [Export] public int         Damage     { get; private set; }
+  [Export] public PackedScene Projectile { get; private set; }
 
   public int     CurrentHealth { get; private set; }
   public bool    Alive         { get; private set; }
   public Vector2 Direction     { get; private set; }
   public Vector2 HurtDirection { get; private set; }
   public bool    Invincible    { get; private set; }
+  public bool    CanAttack     { get; private set; }
 
-  private readonly float Gravity = 980.0f;
+  private const float Gravity    = 980.0f;
+  private const float AttackTime = 3.0f;
 
   public override void _Ready() {
-    Sprite2D        = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
-    Collider        = GetNode<CollisionShape2D>("CollisionShape2D");
-    StateMachine    = GetNode<EnemyStateMachine>("StateMachine");
-    AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
+    Sprite2D         = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+    Collider         = GetNode<CollisionShape2D>("CollisionShape2D");
+    StateMachine     = GetNode<EnemyStateMachine>("StateMachine");
+    AnimationPlayer  = GetNode<AnimationPlayer>("AnimationPlayer");
+    Player           = (Player)GetTree().GetFirstNodeInGroup("Player");
+    if (Projectile != null) {
+      ProjectileMarker = GetNode<Marker2D>("Projectile");
+      SpawnAttackTimer();
+    }
 
     SpawnRaycasts();
+    SpawnAttackTimer();
+    StartAttackTimer();
     StateMachine.InitialStateOnReady();
     SetDefaultStats();
   }
@@ -46,6 +59,19 @@ public partial class Enemy : CharacterBody2D, IDamageable {
     Alive         = true;
     Invincible    = false;
     Direction     = Vector2.Right;
+    CanAttack     = false;
+  }
+
+  public void StartAttackTimer() {
+    AttackTimer.Start();
+  }
+
+  public void SpawnProjectile() {
+    var instance      = Projectile.Instantiate<Projectile>();
+    var position      = ProjectileMarker.Position * new Vector2(MathF.Sign(Direction.X), 1.0f);
+    instance.Position = GlobalPosition + position;
+    instance.SetDirection(instance.Position + Direction);
+    GetParent().AddChild(instance);
   }
 
   public bool TakeDamage(int damage, Vector2 position) {
@@ -78,6 +104,10 @@ public partial class Enemy : CharacterBody2D, IDamageable {
     material.SetShaderParameter("active", value);
   }
 
+  public void SetCanAttack(bool value) {
+    CanAttack = value;
+  }
+
   public void SetInvincible(bool value) {
     Invincible = value;
   }
@@ -102,6 +132,9 @@ public partial class Enemy : CharacterBody2D, IDamageable {
   private void FlipSprite() {
     if (!Mathf.IsZeroApprox(MathF.Abs(Velocity.X))) {
       Sprite2D.FlipH = Velocity.X < 0.0f;
+    } else if (Fly) {
+      Direction      = (Player.GlobalPosition - GlobalPosition).Normalized();
+      Sprite2D.FlipH = Direction.X < 0.0f;
     }
   }
 
@@ -130,5 +163,15 @@ public partial class Enemy : CharacterBody2D, IDamageable {
 
     Raycasts[0] = spawnRaycastDown("Left", -offset.X, 0.0f);
     Raycasts[1] = spawnRaycastDown("Right", offset.X, 0.0f);
+  }
+
+  private void SpawnAttackTimer() {
+    AttackTimer = new Timer() {
+      Name     = "AttackTimer",
+      WaitTime = AttackTime,
+      OneShot  = true,
+    };
+    AttackTimer.Timeout += () => { CanAttack = true; };
+    AddChild(AttackTimer);
   }
 }

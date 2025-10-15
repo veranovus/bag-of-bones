@@ -1,11 +1,19 @@
-[gd_scene load_steps=17 format=3 uid="uid://vpouejhkxf35"]
+[gd_scene load_steps=22 format=3 uid="uid://vpouejhkxf35"]
 
 [ext_resource type="PackedScene" uid="uid://bx41whqpcavj3" path="res://scenes/enemy/enemy.tscn" id="1_jo14l"]
+[ext_resource type="PackedScene" uid="uid://3n0hgv6c2gn3" path="res://scenes/enemy/vampbat/projectile.tscn" id="2_htkvj"]
 [ext_resource type="Texture2D" uid="uid://bhb6fbxt8lfkn" path="res://assets/image/enemy/vampbat/vampbat-attack.png" id="2_wwhr5"]
 [ext_resource type="Texture2D" uid="uid://6q3mwfvphl2s" path="res://assets/image/enemy/vampbat/vampbat-death.png" id="3_lwun1"]
+[ext_resource type="Shader" uid="uid://bhg8d7bncastc" path="res://resources/shader/entity.gdshader" id="3_pnm8g"]
 [ext_resource type="Texture2D" uid="uid://cg04y3wth1bol" path="res://assets/image/enemy/vampbat/vampbat-move.png" id="4_51cw2"]
 [ext_resource type="Script" uid="uid://cuaw533er51wj" path="res://scripts/enemy/state/Fly.cs" id="5_51cw2"]
 [ext_resource type="Script" uid="uid://bvn1komg5o8xh" path="res://scripts/enemy/state/EnemyHurt.cs" id="6_4u3j8"]
+[ext_resource type="Script" uid="uid://c2brgvx3wy436" path="res://scripts/enemy/state/Shoot.cs" id="8_injr7"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_injr7"]
+shader = ExtResource("3_pnm8g")
+shader_parameter/vfx_color = Color(1, 1, 1, 1)
+shader_parameter/active = false
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4u3j8"]
 atlas = ExtResource("2_wwhr5")
@@ -142,9 +150,73 @@ tracks/3/keys = {
 }]
 }
 
+[sub_resource type="Animation" id="Animation_pnm8g"]
+resource_name = "Shoot"
+length = 0.3
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"Attack", 1.0, false],
+"method": &"play"
+}]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"SpawnProjectile"
+}]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("StateMachine")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": ["Fly"],
+"method": &"ChangeState"
+}]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.3),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": [false],
+"method": &"SetCanAttack"
+}, {
+"args": [],
+"method": &"StartAttackTimer"
+}]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_lwun1"]
 _data = {
-&"Hurt": SubResource("Animation_wwhr5")
+&"Hurt": SubResource("Animation_wwhr5"),
+&"Shoot": SubResource("Animation_pnm8g")
 }
 
 [node name="Vampbat" instance=ExtResource("1_jo14l")]
@@ -152,11 +224,12 @@ Health = 1
 Speed = 300.0
 Fly = true
 Damage = 1
+Projectile = ExtResource("2_htkvj")
 
 [node name="AnimatedSprite2D" parent="." index="0"]
+material = SubResource("ShaderMaterial_injr7")
 sprite_frames = SubResource("SpriteFrames_jo14l")
-animation = &"Fly"
-frame_progress = 0.5129674
+animation = &"Attack"
 
 [node name="CollisionShape2D" parent="." index="1"]
 shape = SubResource("CircleShape2D_51cw2")
@@ -172,11 +245,17 @@ rect = Rect2(-50, -60, 100, 120)
 [node name="CollisionShape2D" parent="Area2D" index="0"]
 shape = SubResource("CircleShape2D_51cw2")
 
-[node name="StateMachine" parent="." index="5" node_paths=PackedStringArray("initialState")]
+[node name="Projectile" type="Marker2D" parent="." index="5"]
+position = Vector2(64, 20)
+
+[node name="StateMachine" parent="." index="6" node_paths=PackedStringArray("initialState")]
 initialState = NodePath("Fly")
 
 [node name="Fly" type="Node" parent="StateMachine" index="0"]
 script = ExtResource("5_51cw2")
 
-[node name="Hurt" type="Node" parent="StateMachine" index="1"]
+[node name="Shoot" type="Node" parent="StateMachine" index="1"]
+script = ExtResource("8_injr7")
+
+[node name="Hurt" type="Node" parent="StateMachine" index="2"]
 script = ExtResource("6_4u3j8")

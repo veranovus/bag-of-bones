@@ -18,6 +18,10 @@ public partial class Fly : State<Enemy> {
     Parent.Sprite2D.Play("Fly");
   }
 
+  public override void OnExit() {
+    timer.Stop();
+  }
+
   public override void OnPhysicsProcess(double delta) {
     Parent.Velocity = (Parent.Speed / 5.0f) * direction;
   }
@@ -26,7 +30,7 @@ public partial class Fly : State<Enemy> {
     timer = new Timer {
       Name     = "CayoteeTimer",
       WaitTime = TimerTime,
-      OneShot  = true,
+      OneShot  = false,
     };
     timer.Timeout += PickRandomDirection;
     AddChild(timer);
@@ -34,6 +38,9 @@ public partial class Fly : State<Enemy> {
 
   private void PickRandomDirection() {
     direction.Y = -direction.Y;
-    timer.Start();
+    if (Parent.CanAttack) {
+      Parent.Velocity = Vector2.Zero;
+      StateMachine.ChangeState("Shoot"); 
+    }
   }
 }

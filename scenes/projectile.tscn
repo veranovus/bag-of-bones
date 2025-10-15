@@ -8,6 +8,7 @@ collision_mask = 0
 script = ExtResource("1_c8fcr")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 
