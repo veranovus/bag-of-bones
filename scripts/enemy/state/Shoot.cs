@@ -14,6 +14,6 @@ public partial class Shoot : State<Enemy> {
   }
 
   private void PlayShootAnimation() {
-    Parent.AnimationPlayer.Play("Shoot"); 
+    Parent.AnimationPlayer.Queue("Shoot"); 
   }
 }

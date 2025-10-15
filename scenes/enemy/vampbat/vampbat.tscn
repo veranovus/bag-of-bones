@@ -230,9 +230,10 @@ Projectile = ExtResource("2_htkvj")
 [node name="AnimatedSprite2D" parent="." index="0"]
 material = SubResource("ShaderMaterial_injr7")
 sprite_frames = SubResource("SpriteFrames_jo14l")
-animation = &"Attack"
+animation = &"Fly"
 
 [node name="CollisionShape2D" parent="." index="1"]
+visible = false
 shape = SubResource("CircleShape2D_51cw2")
 
 [node name="AnimationPlayer" parent="." index="2"]
@@ -242,14 +243,15 @@ libraries = {
 
 [node name="VisibleOnScreenEnabler2D" parent="." index="3"]
 rect = Rect2(-50, -60, 100, 120)
+show_rect = false
+
+[node name="Area2D" parent="." index="4"]
+visible = false
 
 [node name="CollisionShape2D" parent="Area2D" index="0"]
 shape = SubResource("CircleShape2D_51cw2")
 
-[node name="Projectile" type="Marker2D" parent="." index="5"]
-position = Vector2(64, 20)
-
-[node name="StateMachine" parent="." index="6" node_paths=PackedStringArray("initialState")]
+[node name="StateMachine" parent="." index="5" node_paths=PackedStringArray("initialState")]
 initialState = NodePath("Fly")
 
 [node name="Fly" type="Node" parent="StateMachine" index="0"]
@@ -260,3 +262,6 @@ script = ExtResource("8_injr7")
 
 [node name="Hurt" type="Node" parent="StateMachine" index="2"]
 script = ExtResource("6_4u3j8")
+
+[node name="Projectile" type="Marker2D" parent="." index="6"]
+position = Vector2(64, 20)

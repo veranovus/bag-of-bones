@@ -17,6 +17,6 @@ public partial class Attack : State<Player> {
       Callable.From<String>((name) => { StateMachine.ChangeState("Move"); }),
       (uint)ConnectFlags.OneShot
     );
-    Parent.AnimationPlayer.Play(Parent.Attack);
+    Parent.AnimationPlayer.Queue(Parent.Attack);
   }
 }

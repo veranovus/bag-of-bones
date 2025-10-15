@@ -34,8 +34,10 @@ animation = &"Default"
 frame_progress = 0.20201378
 
 [node name="CollisionShape2D" parent="." index="1"]
+visible = false
 rotation = -1.570797
 shape = SubResource("RectangleShape2D_c28ns")
 
 [node name="VisibleOnScreenNotifier2D" parent="." index="2"]
+visible = false
 rect = Rect2(-32, -16, 64, 32)

@@ -23,6 +23,6 @@ public partial class PlayerHurt : State<Player> {
       Callable.From<String>((name) => { if(!Parent.Alive) { Parent.QueueFree(); } }),
       (uint)ConnectFlags.OneShot
     );
-    Parent.AnimationPlayer.Play("Hurt"); 
+    Parent.AnimationPlayer.Queue("Hurt"); 
   }
 }

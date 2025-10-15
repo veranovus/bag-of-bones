@@ -61,8 +61,8 @@ animations = [{
 }]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_wc2fe"]
-radius = 44.0
-height = 144.0
+radius = 64.0
+height = 140.0
 
 [sub_resource type="Animation" id="Animation_jnv0e"]
 resource_name = "Hurt"
@@ -152,10 +152,12 @@ Damage = 1
 
 [node name="AnimatedSprite2D" parent="." index="0"]
 material = SubResource("ShaderMaterial_0himp")
+position = Vector2(0, -5)
 sprite_frames = SubResource("SpriteFrames_cbt1e")
-animation = &"Hurt"
+animation = &"Wander"
 
 [node name="CollisionShape2D" parent="." index="1"]
+visible = false
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_wc2fe")
 
@@ -165,7 +167,11 @@ libraries = {
 }
 
 [node name="VisibleOnScreenEnabler2D" parent="." index="3"]
-rect = Rect2(-80, -70, 160, 140)
+rect = Rect2(-80, -70, 160, 135)
+show_rect = false
+
+[node name="Area2D" parent="." index="4"]
+visible = false
 
 [node name="CollisionShape2D" parent="Area2D" index="0"]
 rotation = 1.5707964

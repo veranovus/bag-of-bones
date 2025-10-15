@@ -24,6 +24,6 @@ public partial class EnemyHurt : State<Enemy> {
       Callable.From<String>((name) => { if(!Parent.Alive) { Parent.QueueFree(); } }),
       (uint)ConnectFlags.OneShot
     );
-    Parent.AnimationPlayer.Play("Hurt"); 
+    Parent.AnimationPlayer.Queue("Hurt"); 
   }
 }

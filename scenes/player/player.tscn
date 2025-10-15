@@ -664,13 +664,14 @@ _data = {
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_8ydkj"]
 radius = 48.0
-height = 128.0
+height = 164.0
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lgqa7"]
 radius = 24.0
 height = 256.0
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
+z_index = 10
 collision_layer = 4
 collision_mask = 3
 slide_on_ceiling = false
@@ -683,6 +684,7 @@ Damage = 1
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_yj68g")
+position = Vector2(0, -12)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_gmlin")
 animation = &"Idle"
@@ -694,9 +696,11 @@ libraries = {
 }
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
 shape = SubResource("CapsuleShape2D_8ydkj")
 
 [node name="Actions" type="Node2D" parent="."]
+visible = false
 
 [node name="Horizontal" type="Marker2D" parent="Actions"]
 position = Vector2(128, 0)

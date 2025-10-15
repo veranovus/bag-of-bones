@@ -54,8 +54,10 @@ animation = &"Default"
 frame = 3
 
 [node name="CollisionShape2D" parent="." index="1"]
+visible = false
 position = Vector2(36, 0)
 shape = SubResource("CircleShape2D_ogw1s")
 
 [node name="VisibleOnScreenNotifier2D" parent="." index="2"]
+visible = false
 rect = Rect2(-64, -24, 128, 48)
