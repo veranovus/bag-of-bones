@@ -27,9 +27,9 @@ public partial class Player : CharacterBody2D, IDamageable {
   public bool     Invincible     { get; private set; }
   public bool     CanAttack      { get; private set; }
 
-  private readonly float      Gravity         = 980.0f;
+  private const    float      Gravity         = 980.0f;
+  private const    float      AttackTime      = 0.2f;
   private readonly Marker2D[] AttackPositions = new Marker2D[2];
-  private readonly float      AttackTime      = 0.2f;
 
   public override void _Ready() {
     Sprite2D        = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
