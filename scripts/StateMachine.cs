@@ -15,11 +15,11 @@ public partial class StateMachine<T> : Node where T: Node {
   }
 
   public override void _Process(double delta) {
-    CurrentState.OnProcess(delta);
+    CurrentState?.OnProcess(delta);
   }
 
   public override void _PhysicsProcess(double delta) {
-    CurrentState.OnPhysicsProcess(delta);
+    CurrentState?.OnPhysicsProcess(delta);
   }
 
   public void InitialStateOnReady() {

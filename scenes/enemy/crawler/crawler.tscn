@@ -166,7 +166,7 @@ libraries = {
 &"": SubResource("AnimationLibrary_hxeoq")
 }
 
-[node name="VisibleOnScreenEnabler2D" parent="." index="3"]
+[node name="VisibleOnScreenNotifier2D" parent="." index="3"]
 rect = Rect2(-80, -70, 160, 135)
 show_rect = false
 

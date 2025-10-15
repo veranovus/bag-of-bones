@@ -21,4 +21,10 @@ collision_mask = 4
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HalfwayArea"]
 shape = SubResource("RectangleShape2D_oxauc")
 
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+position = Vector2(-256, 0)
+rect = Rect2(0, 0, 2304, 2560)
+show_rect = false
+
 [connection signal="body_entered" from="HalfwayArea" to="." method="OnHalfwayAreaBodyEntered" flags=6]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="OnScreenExited" flags=6]

@@ -40,9 +40,6 @@ public partial class Enemy : CharacterBody2D, IDamageable {
 
     SpawnRaycasts();
     SpawnAttackTimer();
-    StartAttackTimer();
-    StateMachine.InitialStateOnReady();
-    SetDefaultStats();
   }
 
   public override void _Process(double delta) {
@@ -136,6 +133,27 @@ public partial class Enemy : CharacterBody2D, IDamageable {
       Direction      = (Player.GlobalPosition - GlobalPosition).Normalized();
       Sprite2D.FlipH = Direction.X < 0.0f;
     }
+  }
+
+  private void OnScreenEntered() {
+    StartAttackTimer();
+    StateMachine.InitialStateOnReady();
+    SetDefaultStats();
+  }
+
+  private void OnScreenExited() {
+    SpawnQueueFreeTimer(); 
+  }
+
+  private void SpawnQueueFreeTimer() {
+    var timer = new Timer {
+      Name     = "QueueFreeTimer",
+      WaitTime = 5.0f,
+      OneShot  = true,
+    };
+    timer.Timeout += QueueFree;
+    AddChild(timer);
+    timer.CallDeferred("start");
   }
 
   private void SpawnRaycasts() {

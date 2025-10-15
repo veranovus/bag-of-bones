@@ -16,7 +16,7 @@ scale = Vector2(0.5, 0.5)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 
-[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 
 [node name="Area2D" type="Area2D" parent="."]
 collision_layer = 32
@@ -27,4 +27,6 @@ collision_mask = 4
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("2_a3pup")
 
+[connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="OnScreenEntered" flags=6]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="OnScreenExited" flags=6]
 [connection signal="body_entered" from="Area2D" to="." method="DealDamage"]

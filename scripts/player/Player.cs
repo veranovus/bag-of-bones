@@ -28,7 +28,7 @@ public partial class Player : CharacterBody2D, IDamageable {
   public bool     CanAttack      { get; private set; }
 
   private const    float      Gravity         = 980.0f;
-  private const    float      AttackTime      = 0.2f;
+  private const    float      AttackTime      = 0.1f;
   private readonly Marker2D[] AttackPositions = new Marker2D[2];
 
   public override void _Ready() {
