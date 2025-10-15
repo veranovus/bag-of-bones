@@ -8,6 +8,7 @@ public partial class Player : CharacterBody2D, IDamageable {
   public AnimationPlayer    AnimationPlayer { get; private set; }
   public PlayerStateMachine StateMachine    { get; private set; }
   public Timer              AttackTimer     { get; private set; }
+  public PlayerUI           PlayerUI        { get; private set; }
 
   [Export] public float       Speed      { get; private set; }
   [Export] public float       JumpSpeed  { get; private set; }
@@ -36,6 +37,7 @@ public partial class Player : CharacterBody2D, IDamageable {
     AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
     StateMachine    = GetNode<PlayerStateMachine>("StateMachine");
     AttackTimer     = GetNode<Timer>("AttackTimer");
+    PlayerUI        = GetNode<PlayerUI>("PlayerUI");
 
     RegisterAttackPositions();
     SetAttackTimer();
@@ -59,6 +61,8 @@ public partial class Player : CharacterBody2D, IDamageable {
     Jump          = true;
     Direction     = Vector2.Right;
     CanAttack     = true;
+
+    PlayerUI.UpdateHealthbar();
   }
 
   public Vector2 CollectDirectionalInput() {
@@ -134,6 +138,8 @@ public partial class Player : CharacterBody2D, IDamageable {
       CurrentHealth = 0;
       SetAlive(false);
     }
+    PlayerUI.UpdateHealthbar();
+    PlayerUI.PlayAnimation("Hurt");
     HurtDirection = (GlobalPosition - position).Normalized();
     StateMachine.ChangeState("Hurt");
 

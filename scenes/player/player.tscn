@@ -1,4 +1,4 @@
-[gd_scene load_steps=86 format=3 uid="uid://b1q31wmgvmp0n"]
+[gd_scene load_steps=87 format=3 uid="uid://b1q31wmgvmp0n"]
 
 [ext_resource type="Script" uid="uid://c6rkyr3888wwx" path="res://scripts/player/Player.cs" id="1_8afob"]
 [ext_resource type="PackedScene" uid="uid://dspp5kp3xjtpl" path="res://scenes/player/projectile.tscn" id="2_qek5x"]
@@ -21,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://cnucjcosx1y7" path="res://assets/image/player/player-secondary-up.png" id="14_uniwh"]
 [ext_resource type="Script" uid="uid://dwp1cjpaku4vm" path="res://scripts/player/PlayerStateMachine.cs" id="15_lgqa7"]
 [ext_resource type="Script" uid="uid://bkm7hqa0qni1h" path="res://scripts/player/state/PlayerHurt.cs" id="20_8ydkj"]
+[ext_resource type="PackedScene" uid="uid://bw1bymkf25co0" path="res://scenes/player/player_ui.tscn" id="22_yj68g"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yj68g"]
 shader = ExtResource("3_3j4b4")
@@ -747,3 +748,6 @@ script = ExtResource("7_0owmy")
 
 [node name="Hurt" type="Node" parent="StateMachine"]
 script = ExtResource("20_8ydkj")
+
+[node name="PlayerUI" parent="." instance=ExtResource("22_yj68g")]
+visible = false
