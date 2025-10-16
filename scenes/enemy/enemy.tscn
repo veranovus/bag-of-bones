@@ -1,6 +1,7 @@
-[gd_scene load_steps=3 format=3 uid="uid://bx41whqpcavj3"]
+[gd_scene load_steps=4 format=3 uid="uid://bx41whqpcavj3"]
 
 [ext_resource type="Script" uid="uid://cll7ukfum6osi" path="res://scripts/enemy/Enemy.cs" id="1_4a83h"]
+[ext_resource type="PackedScene" uid="uid://c55tkcik3eo71" path="res://scenes/entity_audio_manager.tscn" id="2_40wdo"]
 [ext_resource type="Script" uid="uid://dbfpyxc3gwdib" path="res://scripts/enemy/EnemyStateMachine.cs" id="2_a3pup"]
 
 [node name="Enemy" type="CharacterBody2D"]
@@ -23,6 +24,8 @@ collision_layer = 32
 collision_mask = 4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+
+[node name="EntityAudioManager" parent="." instance=ExtResource("2_40wdo")]
 
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("2_a3pup")

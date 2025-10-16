@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://vpouejhkxf35"]
+[gd_scene load_steps=26 format=3 uid="uid://vpouejhkxf35"]
 
 [ext_resource type="PackedScene" uid="uid://bx41whqpcavj3" path="res://scenes/enemy/enemy.tscn" id="1_jo14l"]
 [ext_resource type="PackedScene" uid="uid://3n0hgv6c2gn3" path="res://scenes/enemy/vampbat/projectile.tscn" id="2_htkvj"]
@@ -8,7 +8,11 @@
 [ext_resource type="Texture2D" uid="uid://cg04y3wth1bol" path="res://assets/image/enemy/vampbat/vampbat-move.png" id="4_51cw2"]
 [ext_resource type="Script" uid="uid://cuaw533er51wj" path="res://scripts/enemy/state/Fly.cs" id="5_51cw2"]
 [ext_resource type="Script" uid="uid://bvn1komg5o8xh" path="res://scripts/enemy/state/EnemyHurt.cs" id="6_4u3j8"]
+[ext_resource type="Resource" uid="uid://vojoou54gqfi" path="res://resources/audio/enemy/vampbat/vampbat-audio-attack.tres" id="7_bfc85"]
+[ext_resource type="Resource" uid="uid://dval3j72lehlt" path="res://resources/audio/enemy/vampbat/vampbat-audio-damage.tres" id="8_hiwrc"]
 [ext_resource type="Script" uid="uid://c2brgvx3wy436" path="res://scripts/enemy/state/Shoot.cs" id="8_injr7"]
+[ext_resource type="Resource" uid="uid://x6tu150141lk" path="res://resources/audio/enemy/vampbat/vampbat-audio-death.tres" id="9_8p1mt"]
+[ext_resource type="Resource" uid="uid://bb3x5tvfar8vy" path="res://resources/audio/enemy/enemy-audio-damage.tres" id="10_6frkt"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_injr7"]
 shader = ExtResource("3_pnm8g")
@@ -251,7 +255,13 @@ visible = false
 [node name="CollisionShape2D" parent="Area2D" index="0"]
 shape = SubResource("CircleShape2D_51cw2")
 
-[node name="StateMachine" parent="." index="5" node_paths=PackedStringArray("initialState")]
+[node name="EntityAudioManager" parent="." index="5"]
+playlists = Array[Object]([ExtResource("7_bfc85"), ExtResource("8_hiwrc"), ExtResource("9_8p1mt"), ExtResource("10_6frkt")])
+
+[node name="Projectile" type="Marker2D" parent="." index="6"]
+position = Vector2(64, 20)
+
+[node name="StateMachine" parent="." index="7" node_paths=PackedStringArray("initialState")]
 initialState = NodePath("Fly")
 
 [node name="Fly" type="Node" parent="StateMachine" index="0"]
@@ -262,6 +272,3 @@ script = ExtResource("8_injr7")
 
 [node name="Hurt" type="Node" parent="StateMachine" index="2"]
 script = ExtResource("6_4u3j8")
-
-[node name="Projectile" type="Marker2D" parent="." index="6"]
-position = Vector2(64, 20)

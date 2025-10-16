@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AudioPlaylistResource" load_steps=3 format=3 uid="uid://x6tu150141lk"]
+
+[ext_resource type="Script" uid="uid://dffdptiyekxgg" path="res://scripts/audio/AudioPlaylistResource.cs" id="1_cdtox"]
+[ext_resource type="AudioStream" uid="uid://btlr35imuln2u" path="res://assets/audio/enemy/vampbat/vampbat-death.mp3" id="1_i4urj"]
+
+[resource]
+script = ExtResource("1_cdtox")
+Name = "Death"
+Playlist = Array[AudioStream]([ExtResource("1_i4urj")])
+metadata/_custom_type_script = "uid://dffdptiyekxgg"

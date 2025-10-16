@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://c4yyor6h0aybc"]
+[gd_scene load_steps=21 format=3 uid="uid://c4yyor6h0aybc"]
 
 [ext_resource type="PackedScene" uid="uid://bx41whqpcavj3" path="res://scenes/enemy/enemy.tscn" id="1_x13pp"]
 [ext_resource type="Texture2D" uid="uid://ci1cl5ebdv6gb" path="res://assets/image/enemy/crawler/crawler-death.png" id="2_6pvkt"]
@@ -6,6 +6,9 @@
 [ext_resource type="Texture2D" uid="uid://c5vc1p5tyfb00" path="res://assets/image/enemy/crawler/crawler-walk.png" id="2_wc2fe"]
 [ext_resource type="Script" uid="uid://1cfjx1vfq41j" path="res://scripts/enemy/state/Wander.cs" id="3_jnv0e"]
 [ext_resource type="Script" uid="uid://bvn1komg5o8xh" path="res://scripts/enemy/state/EnemyHurt.cs" id="5_6pvkt"]
+[ext_resource type="Resource" uid="uid://b7ef8johtyo63" path="res://resources/audio/enemy/crawler/crawler-audio-damage.tres" id="5_wm14i"]
+[ext_resource type="Resource" uid="uid://dhp356km60ncp" path="res://resources/audio/enemy/crawler/crawler-audio-death.tres" id="6_iumu8"]
+[ext_resource type="Resource" uid="uid://bb3x5tvfar8vy" path="res://resources/audio/enemy/enemy-audio-damage.tres" id="7_uudm7"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0himp"]
 shader = ExtResource("2_vk8an")
@@ -177,7 +180,10 @@ visible = false
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_wc2fe")
 
-[node name="StateMachine" parent="." index="5" node_paths=PackedStringArray("initialState")]
+[node name="EntityAudioManager" parent="." index="5"]
+playlists = Array[Object]([ExtResource("5_wm14i"), ExtResource("6_iumu8"), ExtResource("7_uudm7")])
+
+[node name="StateMachine" parent="." index="6" node_paths=PackedStringArray("initialState")]
 initialState = NodePath("Wander")
 
 [node name="Wander" type="Node" parent="StateMachine" index="0"]

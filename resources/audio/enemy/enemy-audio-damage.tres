@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="AudioPlaylistResource" load_steps=6 format=3 uid="uid://bb3x5tvfar8vy"]
+
+[ext_resource type="Script" uid="uid://dffdptiyekxgg" path="res://scripts/audio/AudioPlaylistResource.cs" id="1_m0rrq"]
+[ext_resource type="AudioStream" uid="uid://1h1rdfl2etge" path="res://assets/audio/enemy/enemy-damage-0.mp3" id="1_tc8ms"]
+[ext_resource type="AudioStream" uid="uid://d3jd08751kr3y" path="res://assets/audio/enemy/enemy-damage-1.mp3" id="2_0xyh5"]
+[ext_resource type="AudioStream" uid="uid://dtmg7uyqemsn" path="res://assets/audio/enemy/enemy-damage-2.mp3" id="3_x7cvb"]
+[ext_resource type="AudioStream" uid="uid://bkbghc6p8cfwo" path="res://assets/audio/enemy/enemy-damage-3.mp3" id="4_u1n41"]
+
+[resource]
+script = ExtResource("1_m0rrq")
+Name = "EnemyDamage"
+Playlist = Array[AudioStream]([ExtResource("1_tc8ms"), ExtResource("2_0xyh5"), ExtResource("3_x7cvb"), ExtResource("4_u1n41")])
+metadata/_custom_type_script = "uid://dffdptiyekxgg"

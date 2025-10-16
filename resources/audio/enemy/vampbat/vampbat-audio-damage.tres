@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="AudioPlaylistResource" load_steps=6 format=3 uid="uid://dval3j72lehlt"]
+
+[ext_resource type="Script" uid="uid://dffdptiyekxgg" path="res://scripts/audio/AudioPlaylistResource.cs" id="1_kkyki"]
+[ext_resource type="AudioStream" uid="uid://bypyuji4726fi" path="res://assets/audio/enemy/vampbat/vampbat-damage-0.mp3" id="1_oks56"]
+[ext_resource type="AudioStream" uid="uid://ol3ik3iwi4x4" path="res://assets/audio/enemy/vampbat/vampbat-damage-1.mp3" id="2_4y6dq"]
+[ext_resource type="AudioStream" uid="uid://b6f4kpbwb2y4s" path="res://assets/audio/enemy/vampbat/vampbat-damage-2.mp3" id="3_7io16"]
+[ext_resource type="AudioStream" uid="uid://dispbrp8c0htl" path="res://assets/audio/enemy/vampbat/vampbat-damage-3.mp3" id="4_vqww7"]
+
+[resource]
+script = ExtResource("1_kkyki")
+Name = "Damage"
+Playlist = Array[AudioStream]([ExtResource("1_oks56"), ExtResource("2_4y6dq"), ExtResource("3_7io16"), ExtResource("4_vqww7")])
+metadata/_custom_type_script = "uid://dffdptiyekxgg"

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AudioPlaylistResource" load_steps=3 format=3 uid="uid://dhp356km60ncp"]
+
+[ext_resource type="AudioStream" uid="uid://daqfhdtca8dae" path="res://assets/audio/enemy/crawler/crawler-death.mp3" id="1_hd26l"]
+[ext_resource type="Script" uid="uid://dffdptiyekxgg" path="res://scripts/audio/AudioPlaylistResource.cs" id="1_o21ub"]
+
+[resource]
+script = ExtResource("1_o21ub")
+Name = "Death"
+Playlist = Array[AudioStream]([ExtResource("1_hd26l")])
+metadata/_custom_type_script = "uid://dffdptiyekxgg"

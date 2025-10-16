@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="AudioPlaylistResource" load_steps=8 format=3 uid="uid://b7ef8johtyo63"]
+
+[ext_resource type="AudioStream" uid="uid://buoberxe7jmej" path="res://assets/audio/enemy/crawler/crawler-damage-0.mp3" id="1_ggpnl"]
+[ext_resource type="Script" uid="uid://dffdptiyekxgg" path="res://scripts/audio/AudioPlaylistResource.cs" id="1_v0io2"]
+[ext_resource type="AudioStream" uid="uid://cjv5asq4chts7" path="res://assets/audio/enemy/crawler/crawler-damage-1.mp3" id="2_kbs3r"]
+[ext_resource type="AudioStream" uid="uid://dewpw0bttuu7b" path="res://assets/audio/enemy/crawler/crawler-damage-2.mp3" id="3_4vwom"]
+[ext_resource type="AudioStream" uid="uid://dirsawuoy7jo" path="res://assets/audio/enemy/crawler/crawler-damage-3.mp3" id="4_fnoy8"]
+[ext_resource type="AudioStream" uid="uid://cw1g8suvr4hqq" path="res://assets/audio/enemy/crawler/crawler-damage-4.mp3" id="5_86yvo"]
+[ext_resource type="AudioStream" uid="uid://bgcj76b1padul" path="res://assets/audio/enemy/crawler/crawler-damage-5.mp3" id="6_o61gl"]
+
+[resource]
+script = ExtResource("1_v0io2")
+Name = "Damage"
+Playlist = Array[AudioStream]([ExtResource("1_ggpnl"), ExtResource("2_kbs3r"), ExtResource("3_4vwom"), ExtResource("4_fnoy8"), ExtResource("5_86yvo"), ExtResource("6_o61gl")])
+metadata/_custom_type_script = "uid://dffdptiyekxgg"
