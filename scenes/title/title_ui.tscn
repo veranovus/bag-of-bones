@@ -1,0 +1,117 @@
+[gd_scene load_steps=4 format=3 uid="uid://c72j8o6i7qgyr"]
+
+[ext_resource type="Texture2D" uid="uid://bvdd3tmlp1hn3" path="res://assets/image/ui/title-screen.png" id="1_ewb6o"]
+[ext_resource type="Theme" uid="uid://dw4j4wrafh1nw" path="res://resources/ui/ui.tres" id="2_eqeaf"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_eqeaf"]
+size = Vector2(32, 32)
+
+[node name="TitleUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Background" type="TextureRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_ewb6o")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 960.0
+grow_vertical = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme = ExtResource("2_eqeaf")
+theme_override_font_sizes/normal_font_size = 256
+text = "Bag Of Bones
+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PlayContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="Play" type="Button" parent="VBoxContainer/PlayContainer"]
+layout_mode = 2
+theme = ExtResource("2_eqeaf")
+text = "Play"
+
+[node name="QuitContainer" type="MarginContainer" parent="VBoxContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 64
+
+[node name="Quit" type="Button" parent="VBoxContainer/QuitContainer"]
+layout_mode = 2
+theme = ExtResource("2_eqeaf")
+text = "Quit"
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 11
+anchor_left = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -960.0
+grow_horizontal = 0
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = 16
+alignment = 2
+
+[node name="VolumeContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="VolumeSlider" type="VSlider" parent="MarginContainer/HBoxContainer/VolumeContainer"]
+custom_minimum_size = Vector2(0, 256)
+layout_mode = 2
+size_flags_horizontal = 8
+theme = ExtResource("2_eqeaf")
+step = 5.0
+value = 50.0
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/VolumeContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = SubResource("PlaceholderTexture2D_eqeaf")
+
+[node name="MusicContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer"]
+layout_mode = 2
+alignment = 2
+
+[node name="MusicSlider" type="VSlider" parent="MarginContainer/HBoxContainer/MusicContainer"]
+custom_minimum_size = Vector2(0, 256)
+layout_mode = 2
+size_flags_horizontal = 8
+theme = ExtResource("2_eqeaf")
+step = 5.0
+value = 50.0
+
+[node name="TextureRect" type="TextureRect" parent="MarginContainer/HBoxContainer/MusicContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = SubResource("PlaceholderTexture2D_eqeaf")

@@ -1,0 +1,47 @@
+[gd_resource type="Theme" load_steps=7 format=3 uid="uid://dw4j4wrafh1nw"]
+
+[ext_resource type="FontFile" uid="uid://co88id5rn3umj" path="res://assets/font/wicked-type/WickedType.ttf" id="1_hvv0o"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_hvv0o"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_1du4q"]
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_bewaa"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1du4q"]
+content_margin_left = 16.0
+content_margin_right = 16.0
+bg_color = Color(0.9882353, 0.8039216, 0.29411766, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+expand_margin_top = 8.0
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hvv0o"]
+content_margin_left = 16.0
+content_margin_right = 16.0
+bg_color = Color(0.18431373, 0.18431373, 0.18431373, 0.60784316)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[resource]
+Button/colors/font_pressed_color = Color(0.9882353, 0.8039216, 0.29411766, 1)
+Button/constants/outline_size = 24
+Button/font_sizes/font_size = 64
+Button/fonts/font = ExtResource("1_hvv0o")
+RichTextLabel/colors/font_shadow_color = Color(0, 0, 0, 0.4862745)
+RichTextLabel/constants/outline_size = 24
+RichTextLabel/constants/shadow_offset_x = 8
+RichTextLabel/constants/shadow_offset_y = 8
+RichTextLabel/constants/shadow_outline_size = 24
+RichTextLabel/font_sizes/normal_font_size = 64
+RichTextLabel/fonts/normal_font = ExtResource("1_hvv0o")
+VSlider/icons/grabber = SubResource("PlaceholderTexture2D_hvv0o")
+VSlider/icons/grabber_disabled = SubResource("PlaceholderTexture2D_1du4q")
+VSlider/icons/grabber_highlight = SubResource("PlaceholderTexture2D_bewaa")
+VSlider/styles/grabber_area = SubResource("StyleBoxFlat_1du4q")
+VSlider/styles/grabber_area_highlight = SubResource("StyleBoxFlat_1du4q")
+VSlider/styles/slider = SubResource("StyleBoxFlat_hvv0o")

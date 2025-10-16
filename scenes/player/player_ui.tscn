@@ -1,9 +1,9 @@
-[gd_scene load_steps=14 format=3 uid="uid://bw1bymkf25co0"]
+[gd_scene load_steps=13 format=3 uid="uid://bw1bymkf25co0"]
 
 [ext_resource type="Shader" uid="uid://lvxb4jj6u87g" path="res://resources/shader/ui_bar.gdshader" id="1_32d7b"]
 [ext_resource type="Script" uid="uid://cj6wh1xo6x1tu" path="res://scripts/player/PlayerUI.cs" id="1_m6sn8"]
-[ext_resource type="FontFile" uid="uid://co88id5rn3umj" path="res://assets/font/wicked-type/WickedType.ttf" id="3_fatww"]
 [ext_resource type="Texture2D" uid="uid://cymtutl8krhrv" path="res://assets/image/ui/status-bars.png" id="3_mo8vb"]
+[ext_resource type="Theme" uid="uid://dw4j4wrafh1nw" path="res://resources/ui/ui.tres" id="4_mo8vb"]
 
 [sub_resource type="Animation" id="Animation_m6sn8"]
 resource_name = "Hurt"
@@ -159,15 +159,6 @@ shader_parameter/size = Vector2(405, 80)
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_nlx67"]
 
-[sub_resource type="Theme" id="Theme_mo8vb"]
-RichTextLabel/colors/font_shadow_color = Color(0, 0, 0, 0.4862745)
-RichTextLabel/constants/outline_size = 24
-RichTextLabel/constants/shadow_offset_x = 8
-RichTextLabel/constants/shadow_offset_y = 8
-RichTextLabel/constants/shadow_outline_size = 24
-RichTextLabel/font_sizes/normal_font_size = 64
-RichTextLabel/fonts/normal_font = ExtResource("3_fatww")
-
 [node name="PlayerUI" type="CanvasLayer"]
 script = ExtResource("1_m6sn8")
 
@@ -222,7 +213,7 @@ offset_left = -256.0
 offset_top = -32.0
 offset_right = 256.0
 offset_bottom = 32.0
-theme = SubResource("Theme_mo8vb")
+theme = ExtResource("4_mo8vb")
 text = "Score: 0
 "
 scroll_active = false
