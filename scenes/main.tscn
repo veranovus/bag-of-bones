@@ -7,6 +7,4 @@
 
 [node name="AudioManager" parent="." instance=ExtResource("2_sugp2")]
 
-[node name="TitleUI" type="CanvasLayer" parent="."]
-
-[node name="TitleUI" parent="TitleUI" instance=ExtResource("2_0wfyh")]
+[node name="TitleUI" parent="." instance=ExtResource("2_0wfyh")]

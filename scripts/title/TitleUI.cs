@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class TitleUI : Control {
+public partial class TitleUI : CanvasLayer {
   private GlobalAudioManager audioManager;
 
   [Export] private PackedScene gameScene;
@@ -12,7 +12,7 @@ public partial class TitleUI : Control {
 
   private void OnPlayButtonPressed() {
     var instance = gameScene.Instantiate<Node2D>();
-    GetParent().GetParent().CallDeferred("add_child", instance);
+    GetParent().CallDeferred("add_child", instance);
     CallDeferred("queue_free");
   }
 
