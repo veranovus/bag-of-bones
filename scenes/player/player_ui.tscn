@@ -1,8 +1,9 @@
-[gd_scene load_steps=11 format=3 uid="uid://bw1bymkf25co0"]
+[gd_scene load_steps=14 format=3 uid="uid://bw1bymkf25co0"]
 
 [ext_resource type="Shader" uid="uid://lvxb4jj6u87g" path="res://resources/shader/ui_bar.gdshader" id="1_32d7b"]
 [ext_resource type="Script" uid="uid://cj6wh1xo6x1tu" path="res://scripts/player/PlayerUI.cs" id="1_m6sn8"]
 [ext_resource type="FontFile" uid="uid://co88id5rn3umj" path="res://assets/font/wicked-type/WickedType.ttf" id="3_fatww"]
+[ext_resource type="Texture2D" uid="uid://cymtutl8krhrv" path="res://assets/image/ui/status-bars.png" id="3_mo8vb"]
 
 [sub_resource type="Animation" id="Animation_m6sn8"]
 resource_name = "Hurt"
@@ -17,7 +18,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4, 0.5),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(344, 72), Vector2(360, 56), Vector2(356, 68), Vector2(348, 60), Vector2(356, 68), Vector2(352, 64)]
+"values": [Vector2(245, 80), Vector2(229, 64), Vector2(241, 76), Vector2(233, 68), Vector2(241, 76), Vector2(237, 72)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -44,7 +45,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(352, 64)]
+"values": [Vector2(237, 72)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -68,7 +69,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(288, 160)]
+"values": [Vector2(288, 176)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -108,7 +109,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [Vector2(280, 152), Vector2(296, 168), Vector2(284, 156), Vector2(292, 164), Vector2(288, 160)]
+"values": [Vector2(280, 168), Vector2(296, 184), Vector2(284, 172), Vector2(292, 180), Vector2(288, 176)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -120,7 +121,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.2, 0.3, 0.4),
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1),
 "update": 0,
-"values": [-0.017453292519943295, 0.017453292519943295, -0.008726646259971648, 0.008726646259971648, 0.0]
+"values": [-0.01745329251994329, 0.01745329251994329, -0.00872664625997164, 0.00872664625997164, 0.0]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
@@ -146,10 +147,17 @@ _data = {
 shader = ExtResource("1_32d7b")
 shader_parameter/color = Color(0.8095769, 0, 0.12496243, 1)
 shader_parameter/ratio = 1.0
-shader_parameter/size = Vector2(640, 64)
-shader_parameter/outline = 8.0
+shader_parameter/size = Vector2(405, 80)
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_tyawr"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mo8vb"]
+shader = ExtResource("1_32d7b")
+shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/ratio = 1.0
+shader_parameter/size = Vector2(405, 80)
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_nlx67"]
 
 [sub_resource type="Theme" id="Theme_mo8vb"]
 RichTextLabel/colors/font_shadow_color = Color(0, 0, 0, 0.4862745)
@@ -169,18 +177,44 @@ libraries = {
 }
 
 [node name="Healthbar" type="Node2D" parent="."]
-position = Vector2(352, 64)
+position = Vector2(237, 72)
 
 [node name="TextureRect" type="TextureRect" parent="Healthbar"]
 material = SubResource("ShaderMaterial_32d7b")
-offset_left = -320.0
-offset_top = -32.0
-offset_right = 320.0
-offset_bottom = 32.0
+offset_left = -205.0
+offset_top = -38.0
+offset_right = 200.0
+offset_bottom = 42.0
 texture = SubResource("PlaceholderTexture2D_tyawr")
+expand_mode = 1
+
+[node name="Border" type="Sprite2D" parent="Healthbar"]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_mo8vb")
+offset = Vector2(84, 42)
+hframes = 2
+
+[node name="Specialbar" type="Node2D" parent="."]
+position = Vector2(1683, 72)
+
+[node name="TextureRect" type="TextureRect" parent="Specialbar"]
+material = SubResource("ShaderMaterial_mo8vb")
+offset_left = -205.0
+offset_top = -38.0
+offset_right = 200.0
+offset_bottom = 42.0
+texture = SubResource("PlaceholderTexture2D_nlx67")
+
+[node name="Border" type="Sprite2D" parent="Specialbar"]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_mo8vb")
+offset = Vector2(-84, 42)
+flip_h = true
+hframes = 2
+frame = 1
 
 [node name="Score" type="Node2D" parent="."]
-position = Vector2(288, 160)
+position = Vector2(288, 176)
 
 [node name="RichTextLabel" type="RichTextLabel" parent="Score"]
 clip_contents = false

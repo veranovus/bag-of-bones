@@ -12,11 +12,12 @@ public partial class Player : CharacterBody2D, IDamageable {
   public Timer              RegenStartTimer { get; private set; }
   public PlayerUI           PlayerUI        { get; private set; }
 
-  [Export] public float       Speed      { get; private set; }
-  [Export] public float       JumpSpeed  { get; private set; }
-  [Export] public int         Health     { get; private set; }
-  [Export] public PackedScene Projectile { get; private set; }
-  [Export] public int         Damage     { get; private set; }
+  [Export] public float       Speed         { get; private set; }
+  [Export] public float       JumpSpeed     { get; private set; }
+  [Export] public int         Health        { get; private set; }
+  [Export] public PackedScene Projectile    { get; private set; }
+  [Export] public int         Damage        { get; private set; }
+  [Export] public int         SpecialCharge { get; private set; }
 
   public bool     Jump           { get; private set; }
   public Vector2  Direction      { get; private set; }
@@ -30,6 +31,7 @@ public partial class Player : CharacterBody2D, IDamageable {
   public bool     Invincible     { get; private set; }
   public bool     CanAttack      { get; private set; }
   public int      Score          { get; private set; }
+  public int      CurrentBone    { get; private set; }
 
   private const    float      Gravity         = 980.0f;
   private const    float      RegenStartTime  = 3.0f;
@@ -72,8 +74,10 @@ public partial class Player : CharacterBody2D, IDamageable {
     Jump          = true;
     Direction     = Vector2.Right;
     CanAttack     = true;
+    CurrentBone   = 0;
 
     PlayerUI.UpdateHealthbar();
+    PlayerUI.UpdateSpecialbar();
   }
 
   public Vector2 CollectDirectionalInput() {

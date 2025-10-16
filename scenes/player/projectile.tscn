@@ -1,25 +1,47 @@
-[gd_scene load_steps=6 format=3 uid="uid://dspp5kp3xjtpl"]
+[gd_scene load_steps=9 format=3 uid="uid://dspp5kp3xjtpl"]
 
 [ext_resource type="PackedScene" uid="uid://dcljnkryfekuu" path="res://scenes/projectile.tscn" id="1_xebok"]
 [ext_resource type="Texture2D" uid="uid://3cerp05252kh" path="res://assets/image/player/player-projectile.png" id="2_c28ns"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_c28ns"]
 atlas = ExtResource("2_c28ns")
-region = Rect2(0, 0, 256, 256)
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yvsue"]
+atlas = ExtResource("2_c28ns")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_suvv8"]
+atlas = ExtResource("2_c28ns")
+region = Rect2(0, 512, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yyqrv"]
+atlas = ExtResource("2_c28ns")
+region = Rect2(512, 512, 512, 512)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_c28ns"]
 animations = [{
 "frames": [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_c28ns")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yvsue")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_suvv8")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yyqrv")
 }],
 "loop": true,
 "name": &"Default",
 "speed": 12.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_c28ns"]
-size = Vector2(32.00004, 63.99998)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_c28ns"]
+radius = 19.999998
+height = 86.0
 
 [node name="Projectile" instance=ExtResource("1_xebok")]
 collision_layer = 8
@@ -28,16 +50,16 @@ Damage = 1
 Speed = 1000.0
 
 [node name="AnimatedSprite2D" parent="." index="0"]
-position = Vector2(0, -5)
+position = Vector2(-3, 4)
 sprite_frames = SubResource("SpriteFrames_c28ns")
 animation = &"Default"
-frame_progress = 0.20201378
+frame_progress = 0.027035546
 
 [node name="CollisionShape2D" parent="." index="1"]
 visible = false
 rotation = -1.570797
-shape = SubResource("RectangleShape2D_c28ns")
+shape = SubResource("CapsuleShape2D_c28ns")
 
 [node name="VisibleOnScreenNotifier2D" parent="." index="2"]
-visible = false
-rect = Rect2(-32, -16, 64, 32)
+rect = Rect2(-44, -22, 88, 44)
+show_rect = false

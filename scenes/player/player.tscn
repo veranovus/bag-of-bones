@@ -682,6 +682,7 @@ JumpSpeed = 600.0
 Health = 100
 Projectile = ExtResource("2_qek5x")
 Damage = 1
+SpecialCharge = 50
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_yj68g")
