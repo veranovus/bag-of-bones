@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="AudioPlaylistResource" load_steps=6 format=3 uid="uid://0pg2r65a415l"]
+
+[ext_resource type="AudioStream" uid="uid://dtoo64qe8aii5" path="res://assets/audio/player/player-melee-0.mp3" id="1_54fbl"]
+[ext_resource type="Script" uid="uid://dffdptiyekxgg" path="res://scripts/audio/AudioPlaylistResource.cs" id="1_uro7f"]
+[ext_resource type="AudioStream" uid="uid://dx03vgbjq6hai" path="res://assets/audio/player/player-melee-1.mp3" id="2_8g1q7"]
+[ext_resource type="AudioStream" uid="uid://c6256nexoe6qn" path="res://assets/audio/player/player-melee-2.mp3" id="3_nu42p"]
+[ext_resource type="AudioStream" uid="uid://y1bhahd0myix" path="res://assets/audio/player/player-melee-3.mp3" id="4_jxwrl"]
+
+[resource]
+script = ExtResource("1_uro7f")
+Name = "Primary"
+Playlist = Array[AudioStream]([ExtResource("1_54fbl"), ExtResource("2_8g1q7"), ExtResource("3_nu42p"), ExtResource("4_jxwrl"), ExtResource("4_jxwrl")])
+metadata/_custom_type_script = "uid://dffdptiyekxgg"

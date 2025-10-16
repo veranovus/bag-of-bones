@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c55tkcik3eo71"]
+
+[ext_resource type="Script" uid="uid://dmlw4pf3maral" path="res://scripts/audio/EntityAudioManager.cs" id="1_g1qce"]
+
+[node name="EntityAudioManager" type="AudioStreamPlayer"]
+script = ExtResource("1_g1qce")

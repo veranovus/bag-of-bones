@@ -1,0 +1,14 @@
+[gd_resource type="Resource" script_class="AudioPlaylistResource" load_steps=7 format=3 uid="uid://bnk0yenfkjohs"]
+
+[ext_resource type="AudioStream" uid="uid://do6pulh8rjt41" path="res://assets/audio/player/player-jump-0.mp3" id="1_3cail"]
+[ext_resource type="Script" uid="uid://dffdptiyekxgg" path="res://scripts/audio/AudioPlaylistResource.cs" id="1_8ue0p"]
+[ext_resource type="AudioStream" uid="uid://b3b3v3fxxylyw" path="res://assets/audio/player/player-jump-1.mp3" id="2_faayi"]
+[ext_resource type="AudioStream" uid="uid://dmndey2fi0qqg" path="res://assets/audio/player/player-jump-2.mp3" id="3_j1idg"]
+[ext_resource type="AudioStream" uid="uid://yhpnikluehhw" path="res://assets/audio/player/player-jump-3.mp3" id="4_3mwj5"]
+[ext_resource type="AudioStream" uid="uid://dke4edgplwo7f" path="res://assets/audio/player/player-jump-4.mp3" id="5_sufih"]
+
+[resource]
+script = ExtResource("1_8ue0p")
+Name = "Jump"
+Playlist = Array[AudioStream]([ExtResource("1_3cail"), ExtResource("2_faayi"), ExtResource("3_j1idg"), ExtResource("4_3mwj5"), ExtResource("5_sufih")])
+metadata/_custom_type_script = "uid://dffdptiyekxgg"

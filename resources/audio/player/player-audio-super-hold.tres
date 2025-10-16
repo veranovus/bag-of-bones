@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AudioPlaylistResource" load_steps=3 format=3 uid="uid://wcgqx70ut3qy"]
+
+[ext_resource type="Script" uid="uid://dffdptiyekxgg" path="res://scripts/audio/AudioPlaylistResource.cs" id="1_2rmga"]
+[ext_resource type="AudioStream" uid="uid://hrsvoachhuh3" path="res://assets/audio/player/player-super-hold.mp3" id="1_ayw33"]
+
+[resource]
+script = ExtResource("1_2rmga")
+Name = "SuperHold"
+Playlist = Array[AudioStream]([ExtResource("1_ayw33")])
+metadata/_custom_type_script = "uid://dffdptiyekxgg"

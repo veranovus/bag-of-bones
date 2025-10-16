@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AudioPlaylistResource" load_steps=3 format=3 uid="uid://csegqf2v5fhaq"]
+
+[ext_resource type="Script" uid="uid://dffdptiyekxgg" path="res://scripts/audio/AudioPlaylistResource.cs" id="1_bh4tk"]
+[ext_resource type="AudioStream" uid="uid://s5cwqr10b3a2" path="res://assets/audio/player/player-low-health.mp3" id="1_toh34"]
+
+[resource]
+script = ExtResource("1_bh4tk")
+Name = "LowHealth"
+Playlist = Array[AudioStream]([ExtResource("1_toh34")])
+metadata/_custom_type_script = "uid://dffdptiyekxgg"

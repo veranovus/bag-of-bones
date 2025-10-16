@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AudioPlaylistResource" load_steps=3 format=3 uid="uid://bgch5tnoemojr"]
+
+[ext_resource type="Script" uid="uid://dffdptiyekxgg" path="res://scripts/audio/AudioPlaylistResource.cs" id="1_bklxc"]
+[ext_resource type="AudioStream" uid="uid://d0ms5i7fk3ygm" path="res://assets/audio/player/player-super-release.mp3" id="1_i0h42"]
+
+[resource]
+script = ExtResource("1_bklxc")
+Name = "SuperRelease"
+Playlist = Array[AudioStream]([ExtResource("1_i0h42")])
+metadata/_custom_type_script = "uid://dffdptiyekxgg"

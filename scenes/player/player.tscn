@@ -1,4 +1,4 @@
-[gd_scene load_steps=87 format=3 uid="uid://b1q31wmgvmp0n"]
+[gd_scene load_steps=97 format=3 uid="uid://b1q31wmgvmp0n"]
 
 [ext_resource type="Script" uid="uid://c6rkyr3888wwx" path="res://scripts/player/Player.cs" id="1_8afob"]
 [ext_resource type="PackedScene" uid="uid://dspp5kp3xjtpl" path="res://scenes/player/projectile.tscn" id="2_qek5x"]
@@ -20,8 +20,18 @@
 [ext_resource type="Texture2D" uid="uid://du1urpa50hx8y" path="res://assets/image/player/player-secondary-down.png" id="13_28m0y"]
 [ext_resource type="Texture2D" uid="uid://cnucjcosx1y7" path="res://assets/image/player/player-secondary-up.png" id="14_uniwh"]
 [ext_resource type="Script" uid="uid://dwp1cjpaku4vm" path="res://scripts/player/PlayerStateMachine.cs" id="15_lgqa7"]
+[ext_resource type="PackedScene" uid="uid://c55tkcik3eo71" path="res://scenes/entity_audio_manager.tscn" id="16_ioxgp"]
+[ext_resource type="Resource" uid="uid://csw304j6a8bj2" path="res://resources/audio/player/player-audio-damage.tres" id="17_pk8ii"]
+[ext_resource type="Resource" uid="uid://d2n27er62bkl1" path="res://resources/audio/player/player-audio-death.tres" id="18_5mf0n"]
+[ext_resource type="Resource" uid="uid://bnk0yenfkjohs" path="res://resources/audio/player/player-audio-jump.tres" id="19_4hvnv"]
 [ext_resource type="Script" uid="uid://bkm7hqa0qni1h" path="res://scripts/player/state/PlayerHurt.cs" id="20_8ydkj"]
+[ext_resource type="Resource" uid="uid://csegqf2v5fhaq" path="res://resources/audio/player/player-audio-low-health.tres" id="20_bbmj2"]
+[ext_resource type="Resource" uid="uid://0pg2r65a415l" path="res://resources/audio/player/player-audio-primary.tres" id="21_kxw46"]
+[ext_resource type="Resource" uid="uid://pp645s6k2qpx" path="res://resources/audio/player/player-audio-secondary.tres" id="22_8qxvo"]
 [ext_resource type="PackedScene" uid="uid://bw1bymkf25co0" path="res://scenes/player/player_ui.tscn" id="22_yj68g"]
+[ext_resource type="Resource" uid="uid://wcgqx70ut3qy" path="res://resources/audio/player/player-audio-super-hold.tres" id="23_5q8fn"]
+[ext_resource type="Resource" uid="uid://bgch5tnoemojr" path="res://resources/audio/player/player-audio-super-release.tres" id="24_wva7c"]
+[ext_resource type="Resource" uid="uid://dous2imu1mlon" path="res://resources/audio/player/player-audio-super-startup.tres" id="25_7obkq"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yj68g"]
 shader = ExtResource("3_3j4b4")
@@ -734,6 +744,9 @@ disabled = true
 [node name="RegenTimer" type="Timer" parent="."]
 
 [node name="RegenStartTimer" type="Timer" parent="."]
+
+[node name="EntityAudioManager" parent="." instance=ExtResource("16_ioxgp")]
+playlists = Array[Object]([ExtResource("17_pk8ii"), ExtResource("18_5mf0n"), ExtResource("19_4hvnv"), ExtResource("20_bbmj2"), ExtResource("21_kxw46"), ExtResource("22_8qxvo"), ExtResource("23_5q8fn"), ExtResource("24_wva7c"), ExtResource("25_7obkq")])
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initialState")]
 script = ExtResource("15_lgqa7")

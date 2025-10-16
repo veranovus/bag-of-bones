@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="AudioPlaylistResource" load_steps=3 format=3 uid="uid://pp645s6k2qpx"]
+
+[ext_resource type="AudioStream" uid="uid://bqjjfixdgbwps" path="res://assets/audio/player/player-projectile.mp3" id="1_66ftc"]
+[ext_resource type="Script" uid="uid://dffdptiyekxgg" path="res://scripts/audio/AudioPlaylistResource.cs" id="1_d13oc"]
+
+[resource]
+script = ExtResource("1_d13oc")
+Name = "Secondary"
+Playlist = Array[AudioStream]([ExtResource("1_66ftc")])
+metadata/_custom_type_script = "uid://dffdptiyekxgg"
