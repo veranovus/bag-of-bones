@@ -153,6 +153,34 @@ tracks/3/keys = {
 "method": &"ChangeState"
 }]
 }
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("EntityAudioManager")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": ["Damage"],
+"method": &"PlayRandomAudio"
+}]
+}
+tracks/5/type = "method"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("EntityAudioManager")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": ["EnemyDamage"],
+"method": &"PlayRandomAudio"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_pnm8g"]
 resource_name = "Shoot"
@@ -216,6 +244,20 @@ tracks/3/keys = {
 "method": &"StartAttackTimer"
 }]
 }
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("EntityAudioManager")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": ["Attack"],
+"method": &"PlayRandomAudio"
+}]
+}
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_lwun1"]
 _data = {
@@ -256,6 +298,7 @@ visible = false
 shape = SubResource("CircleShape2D_51cw2")
 
 [node name="EntityAudioManager" parent="." index="5"]
+max_polyphony = 3
 playlists = Array[Object]([ExtResource("7_bfc85"), ExtResource("8_hiwrc"), ExtResource("9_8p1mt"), ExtResource("10_6frkt")])
 
 [node name="Projectile" type="Marker2D" parent="." index="6"]

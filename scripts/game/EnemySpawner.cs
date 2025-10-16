@@ -23,5 +23,20 @@ public partial class EnemySpawner : Marker2D {
     enemyRoot = new Node2D{ Name = "Enemies" };
     var root  = GetTree().GetFirstNodeInGroup("Game");
     root.AddChild(enemyRoot);
+
+    ConnectOnPlayerDied();
+  }
+
+  private void SetEnemyRootToNull() {
+    enemyRoot = null;
+  }
+
+  private void ConnectOnPlayerDied() {
+    var player = (Player)GetTree().GetFirstNodeInGroup("Player");
+    player.Connect(
+      Player.SignalName.PlayerDied,
+      Callable.From(SetEnemyRootToNull),
+      (uint)ConnectFlags.OneShot
+    );
   }
 }

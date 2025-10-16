@@ -1,0 +1,84 @@
+[gd_scene load_steps=6 format=3 uid="uid://u7gios1kjmyh"]
+
+[ext_resource type="Script" uid="uid://6o4dnoby8hpn" path="res://scripts/ui/GameOverUI.cs" id="1_sxdiq"]
+[ext_resource type="Texture2D" uid="uid://dfgl65c1xbp5l" path="res://assets/image/ui/background.png" id="1_u4odh"]
+[ext_resource type="PackedScene" uid="uid://c72j8o6i7qgyr" path="res://scenes/ui/title_ui.tscn" id="2_nkgcp"]
+[ext_resource type="Theme" uid="uid://dw4j4wrafh1nw" path="res://resources/ui/ui.tres" id="2_sxdiq"]
+[ext_resource type="PackedScene" uid="uid://rqdcp4a3qtdv" path="res://scenes/game/game.tscn" id="3_6o2nj"]
+
+[node name="GameOverUI" type="CanvasLayer"]
+script = ExtResource("1_sxdiq")
+gameScene = ExtResource("3_6o2nj")
+titleScene = ExtResource("2_nkgcp")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("1_u4odh")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="LeftMargin" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+
+[node name="CenterMargin" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/CenterMargin"]
+layout_mode = 2
+theme_override_constants/separation = 64
+alignment = 1
+
+[node name="TextContainer" type="VBoxContainer" parent="HBoxContainer/CenterMargin/VBoxContainer"]
+layout_mode = 2
+
+[node name="GameOverLabel" type="RichTextLabel" parent="HBoxContainer/CenterMargin/VBoxContainer/TextContainer"]
+layout_mode = 2
+theme = ExtResource("2_sxdiq")
+theme_override_font_sizes/normal_font_size = 256
+text = "Game Over!"
+fit_content = true
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ScoreLabel" type="RichTextLabel" parent="HBoxContainer/CenterMargin/VBoxContainer/TextContainer"]
+layout_mode = 2
+theme = ExtResource("2_sxdiq")
+text = "Score: ???"
+fit_content = true
+horizontal_alignment = 1
+
+[node name="ButtonContainer" type="VBoxContainer" parent="HBoxContainer/CenterMargin/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="TryAgainButton" type="Button" parent="HBoxContainer/CenterMargin/VBoxContainer/ButtonContainer"]
+layout_mode = 2
+theme = ExtResource("2_sxdiq")
+text = "Try again"
+
+[node name="TitleButton" type="Button" parent="HBoxContainer/CenterMargin/VBoxContainer/ButtonContainer"]
+layout_mode = 2
+theme = ExtResource("2_sxdiq")
+text = "Return to title"
+
+[node name="QuitButton" type="Button" parent="HBoxContainer/CenterMargin/VBoxContainer/ButtonContainer"]
+layout_mode = 2
+theme = ExtResource("2_sxdiq")
+text = "Quit"
+
+[node name="RightMargin" type="MarginContainer" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+
+[connection signal="pressed" from="HBoxContainer/CenterMargin/VBoxContainer/ButtonContainer/TryAgainButton" to="." method="OnTryAgainButtonPressed"]
+[connection signal="pressed" from="HBoxContainer/CenterMargin/VBoxContainer/ButtonContainer/TitleButton" to="." method="OnTitleButtonPressed"]
+[connection signal="pressed" from="HBoxContainer/CenterMargin/VBoxContainer/ButtonContainer/QuitButton" to="." method="OnQuitButtonPressed"]

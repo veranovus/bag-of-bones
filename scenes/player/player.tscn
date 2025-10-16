@@ -1,4 +1,4 @@
-[gd_scene load_steps=97 format=3 uid="uid://b1q31wmgvmp0n"]
+[gd_scene load_steps=100 format=3 uid="uid://b1q31wmgvmp0n"]
 
 [ext_resource type="Script" uid="uid://c6rkyr3888wwx" path="res://scripts/player/Player.cs" id="1_8afob"]
 [ext_resource type="PackedScene" uid="uid://dspp5kp3xjtpl" path="res://scenes/player/projectile.tscn" id="2_qek5x"]
@@ -32,6 +32,7 @@
 [ext_resource type="Resource" uid="uid://wcgqx70ut3qy" path="res://resources/audio/player/player-audio-super-hold.tres" id="23_5q8fn"]
 [ext_resource type="Resource" uid="uid://bgch5tnoemojr" path="res://resources/audio/player/player-audio-super-release.tres" id="24_wva7c"]
 [ext_resource type="Resource" uid="uid://dous2imu1mlon" path="res://resources/audio/player/player-audio-super-startup.tres" id="25_7obkq"]
+[ext_resource type="Script" uid="uid://de5471rok03hk" path="res://scripts/player/state/Death.cs" id="32_5mf0n"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_yj68g"]
 shader = ExtResource("3_3j4b4")
@@ -570,6 +571,20 @@ tracks/3/keys = {
 "method": &"ChangeState"
 }]
 }
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("EntityAudioManager")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": ["Damage"],
+"method": &"PlayRandomAudio"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_0owmy"]
 resource_name = "Primary"
@@ -619,6 +634,20 @@ tracks/2/keys = {
 "method": &"start"
 }]
 }
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("EntityAudioManager")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.1),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": ["Primary"],
+"method": &"PlayRandomAudio"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_qek5x"]
 resource_name = "Secondary"
@@ -665,11 +694,146 @@ tracks/2/keys = {
 "method": &"start"
 }]
 }
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("EntityAudioManager")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.2),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": ["Secondary"],
+"method": &"PlayRandomAudio"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_5mf0n"]
+resource_name = "Death"
+tracks/0/type = "method"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("AnimatedSprite2D")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [&"Death", 1.0, false],
+"method": &"play"
+}]
+}
+tracks/1/type = "method"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.20000002, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"values": [{
+"args": [true],
+"method": &"SetShaderActive"
+}, {
+"args": [false],
+"method": &"SetShaderActive"
+}, {
+"args": [true],
+"method": &"SetShaderActive"
+}, {
+"args": [false],
+"method": &"SetShaderActive"
+}, {
+"args": [true],
+"method": &"SetShaderActive"
+}, {
+"args": [false],
+"method": &"SetShaderActive"
+}, {
+"args": [true],
+"method": &"SetShaderActive"
+}, {
+"args": [false],
+"method": &"SetShaderActive"
+}, {
+"args": [true],
+"method": &"SetShaderActive"
+}, {
+"args": [false],
+"method": &"SetShaderActive"
+}]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("EntityAudioManager")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"values": [{
+"args": ["LowHealth"],
+"method": &"PlayRandomAudio"
+}, {
+"args": ["Death"],
+"method": &"PlayRandomAudio"
+}]
+}
+tracks/3/type = "method"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.20000002, 0.3, 0.40000004, 0.5, 0.6, 0.70000005, 0.8000001, 0.90000004),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
+"values": [{
+"args": [Vector2(-5, -5)],
+"method": &"translate"
+}, {
+"args": [Vector2(5, 5)],
+"method": &"translate"
+}, {
+"args": [Vector2(-10, -10)],
+"method": &"translate"
+}, {
+"args": [Vector2(10, 10)],
+"method": &"translate"
+}, {
+"args": [Vector2(-10, -10)],
+"method": &"translate"
+}, {
+"args": [Vector2(10, 10)],
+"method": &"translate"
+}, {
+"args": [Vector2(-20, -20)],
+"method": &"translate"
+}, {
+"args": [Vector2(20, 20)],
+"method": &"translate"
+}, {
+"args": [Vector2(-20, -20)],
+"method": &"translate"
+}, {
+"args": [Vector2(20, 20)],
+"method": &"translate"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_4hvnv"]
+length = 0.001
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_qek5x"]
 _data = {
+&"Death": SubResource("Animation_5mf0n"),
 &"Hurt": SubResource("Animation_8ydkj"),
 &"Primary": SubResource("Animation_0owmy"),
+&"RESET": SubResource("Animation_4hvnv"),
 &"Secondary": SubResource("Animation_qek5x")
 }
 
@@ -683,13 +847,14 @@ height = 256.0
 
 [node name="Player" type="CharacterBody2D" groups=["Player"]]
 z_index = 10
+rotation = 0.017453292
 collision_layer = 4
 collision_mask = 3
 slide_on_ceiling = false
 script = ExtResource("1_8afob")
 Speed = 450.0
 JumpSpeed = 600.0
-Health = 100
+Health = 20
 Projectile = ExtResource("2_qek5x")
 Damage = 1
 SpecialCharge = 50
@@ -746,6 +911,7 @@ disabled = true
 [node name="RegenStartTimer" type="Timer" parent="."]
 
 [node name="EntityAudioManager" parent="." instance=ExtResource("16_ioxgp")]
+max_polyphony = 5
 playlists = Array[Object]([ExtResource("17_pk8ii"), ExtResource("18_5mf0n"), ExtResource("19_4hvnv"), ExtResource("20_bbmj2"), ExtResource("21_kxw46"), ExtResource("22_8qxvo"), ExtResource("23_5q8fn"), ExtResource("24_wva7c"), ExtResource("25_7obkq")])
 
 [node name="StateMachine" type="Node" parent="." node_paths=PackedStringArray("initialState")]
@@ -766,6 +932,9 @@ script = ExtResource("7_0owmy")
 
 [node name="Hurt" type="Node" parent="StateMachine"]
 script = ExtResource("20_8ydkj")
+
+[node name="Death" type="Node" parent="StateMachine"]
+script = ExtResource("32_5mf0n")
 
 [node name="PlayerUI" parent="." instance=ExtResource("22_yj68g")]
 visible = false

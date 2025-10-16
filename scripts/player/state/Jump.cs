@@ -19,6 +19,7 @@ public partial class Jump : State<Player> {
 
     Parent.SetJump(false);
     Parent.Sprite2D.Play("Jump");
+    Parent.AudioManager.PlayRandomAudio("Jump");
   }
 
   public override void OnProcess(double delta) {

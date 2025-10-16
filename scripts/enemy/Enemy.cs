@@ -38,6 +38,7 @@ public partial class Enemy : CharacterBody2D, IDamageable {
       SpawnAttackTimer();
     }
 
+    ConnectOnPlayerDied();
     SpawnRaycasts();
     SpawnAttackTimer();
   }
@@ -148,6 +149,10 @@ public partial class Enemy : CharacterBody2D, IDamageable {
     SpawnQueueFreeTimer(); 
   }
 
+  private void OnPlayerDied() {
+    ProcessMode = ProcessModeEnum.Disabled;
+  }
+
   private void SpawnQueueFreeTimer() {
     var timer = new Timer {
       Name     = "QueueFreeTimer",
@@ -194,5 +199,13 @@ public partial class Enemy : CharacterBody2D, IDamageable {
     };
     AttackTimer.Timeout += () => { CanAttack = true; };
     AddChild(AttackTimer);
+  }
+
+  private void ConnectOnPlayerDied() {
+    Player.Connect(
+      Player.SignalName.PlayerDied,
+      Callable.From(OnPlayerDied),
+      (uint)ConnectFlags.OneShot
+    );
   }
 }

@@ -20,7 +20,7 @@ public partial class PlayerHurt : State<Player> {
   private void PlayHurtAnimation() {
     Parent.AnimationPlayer.Connect(
       AnimationPlayer.SignalName.AnimationFinished,
-      Callable.From<String>((name) => { if(!Parent.Alive) { Parent.QueueFree(); } }),
+      Callable.From<String>((name) => { if(!Parent.Alive) { StateMachine.ChangeState("Death"); } }),
       (uint)ConnectFlags.OneShot
     );
     Parent.AnimationPlayer.Queue("Hurt"); 

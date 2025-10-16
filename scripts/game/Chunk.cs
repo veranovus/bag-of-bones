@@ -31,9 +31,9 @@ public partial class Chunk : Node2D {
   }
 
   private void LoadChunkScenes() {
-    var files = Directory.GetFiles("scenes/game/level/");
+    var files = ResourceLoader.ListDirectory("res://scenes/game/level/");
     foreach (var path in files) {
-      Chunks.Add(ResourceLoader.Load<PackedScene>(path));
+      Chunks.Add(ResourceLoader.Load<PackedScene>($"res://scenes/game/level/{path}"));
     }
   }
 

@@ -18,6 +18,7 @@ public partial class Camera : Camera2D {
   public override void _Ready() {
     foregroundRoot = GetNode<Node2D>("Foregrounds");
     player         = (Player)GetTree().GetFirstNodeInGroup("Player");
+    ConnectOnPlayerDied();
 
     speed      = InitialSpeed;
     generation = 0;
@@ -27,6 +28,10 @@ public partial class Camera : Camera2D {
   }
 
   public override void _PhysicsProcess(double delta) {
+    if (!player.Alive) {
+      return;
+    }
+
     var diff   = player.GlobalPosition - GlobalPosition;
     var offset = 0.0f; 
 
@@ -65,10 +70,29 @@ public partial class Camera : Camera2D {
       FlipH   = (generation % 2) == 0,
     };
     if (foregrounds.Count > 0) {
-      instance.Position = foregrounds[foregrounds.Count - 1].Position + new Vector2(0.0f, 1080.0f);
+      instance.Position = foregrounds[^1].Position + new Vector2(0.0f, 1080.0f);
     }
     foregrounds.Add(instance);
     foregroundRoot.AddChild(instance);
     generation += 1;
+  }
+
+  private void OnPlayerDied() {
+    var diff  = player.GlobalPosition - GlobalPosition;
+    var tween = CreateTween();
+
+    tween.SetParallel(true);
+    tween.TweenProperty(this, "position", Position + new Vector2(0.0f, diff.Y), 0.25f);
+    foreach (var fg in foregrounds) {
+      tween.TweenProperty(fg, "position", fg.Position + new Vector2(0.0f, diff.Y) * 0.25f, 0.25f);
+    }
+  }
+
+  private void ConnectOnPlayerDied() {
+    player.Connect(
+      Player.SignalName.PlayerDied,
+      Callable.From(OnPlayerDied),
+      (uint)ConnectFlags.OneShot
+    );
   }
 }

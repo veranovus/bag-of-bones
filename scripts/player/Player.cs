@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using System.Security;
 
 public partial class Player : CharacterBody2D, IDamageable {
+  [Signal] public delegate void PlayerDiedEventHandler();
+
   public AnimatedSprite2D   Sprite2D        { get; private set; }
   public AnimationPlayer    AnimationPlayer { get; private set; }
   public PlayerStateMachine StateMachine    { get; private set; }
   public Timer              AttackTimer     { get; private set; }
   public Timer              RegenTimer      { get; private set; }
   public Timer              RegenStartTimer { get; private set; }
+  public EntityAudioManager AudioManager    { get; private set; }
   public PlayerUI           PlayerUI        { get; private set; }
 
   [Export] public float       Speed         { get; private set; }
@@ -18,6 +21,7 @@ public partial class Player : CharacterBody2D, IDamageable {
   [Export] public PackedScene Projectile    { get; private set; }
   [Export] public int         Damage        { get; private set; }
   [Export] public int         SpecialCharge { get; private set; }
+           public PackedScene GameOverScene { get; private set; }
 
   public bool     Jump           { get; private set; }
   public Vector2  Direction      { get; private set; }
@@ -48,7 +52,9 @@ public partial class Player : CharacterBody2D, IDamageable {
     AttackTimer     = GetNode<Timer>("AttackTimer");
     RegenTimer      = GetNode<Timer>("RegenTimer");
     RegenStartTimer = GetNode<Timer>("RegenStartTimer");
+    AudioManager    = GetNode<EntityAudioManager>("EntityAudioManager");
     PlayerUI        = GetNode<PlayerUI>("PlayerUI");
+    GameOverScene   = ResourceLoader.Load<PackedScene>("res://scenes/ui/game_over_ui.tscn");
 
     RegisterAttackPositions();
     SetAttackTimer();
