@@ -86,7 +86,7 @@ public partial class Player : CharacterBody2D, IDamageable {
   }
 
   public override void _PhysicsProcess(double delta) {
-    UpdateDamageAreaPosition();
+    UpdateUltimateVFXPositions();
     ApplyGravity(delta);
     MoveAndSlide();
   }
@@ -141,7 +141,11 @@ public partial class Player : CharacterBody2D, IDamageable {
     }
 
     if (Attack != null) {
-      if (!PayAttackCost(AttackCost)) {
+      if (Attack == "Ultimate") {
+        if (!PayUltimateCost()) {
+          return;
+        }
+      } else if (!PayAttackCost(AttackCost)) {
         AudioManager.PlayRandomAudio("LowHealth");
         return;
       }
@@ -258,7 +262,9 @@ public partial class Player : CharacterBody2D, IDamageable {
     if (Ultimate = value) {
       DamageArea.Enable();
       ParticleEmitter.Emitting = true;
+
       UltimateTimer.Start();
+      CreateSpecialbarDrainTween();
     } else {
       DamageArea.Disable();
       ParticleEmitter.Emitting = false;
@@ -288,6 +294,10 @@ public partial class Player : CharacterBody2D, IDamageable {
     PlayerUI.UpdateHealthbar();
   }
 
+  private bool PayUltimateCost() {
+    return CurrentBone == SpecialCharge;
+  }
+
   private bool PayAttackCost(int value) {
     if (Ultimate) {
       return true;
@@ -305,10 +315,11 @@ public partial class Player : CharacterBody2D, IDamageable {
     return true;
   }
 
-  private void UpdateDamageAreaPosition() {
+  private void UpdateUltimateVFXPositions() {
     if (Ultimate) {
       DamageArea.GlobalPosition      = Camera.GlobalPosition;
       ParticleEmitter.GlobalPosition = Camera.GlobalPosition - new Vector2(0.0f, 1080.0f / 2.0f);
+      PlayerUI.UpdateSpecialbar();
     } else {
       DamageArea.Position = Vector2.Zero;
     }
@@ -337,6 +348,11 @@ public partial class Player : CharacterBody2D, IDamageable {
       area.BodyEntered  += DealDamage;
       AttackPositions[i] = marker;
     }
+  }
+
+  private void CreateSpecialbarDrainTween() {
+      var tween = CreateTween();
+      tween.TweenProperty(this, "CurrentBone", 0, UltimateTime);
   }
 
   private void OnDifficultyIncreased(int difficulty) {

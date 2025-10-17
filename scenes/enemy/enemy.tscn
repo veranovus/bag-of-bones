@@ -49,6 +49,6 @@ scale_amount_min = 0.75
 [node name="StateMachine" type="Node" parent="."]
 script = ExtResource("2_a3pup")
 
-[connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="OnScreenEntered" flags=6]
-[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="OnScreenExited" flags=6]
+[connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="OnScreenEntered"]
+[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="OnScreenExited"]
 [connection signal="body_entered" from="Area2D" to="." method="DealDamage"]

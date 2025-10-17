@@ -1043,10 +1043,10 @@ slide_on_ceiling = false
 script = ExtResource("1_8afob")
 Speed = 450.0
 JumpSpeed = 600.0
-Health = 20
+Health = 50
 Projectile = ExtResource("2_qek5x")
 Damage = 1
-SpecialCharge = 50
+SpecialCharge = 100
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_yj68g")

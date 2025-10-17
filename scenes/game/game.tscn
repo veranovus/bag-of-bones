@@ -16,7 +16,6 @@ script = ExtResource("1_lfrn8")
 
 [node name="Player" parent="." instance=ExtResource("1_kelw5")]
 position = Vector2(896, 384)
-Health = 50
 
 [node name="Camera" parent="." instance=ExtResource("3_0sr1o")]
 position = Vector2(896, 540)

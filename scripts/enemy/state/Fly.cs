@@ -5,7 +5,8 @@ public partial class Fly : State<Enemy> {
   private Timer   timer;
   private Vector2 direction;
 
-  private const float TimerTime = 0.2f;
+  private const float TimerTime      = 0.2f;
+  private const float AttackDistance = 1080.0f;
 
   public override void _Ready() {
     SpawnTimer();
@@ -38,7 +39,9 @@ public partial class Fly : State<Enemy> {
 
   private void PickRandomDirection() {
     direction.Y = -direction.Y;
-    if (Parent.CanAttack) {
+
+    var distance = Parent.Player.GlobalPosition - Parent.GlobalPosition;
+    if (distance.Length() <= AttackDistance && Parent.CanAttack) {
       Parent.Velocity = Vector2.Zero;
       StateMachine.ChangeState("Shoot"); 
     }

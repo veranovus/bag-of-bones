@@ -22,6 +22,12 @@ public partial class Wander : State<Enemy> {
       if (!Parent.Raycasts[1].IsColliding() && Parent.Direction.X > 0.0f) {
         Parent.SetDirection(Vector2.Left);
       }
+      if (Parent.Raycasts[2].IsColliding() && Parent.Direction.X < 0.0f) {
+        Parent.SetDirection(Vector2.Right);
+      }
+      if (Parent.Raycasts[3].IsColliding() && Parent.Direction.X > 0.0f) {
+        Parent.SetDirection(Vector2.Left);
+      }
     }
   }
 }

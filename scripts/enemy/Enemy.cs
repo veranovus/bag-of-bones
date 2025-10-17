@@ -7,9 +7,10 @@ public partial class Enemy : CharacterBody2D, IDamageable {
   public EnemyStateMachine StateMachine     { get; private set; }
   public AnimationPlayer   AnimationPlayer  { get; private set; }
   public Player            Player           { get; private set; }
-  public RayCast2D[]       Raycasts         { get; private set; } = new RayCast2D[2];
+  public RayCast2D[]       Raycasts         { get; private set; } = new RayCast2D[4];
   public Marker2D          ProjectileMarker { get; private set; }
   public Timer             AttackTimer      { get; private set; }
+  public Timer             QueueFreeTimer   { get; private set; }
   public CpuParticles2D    ParticleEmitter  { get; private set; }
 
   [Export] public int         Health     { get; private set; }
@@ -27,6 +28,8 @@ public partial class Enemy : CharacterBody2D, IDamageable {
   public int     CurrentDamage { get; private set; }
   public int     Difficulty    { get; private set; }
   public int     CurrentBone   { get; private set; }
+  public bool    InScreen      { get; private set; }
+  public bool    FirstTime     { get; private set; } = true;
 
   private const float Gravity         = 980.0f;
   private const float AttackTime      = 3.0f;
@@ -45,11 +48,13 @@ public partial class Enemy : CharacterBody2D, IDamageable {
       ProjectileMarker = GetNode<Marker2D>("Projectile");
       SpawnAttackTimer();
     }
+    Sprite2D.Material = (Material)Sprite2D.Material.Duplicate();
 
     ConnectOnDifficultyIncreased();
     ConnectOnPlayerDied();
 
     SpawnRaycasts();
+    SpawnQueueFreeTimer();
     SpawnAttackTimer();
   }
 
@@ -162,13 +167,18 @@ public partial class Enemy : CharacterBody2D, IDamageable {
   }
 
   private void OnScreenEntered() {
-    StartAttackTimer();
-    StateMachine.InitialStateOnReady();
-    SetDefaultStats();
+    if (FirstTime) {
+      StartAttackTimer();
+      StateMachine.InitialStateOnReady();
+      SetDefaultStats();
+      FirstTime = false;
+    }
+    InScreen = true;
   }
 
   private void OnScreenExited() {
-    SpawnQueueFreeTimer(); 
+    InScreen = false;
+    QueueFreeTimer.Start(); 
   }
 
   private void OnPlayerDied() {
@@ -197,21 +207,20 @@ public partial class Enemy : CharacterBody2D, IDamageable {
   }
 
   private void SpawnQueueFreeTimer() {
-    var timer = new Timer {
+    QueueFreeTimer = new Timer {
       Name     = "QueueFreeTimer",
       WaitTime = 5.0f,
       OneShot  = true,
     };
-    timer.Timeout += QueueFree;
-    AddChild(timer);
-    timer.CallDeferred("start");
+    QueueFreeTimer.Timeout += () => { if (!InScreen) QueueFree(); };
+    AddChild(QueueFreeTimer);
   }
 
   private void SpawnRaycasts() {
     var root = new Node2D { Name = "Raycasts" };
     AddChild(root);
 
-    var margin = 50.0f;
+    var margin = new Vector2(10.0f, 50.0f);
     var offset = Collider.Shape switch {
       RectangleShape2D rect    => new Vector2(rect.Size.X / 2.0f, rect.Size.Y / 2.0f),
       CircleShape2D    circle  => new Vector2(circle.Radius, circle.Radius),
@@ -219,19 +228,21 @@ public partial class Enemy : CharacterBody2D, IDamageable {
       _                        => new Vector2(0.0f, 0.0f), 
     };
 
-    RayCast2D spawnRaycastDown(string name, float x, float y) {
+    RayCast2D spawnRaycast(string name, float x, float y, Vector2 target) {
       var raycast = new RayCast2D {
         Name           = name,
         Position       = new Vector2(x, y),
-        TargetPosition = new Vector2(0.0f, offset.Y + margin),
+        TargetPosition = target,
         CollisionMask  = 0b0011,
       };
       root.AddChild(raycast);
       return raycast;
     }
 
-    Raycasts[0] = spawnRaycastDown("Left", -offset.X, 0.0f);
-    Raycasts[1] = spawnRaycastDown("Right", offset.X, 0.0f);
+    Raycasts[0] = spawnRaycast("DownLeft", -offset.X, 0.0f, new Vector2(0.0f, offset.X + margin.Y));
+    Raycasts[1] = spawnRaycast("DownRight", offset.X, 0.0f, new Vector2(0.0f, offset.X + margin.Y));
+    Raycasts[2] = spawnRaycast("Left", -offset.X, 0.0f, new Vector2(-margin.X, 0.0f));
+    Raycasts[3] = spawnRaycast("Right", offset.X, 0.0f, new Vector2( margin.X, 0.0f));
   }
 
   private void SpawnAttackTimer() {
