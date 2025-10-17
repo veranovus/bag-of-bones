@@ -33,11 +33,11 @@ public partial class PlayerUI : CanvasLayer {
   }
 
   public void UpdateScore() {
-    score.Text = $"Score: {player.Score}x{player.Modifier}";
+    score.Text    = $"Score: {player.Score}[font_size=32]x{player.Modifier}[/font_size]";
   }
 
   public void UpdateDepth() {
-    depth.Text = $"Depth: {player.Depth:F1}m";    
+    depth.Text = $"Depth: {player.Depth:F1}[font_size=32]m[/font_size]";    
   }
 
   public void PlayAnimation(string animation) {

@@ -14,7 +14,7 @@ config/name="Bag of Bones"
 config/version="0.1.0"
 run/main_scene="uid://d2q1lx341c46b"
 config/features=PackedStringArray("4.5", "C#", "GL Compatibility")
-config/icon="res://icon.svg"
+config/icon="uid://d3rpwpxkpix6w"
 
 [display]
 

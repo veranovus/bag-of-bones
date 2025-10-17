@@ -11,7 +11,7 @@ public partial class GameOverUI : CanvasLayer {
     var depth  = GetNode<RichTextLabel>("HBoxContainer/CenterMargin/VBoxContainer/TextContainer/VBoxContainer/DepthLabel");
 
     score.Text = $"Score: {player.Score}";
-    depth.Text = $"Depth: {player.Depth:F1}m";
+    depth.Text = $"Depth: {player.Depth:F1}[font_size=32]m[/font_size]";
 
     GetTree().GetFirstNodeInGroup("Game").CallDeferred("queue_free");
   }

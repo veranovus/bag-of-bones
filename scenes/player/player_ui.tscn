@@ -86,7 +86,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("Score/RichTextLabel:modulate")
+tracks/4/path = NodePath("Score/ScoreText:modulate")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -126,7 +126,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Score/RichTextLabel:modulate")
+tracks/2/path = NodePath("Score/ScoreText:modulate")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -207,14 +207,15 @@ frame = 1
 [node name="Score" type="Node2D" parent="."]
 position = Vector2(288, 176)
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Score"]
+[node name="ScoreText" type="RichTextLabel" parent="Score"]
 clip_contents = false
 offset_left = -256.0
 offset_top = -32.0
 offset_right = 256.0
 offset_bottom = 32.0
 theme = ExtResource("4_mo8vb")
-text = "Score: 0
+bbcode_enabled = true
+text = "Score: 0[font_size=32]x1[/font_size]
 "
 scroll_active = false
 vertical_alignment = 1
@@ -229,7 +230,8 @@ offset_top = -32.0
 offset_right = 256.0
 offset_bottom = 32.0
 theme = ExtResource("4_mo8vb")
-text = "Depth: 0m
+bbcode_enabled = true
+text = "Depth: 0[font_size=32]m[/font_size]
 "
 scroll_active = false
 horizontal_alignment = 2

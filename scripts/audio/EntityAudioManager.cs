@@ -9,11 +9,7 @@ public partial class EntityAudioManager : AudioStreamPlayer {
 
   public override void _EnterTree() {
     globalAudioManager = (GlobalAudioManager)GetTree().GetFirstNodeInGroup("AudioManager");
-    globalAudioManager.SoundVolumeChanged += OnSoundVolumeChanged;
-  }
-
-  public override void _ExitTree() {
-    globalAudioManager.SoundVolumeChanged -= OnSoundVolumeChanged;
+    VolumeLinear       = globalAudioManager.SoundVolume;
   }
 
   public void PlayRandomAudio(string name) {
@@ -25,9 +21,5 @@ public partial class EntityAudioManager : AudioStreamPlayer {
       Play();
       return;
     }
-  }
-
-  private void OnSoundVolumeChanged(float volume) {
-    VolumeLinear = volume;
   }
 }

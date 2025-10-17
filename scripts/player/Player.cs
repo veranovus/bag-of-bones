@@ -115,6 +115,7 @@ public partial class Player : CharacterBody2D, IDamageable {
 
     ResetModifier();
 
+    DamageArea.SetDeathCallback(Callable.From(AddScore));
     DamageArea.SetDamage(int.MaxValue);
     DamageArea.Disable();
 

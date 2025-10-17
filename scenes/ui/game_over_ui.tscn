@@ -66,7 +66,8 @@ horizontal_alignment = 1
 layout_mode = 2
 size_flags_horizontal = 3
 theme = ExtResource("2_sxdiq")
-text = "Depth: 0m"
+bbcode_enabled = true
+text = "Depth: 0[font_size=32]m[/font_size]"
 fit_content = true
 horizontal_alignment = 1
 

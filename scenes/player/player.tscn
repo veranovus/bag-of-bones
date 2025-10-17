@@ -1046,14 +1046,14 @@ JumpSpeed = 600.0
 Health = 50
 Projectile = ExtResource("2_qek5x")
 Damage = 1
-SpecialCharge = 100
+SpecialCharge = 50
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 material = SubResource("ShaderMaterial_yj68g")
 position = Vector2(0, -12)
 scale = Vector2(0.5, 0.5)
 sprite_frames = SubResource("SpriteFrames_gmlin")
-animation = &"Ultimate"
+animation = &"Idle"
 flip_h = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
