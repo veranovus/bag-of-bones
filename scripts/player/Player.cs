@@ -10,11 +10,15 @@ public partial class Player : CharacterBody2D, IDamageable {
   public AnimatedSprite2D   Sprite2D        { get; private set; }
   public AnimationPlayer    AnimationPlayer { get; private set; }
   public PlayerStateMachine StateMachine    { get; private set; }
+  public Timer              UltimateTimer   { get; private set; }
   public Timer              AttackTimer     { get; private set; }
   public Timer              RegenTimer      { get; private set; }
   public Timer              RegenStartTimer { get; private set; }
   public EntityAudioManager AudioManager    { get; private set; }
   public PlayerUI           PlayerUI        { get; private set; }
+  public DamageOverTimeArea DamageArea      { get; private set; }
+  public CpuParticles2D     ParticleEmitter { get; private set; }
+  public Camera             Camera          { get; private set; }
 
   [Export] public float       Speed         { get; private set; }
   [Export] public float       JumpSpeed     { get; private set; }
@@ -39,8 +43,11 @@ public partial class Player : CharacterBody2D, IDamageable {
   public int      Score          { get; private set; }
   public int      CurrentBone    { get; private set; }
   public int      Difficulty     { get; private set; }
+  public bool     DisableGravity { get; private set; }
+  public bool     Ultimate       { get; private set; }
 
   private const    float      Gravity              = 980.0f;
+  private const    float      UltimateTime         = 10.0f;
   private const    float      RegenStartTime       = 3.5f;
   private const    float      RegenStartTimeReduce = 0.5f;
   private const    float      RegenTime            = 0.2f;
@@ -53,15 +60,20 @@ public partial class Player : CharacterBody2D, IDamageable {
     Sprite2D        = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
     AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
     StateMachine    = GetNode<PlayerStateMachine>("StateMachine");
+    UltimateTimer   = GetNode<Timer>("UltimateTimer");
     AttackTimer     = GetNode<Timer>("AttackTimer");
     RegenTimer      = GetNode<Timer>("RegenTimer");
     RegenStartTimer = GetNode<Timer>("RegenStartTimer");
     AudioManager    = GetNode<EntityAudioManager>("EntityAudioManager");
     PlayerUI        = GetNode<PlayerUI>("PlayerUI");
+    DamageArea      = GetNode<DamageOverTimeArea>("DamageOverTimeArea");
+    ParticleEmitter = GetNode<CpuParticles2D>("CPUParticles2D");
+    Camera          = (Camera)GetTree().GetFirstNodeInGroup("Camera");
     GameOverScene   = ResourceLoader.Load<PackedScene>("res://scenes/ui/game_over_ui.tscn");
 
     ConnectOnDifficultyIncreased();
     RegisterAttackPositions();
+    SetUltimateTimer();
     SetAttackTimer();
     SetRegenTimer();
     SetRegenStartTimer(true);
@@ -74,6 +86,7 @@ public partial class Player : CharacterBody2D, IDamageable {
   }
 
   public override void _PhysicsProcess(double delta) {
+    UpdateDamageAreaPosition();
     ApplyGravity(delta);
     MoveAndSlide();
   }
@@ -87,6 +100,9 @@ public partial class Player : CharacterBody2D, IDamageable {
     CanAttack     = true;
     CurrentBone   = 0;
     Difficulty    = 0;
+
+    DamageArea.SetDamage(int.MaxValue);
+    DamageArea.Disable();
 
     PlayerUI.UpdateHealthbar();
     PlayerUI.UpdateSpecialbar();
@@ -114,13 +130,17 @@ public partial class Player : CharacterBody2D, IDamageable {
     if        (Input.IsActionJustPressed("action_primary")) {
       Attack = "Primary";
     } else if (Input.IsActionJustPressed("action_secondary")) {
-      Attack = "Secondary";
+      Attack = "Secondary"; 
+    } else if (Input.IsActionJustPressed("action_ultimate")) {
+      Attack = "Ultimate";
+    } else if (Input.IsActionPressed("action_ultimate_controller_left") && 
+               Input.IsActionPressed("action_ultimate_controller_right")) {
+      Attack = "Ultimate";
     } else {
       Attack = null;
     }
 
     if (Attack != null) {
-      // TODO: Play an animation on healthbar and a sound effect here.
       if (!PayAttackCost(AttackCost)) {
         AudioManager.PlayRandomAudio("LowHealth");
         return;
@@ -162,7 +182,7 @@ public partial class Player : CharacterBody2D, IDamageable {
     if (!Alive) {
       return false;
     }
-    if (Invincible) {
+    if (Invincible || Ultimate) {
       return true;
     }
 
@@ -209,6 +229,9 @@ public partial class Player : CharacterBody2D, IDamageable {
     if (CurrentBone == SpecialCharge) {
       return;
     }
+    if (Ultimate) {
+      return;
+    }
 
     CurrentBone += value;
     if (CurrentBone > SpecialCharge) {
@@ -231,6 +254,23 @@ public partial class Player : CharacterBody2D, IDamageable {
     Jump = value;
   }
 
+  public void SetUltimate(bool value) {
+    if (Ultimate = value) {
+      DamageArea.Enable();
+      ParticleEmitter.Emitting = true;
+      UltimateTimer.Start();
+    } else {
+      DamageArea.Disable();
+      ParticleEmitter.Emitting = false;
+    }
+  }
+
+  public void SetDisableGravity(bool value) {
+    if (DisableGravity = value) {
+      Velocity = Vector2.Zero;
+    }
+  }
+
   private void SetAlive(bool value) {
     if (Alive = value) {
       SetDefaultStats();
@@ -249,6 +289,9 @@ public partial class Player : CharacterBody2D, IDamageable {
   }
 
   private bool PayAttackCost(int value) {
+    if (Ultimate) {
+      return true;
+    }
     if (CurrentHealth - value < 1) {
       return false;
     }
@@ -262,7 +305,19 @@ public partial class Player : CharacterBody2D, IDamageable {
     return true;
   }
 
+  private void UpdateDamageAreaPosition() {
+    if (Ultimate) {
+      DamageArea.GlobalPosition      = Camera.GlobalPosition;
+      ParticleEmitter.GlobalPosition = Camera.GlobalPosition - new Vector2(0.0f, 1080.0f / 2.0f);
+    } else {
+      DamageArea.Position = Vector2.Zero;
+    }
+  }
+
   private void ApplyGravity(double delta) {
+    if (DisableGravity) {
+      return;
+    }
     Velocity = Velocity with { Y = Velocity.Y + (Gravity * (float)delta) }; 
   }
 
@@ -294,6 +349,12 @@ public partial class Player : CharacterBody2D, IDamageable {
     game.DifficultyIncreased += OnDifficultyIncreased;
 
     Difficulty = game.Difficulty;
+  }
+
+  private void SetUltimateTimer() {
+    UltimateTimer.WaitTime = UltimateTime;
+    UltimateTimer.OneShot  = true;
+    UltimateTimer.Timeout += () => { SetUltimate(false); };
   }
 
   private void SetAttackTimer() {

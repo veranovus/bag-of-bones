@@ -3,9 +3,9 @@
 [ext_resource type="Script" uid="uid://dhfrm4k0ss1gv" path="res://scripts/DamageOverTimeArea.cs" id="1_a602s"]
 [ext_resource type="Shader" uid="uid://cwndn4td7b65k" path="res://resources/shader/color_rect.gdshader" id="1_b5mc3"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_yuoba"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_a602s"]
 shader = ExtResource("1_b5mc3")
-shader_parameter/color = Color(1, 1, 1, 1)
+shader_parameter/color = Color(0.53309095, 0, 0.07331426, 0.49019608)
 
 [sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_b5mc3"]
 size = Vector2(1920, 1080)
@@ -16,10 +16,11 @@ script = ExtResource("1_a602s")
 [node name="Timer" type="Timer" parent="."]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
+layer = 5
 visible = false
 
 [node name="OverlayColor" type="TextureRect" parent="CanvasLayer"]
-material = SubResource("ShaderMaterial_yuoba")
+material = SubResource("ShaderMaterial_a602s")
 offset_right = 40.0
 offset_bottom = 40.0
 texture = SubResource("PlaceholderTexture2D_b5mc3")

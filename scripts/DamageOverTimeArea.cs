@@ -3,33 +3,31 @@ using System;
 using System.Collections.Generic;
 
 public partial class DamageOverTimeArea : Area2D {
-  private CanvasLayer    canvasLayer;
-  private ShaderMaterial textureMaterial;
-  private Timer          timer;
+  private CanvasLayer canvasLayer;
+  private Timer       timer;
 
   [Export] private float damageFrequency = 1.0f;
   [Export] private bool  showOverlay     = false;
-  [Export] private Color overlayColor    = Godot.Colors.White;
 
   private int          damage;
   private List<Node2D> bodies = [];
 
   public override void _Ready() {
-    canvasLayer     = GetNode<CanvasLayer>("CanvasLayer");
-    textureMaterial = (ShaderMaterial)canvasLayer.GetChild<TextureRect>(0).Material;
-    timer           = GetNode<Timer>("Timer");
+    canvasLayer = GetNode<CanvasLayer>("CanvasLayer");
+    timer       = GetNode<Timer>("Timer");
 
-    SetOverlayColor();
     SetTimer();
   }
 
   public void Enable() {
     bodies.Clear();
-    Monitoring = true;
+    Monitoring          = true;
+    canvasLayer.Visible = showOverlay;
   }
 
   public void Disable() {
-    Monitoring = false;
+    Monitoring          = false;
+    canvasLayer.Visible = false;
   }
 
   public void SetDamage(int value) {
@@ -69,11 +67,6 @@ public partial class DamageOverTimeArea : Area2D {
     if (node is IDamageable damageable) {
       bodies.Remove(node);
     }
-  }
-
-  private void SetOverlayColor() {
-    canvasLayer.Visible = showOverlay;
-    textureMaterial.SetShaderParameter("color", overlayColor);
   }
 
   private void SetTimer() {

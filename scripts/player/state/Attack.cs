@@ -7,6 +7,9 @@ public partial class Attack : State<Player> {
   }
 
   public override void OnPhysicsProcess(double delta) {
+    if (Parent.Attack == "Ultimate") {
+      return;
+    }
     var input       = Parent.CollectDirectionalInput();
     Parent.Velocity = Parent.Velocity with { X = input.X * Parent.Speed };
   }
