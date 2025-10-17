@@ -1,4 +1,4 @@
-[gd_scene load_steps=100 format=3 uid="uid://b1q31wmgvmp0n"]
+[gd_scene load_steps=111 format=3 uid="uid://b1q31wmgvmp0n"]
 
 [ext_resource type="Script" uid="uid://c6rkyr3888wwx" path="res://scripts/player/Player.cs" id="1_8afob"]
 [ext_resource type="PackedScene" uid="uid://dspp5kp3xjtpl" path="res://scenes/player/projectile.tscn" id="2_qek5x"]
@@ -20,6 +20,7 @@
 [ext_resource type="Texture2D" uid="uid://du1urpa50hx8y" path="res://assets/image/player/player-secondary-down.png" id="13_28m0y"]
 [ext_resource type="Texture2D" uid="uid://cnucjcosx1y7" path="res://assets/image/player/player-secondary-up.png" id="14_uniwh"]
 [ext_resource type="Script" uid="uid://dwp1cjpaku4vm" path="res://scripts/player/PlayerStateMachine.cs" id="15_lgqa7"]
+[ext_resource type="Texture2D" uid="uid://ci6l8i8r14jll" path="res://assets/image/player/player-ultimate.png" id="16_4hvnv"]
 [ext_resource type="PackedScene" uid="uid://c55tkcik3eo71" path="res://scenes/entity_audio_manager.tscn" id="16_ioxgp"]
 [ext_resource type="Resource" uid="uid://csw304j6a8bj2" path="res://resources/audio/player/player-audio-damage.tres" id="17_pk8ii"]
 [ext_resource type="Resource" uid="uid://d2n27er62bkl1" path="res://resources/audio/player/player-audio-death.tres" id="18_5mf0n"]
@@ -263,6 +264,46 @@ region = Rect2(0, 512, 512, 512)
 atlas = ExtResource("14_uniwh")
 region = Rect2(512, 512, 512, 512)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_upxxc"]
+atlas = ExtResource("16_4hvnv")
+region = Rect2(0, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ln3h3"]
+atlas = ExtResource("16_4hvnv")
+region = Rect2(512, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_uygh0"]
+atlas = ExtResource("16_4hvnv")
+region = Rect2(1024, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_t1aof"]
+atlas = ExtResource("16_4hvnv")
+region = Rect2(1536, 0, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w8qe1"]
+atlas = ExtResource("16_4hvnv")
+region = Rect2(0, 512, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hdvrm"]
+atlas = ExtResource("16_4hvnv")
+region = Rect2(512, 512, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5xbmr"]
+atlas = ExtResource("16_4hvnv")
+region = Rect2(1024, 512, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hir57"]
+atlas = ExtResource("16_4hvnv")
+region = Rect2(1536, 512, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7072n"]
+atlas = ExtResource("16_4hvnv")
+region = Rect2(0, 1024, 512, 512)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gmu8b"]
+atlas = ExtResource("16_4hvnv")
+region = Rect2(512, 1024, 512, 512)
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_gmlin"]
 animations = [{
 "frames": [{
@@ -492,6 +533,41 @@ animations = [{
 "loop": false,
 "name": &"SecondaryUp",
 "speed": 12.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_upxxc")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ln3h3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_uygh0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_t1aof")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w8qe1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hdvrm")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5xbmr")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hir57")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7072n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gmu8b")
+}],
+"loop": false,
+"name": &"Ultimate",
+"speed": 12.0
 }]
 
 [sub_resource type="Animation" id="Animation_8ydkj"]
@@ -560,29 +636,29 @@ tracks/2/keys = {
 tracks/3/type = "method"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("StateMachine")
+tracks/3/path = NodePath("EntityAudioManager")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(0.5),
-"transitions": PackedFloat32Array(1),
-"values": [{
-"args": ["Move"],
-"method": &"ChangeState"
-}]
-}
-tracks/4/type = "method"
-tracks/4/imported = false
-tracks/4/enabled = true
-tracks/4/path = NodePath("EntityAudioManager")
-tracks/4/interp = 1
-tracks/4/loop_wrap = true
-tracks/4/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "values": [{
 "args": ["Damage"],
 "method": &"PlayRandomAudio"
+}]
+}
+tracks/4/type = "method"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath(".")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.5),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"ChangeToDefaultState"
 }]
 }
 

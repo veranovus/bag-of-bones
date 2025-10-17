@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Security;
+using System.Security.Principal;
 
 public partial class Player : CharacterBody2D, IDamageable {
   [Signal] public delegate void PlayerDiedEventHandler();
@@ -37,13 +38,15 @@ public partial class Player : CharacterBody2D, IDamageable {
   public bool     CanAttack      { get; private set; }
   public int      Score          { get; private set; }
   public int      CurrentBone    { get; private set; }
+  public int      Difficulty     { get; private set; }
 
-  private const    float      Gravity         = 980.0f;
-  private const    float      RegenStartTime  = 3.0f;
-  private const    float      RegenTime       = 0.2f;
-  private const    int        RegenAmount     = 1;
-  private const    int        AttackCost      = 5;
-  private const    float      AttackTime      = 0.1f;
+  private const    float      Gravity              = 980.0f;
+  private const    float      RegenStartTime       = 3.5f;
+  private const    float      RegenStartTimeReduce = 0.5f;
+  private const    float      RegenTime            = 0.2f;
+  private const    int        RegenAmount          = 2;
+  private const    int        AttackCost           = 5;
+  private const    float      AttackTime           = 0.1f;
   private readonly Marker2D[] AttackPositions = new Marker2D[2];
 
   public override void _Ready() {
@@ -57,10 +60,11 @@ public partial class Player : CharacterBody2D, IDamageable {
     PlayerUI        = GetNode<PlayerUI>("PlayerUI");
     GameOverScene   = ResourceLoader.Load<PackedScene>("res://scenes/ui/game_over_ui.tscn");
 
+    ConnectOnDifficultyIncreased();
     RegisterAttackPositions();
     SetAttackTimer();
     SetRegenTimer();
-    SetRegenStartTimer();
+    SetRegenStartTimer(true);
     StateMachine.InitialStateOnReady();
     SetDefaultStats();
   }
@@ -82,6 +86,7 @@ public partial class Player : CharacterBody2D, IDamageable {
     Direction     = Vector2.Right;
     CanAttack     = true;
     CurrentBone   = 0;
+    Difficulty    = 0;
 
     PlayerUI.UpdateHealthbar();
     PlayerUI.UpdateSpecialbar();
@@ -179,6 +184,13 @@ public partial class Player : CharacterBody2D, IDamageable {
     return Alive;
   }
 
+  public void ChangeToDefaultState() {
+    if (!Alive) {
+      return;
+    }
+    StateMachine.ChangeState("Move");
+  }
+
   public void DealDamage(Node2D node) {
     if (node is IDamageable damageable) {
       if (!damageable.TakeDamage(Damage, GlobalPosition)) {
@@ -194,10 +206,15 @@ public partial class Player : CharacterBody2D, IDamageable {
   }
 
   public void AddBone(int value) {
+    if (CurrentBone == SpecialCharge) {
+      return;
+    }
+
     CurrentBone += value;
     if (CurrentBone > SpecialCharge) {
       CurrentBone = SpecialCharge;
     }
+
     PlayerUI.UpdateSpecialbar();
   }
 
@@ -267,6 +284,18 @@ public partial class Player : CharacterBody2D, IDamageable {
     }
   }
 
+  private void OnDifficultyIncreased(int difficulty) {
+    Difficulty = difficulty;
+    SetRegenStartTimer();
+  }
+
+  private void ConnectOnDifficultyIncreased() {
+    var game = (Game)GetTree().GetFirstNodeInGroup("Game");
+    game.DifficultyIncreased += OnDifficultyIncreased;
+
+    Difficulty = game.Difficulty;
+  }
+
   private void SetAttackTimer() {
     AttackTimer.WaitTime = AttackTime;
     AttackTimer.OneShot  = true;
@@ -279,8 +308,11 @@ public partial class Player : CharacterBody2D, IDamageable {
     RegenTimer.Timeout += Regenerate;
   }
 
-  private void SetRegenStartTimer() {
-    RegenStartTimer.WaitTime = RegenStartTime;
+  private void SetRegenStartTimer(bool first = false) {
+    RegenStartTimer.WaitTime = RegenStartTime - (Difficulty * RegenStartTimeReduce);
+    if (!first) {
+      return;
+    }
     RegenStartTimer.OneShot  = true;
     RegenStartTimer.Timeout += () => { RegenTimer.Start(); };
   }

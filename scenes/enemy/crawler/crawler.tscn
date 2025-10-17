@@ -193,7 +193,7 @@ _data = {
 [node name="Crawler" instance=ExtResource("1_x13pp")]
 Health = 2
 Speed = 200.0
-Damage = 15
+Damage = 10
 
 [node name="AnimatedSprite2D" parent="." index="0"]
 material = SubResource("ShaderMaterial_0himp")

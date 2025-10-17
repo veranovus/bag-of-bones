@@ -26,6 +26,10 @@ public partial class Projectile : Area2D {
     );
   }
 
+  public void SetDamage(int difficulty, int increase) {
+    Damage += (difficulty * increase);
+  }
+
   public void SetDirection(Vector2 direction) {
     LookAt(direction);
     this.direction = Vector2.Right.Rotated(Rotation);

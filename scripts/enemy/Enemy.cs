@@ -24,9 +24,15 @@ public partial class Enemy : CharacterBody2D, IDamageable {
   public Vector2 HurtDirection { get; private set; }
   public bool    Invincible    { get; private set; }
   public bool    CanAttack     { get; private set; }
+  public int     CurrentDamage { get; private set; }
+  public int     Difficulty    { get; private set; }
+  public int     CurrentBone   { get; private set; }
 
-  private const float Gravity          = 980.0f;
-  private const float AttackTime       = 3.0f;
+  private const float Gravity         = 980.0f;
+  private const float AttackTime      = 3.0f;
+  private const int   DamageIncrease  = 2;
+  private const int   Bone            = 5;
+  private const int   BoneIncrease    = 1;
 
   public override void _Ready() {
     Sprite2D         = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
@@ -40,7 +46,9 @@ public partial class Enemy : CharacterBody2D, IDamageable {
       SpawnAttackTimer();
     }
 
+    ConnectOnDifficultyIncreased();
     ConnectOnPlayerDied();
+
     SpawnRaycasts();
     SpawnAttackTimer();
   }
@@ -60,6 +68,9 @@ public partial class Enemy : CharacterBody2D, IDamageable {
     Invincible    = false;
     Direction     = Vector2.Right;
     CanAttack     = false;
+    CurrentDamage = Damage + (Difficulty * DamageIncrease);
+    CurrentBone   = Bone   + (Difficulty * BoneIncrease);
+    Difficulty    = 0;
   }
 
   public void StartAttackTimer() {
@@ -71,6 +82,7 @@ public partial class Enemy : CharacterBody2D, IDamageable {
     var position      = ProjectileMarker.Position * new Vector2(MathF.Sign(Direction.X), 1.0f);
     instance.Position = GlobalPosition + position;
     instance.SetDirection(instance.Position + Direction);
+    instance.SetDamage(Difficulty, DamageIncrease);
     GetParent().AddChild(instance);
   }
 
@@ -94,13 +106,11 @@ public partial class Enemy : CharacterBody2D, IDamageable {
   }
 
   public void EmitPartciles() {
-    const int amount = 5;
-  
     ParticleEmitter.Direction = HurtDirection;
-    ParticleEmitter.Amount    = amount;
+    ParticleEmitter.Amount    = CurrentBone;
     ParticleEmitter.Emitting  = true;
 
-    Player.AddBone(amount);
+    Player.AddBone(CurrentBone);
   }
 
   public void DealDamage(Node2D node) {
@@ -108,7 +118,7 @@ public partial class Enemy : CharacterBody2D, IDamageable {
       return;
     }
     if (node is IDamageable damageable) {
-      damageable.TakeDamage(Damage, GlobalPosition);
+      damageable.TakeDamage(CurrentDamage, GlobalPosition);
     }
   }
 
@@ -165,6 +175,27 @@ public partial class Enemy : CharacterBody2D, IDamageable {
     ProcessMode = ProcessModeEnum.Disabled;
   }
 
+  private void OnDifficultyIncreased(int difficulty) {
+    Difficulty    = difficulty;
+    CurrentDamage = Damage + (Difficulty * ((Fly) ? 1 : DamageIncrease));
+    CurrentBone   = Bone   + (Difficulty * BoneIncrease);
+  }
+
+  private void ConnectOnDifficultyIncreased() {
+    var game = (Game)GetTree().GetFirstNodeInGroup("Game");
+    game.DifficultyIncreased += OnDifficultyIncreased;
+
+    Difficulty = game.Difficulty;
+  }
+
+  private void ConnectOnPlayerDied() {
+    Player.Connect(
+      Player.SignalName.PlayerDied,
+      Callable.From(OnPlayerDied),
+      (uint)ConnectFlags.OneShot
+    );
+  }
+
   private void SpawnQueueFreeTimer() {
     var timer = new Timer {
       Name     = "QueueFreeTimer",
@@ -211,13 +242,5 @@ public partial class Enemy : CharacterBody2D, IDamageable {
     };
     AttackTimer.Timeout += () => { CanAttack = true; };
     AddChild(AttackTimer);
-  }
-
-  private void ConnectOnPlayerDied() {
-    Player.Connect(
-      Player.SignalName.PlayerDied,
-      Callable.From(OnPlayerDied),
-      (uint)ConnectFlags.OneShot
-    );
   }
 }

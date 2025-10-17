@@ -1,8 +1,12 @@
-[gd_scene load_steps=4 format=3 uid="uid://bhe12151h11oi"]
+[gd_scene load_steps=6 format=3 uid="uid://bhe12151h11oi"]
 
 [ext_resource type="Script" uid="uid://cpgswdk08wck7" path="res://scripts/game/Camera.cs" id="1_5gn2c"]
 [ext_resource type="Texture2D" uid="uid://c1nujtfxaal46" path="res://assets/image/environment/background.png" id="2_lbd4k"]
 [ext_resource type="Texture2D" uid="uid://07c1ub76mh3l" path="res://assets/image/environment/foreground.png" id="3_un6uh"]
+[ext_resource type="PackedScene" uid="uid://iqy21ts63h5x" path="res://scenes/damage_over_time_area.tscn" id="4_d5jwf"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d5jwf"]
+size = Vector2(1920, 5400)
 
 [node name="Camera" type="Camera2D"]
 script = ExtResource("1_5gn2c")
@@ -14,3 +18,12 @@ texture = ExtResource("2_lbd4k")
 
 [node name="Foregrounds" type="Node2D" parent="."]
 z_index = -10
+
+[node name="DamageOverTimeArea" parent="." instance=ExtResource("4_d5jwf")]
+position = Vector2(0, -3240)
+collision_layer = 2
+collision_mask = 4
+damageFrequency = 5.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DamageOverTimeArea"]
+shape = SubResource("RectangleShape2D_d5jwf")
