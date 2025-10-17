@@ -218,3 +218,19 @@ text = "Score: 0
 "
 scroll_active = false
 vertical_alignment = 1
+
+[node name="Depth" type="Node2D" parent="."]
+position = Vector2(1632, 176)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Depth"]
+clip_contents = false
+offset_left = -256.0
+offset_top = -32.0
+offset_right = 256.0
+offset_bottom = 32.0
+theme = ExtResource("4_mo8vb")
+text = "Depth: 0m
+"
+scroll_active = false
+horizontal_alignment = 2
+vertical_alignment = 1

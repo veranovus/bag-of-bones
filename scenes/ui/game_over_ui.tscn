@@ -34,11 +34,12 @@ size_flags_stretch_ratio = 2.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/CenterMargin"]
 layout_mode = 2
-theme_override_constants/separation = 64
+theme_override_constants/separation = 32
 alignment = 1
 
 [node name="TextContainer" type="VBoxContainer" parent="HBoxContainer/CenterMargin/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 16
 
 [node name="GameOverLabel" type="RichTextLabel" parent="HBoxContainer/CenterMargin/VBoxContainer/TextContainer"]
 layout_mode = 2
@@ -49,10 +50,23 @@ fit_content = true
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ScoreLabel" type="RichTextLabel" parent="HBoxContainer/CenterMargin/VBoxContainer/TextContainer"]
+[node name="VBoxContainer" type="HBoxContainer" parent="HBoxContainer/CenterMargin/VBoxContainer/TextContainer"]
 layout_mode = 2
+size_flags_vertical = 3
+
+[node name="ScoreLabel" type="RichTextLabel" parent="HBoxContainer/CenterMargin/VBoxContainer/TextContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
 theme = ExtResource("2_sxdiq")
-text = "Score: ???"
+text = "Score: 0"
+fit_content = true
+horizontal_alignment = 1
+
+[node name="DepthLabel" type="RichTextLabel" parent="HBoxContainer/CenterMargin/VBoxContainer/TextContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme = ExtResource("2_sxdiq")
+text = "Depth: 0m"
 fit_content = true
 horizontal_alignment = 1
 

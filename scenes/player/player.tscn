@@ -1122,6 +1122,8 @@ anim_speed_max = 4.85
 
 [node name="UltimateTimer" type="Timer" parent="."]
 
+[node name="ModifierTimer" type="Timer" parent="."]
+
 [node name="AttackTimer" type="Timer" parent="."]
 
 [node name="RegenTimer" type="Timer" parent="."]

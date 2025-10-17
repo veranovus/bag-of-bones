@@ -11,6 +11,7 @@ public partial class Player : CharacterBody2D, IDamageable {
   public AnimationPlayer    AnimationPlayer { get; private set; }
   public PlayerStateMachine StateMachine    { get; private set; }
   public Timer              UltimateTimer   { get; private set; }
+  public Timer              ModifierTimer   { get; private set; }
   public Timer              AttackTimer     { get; private set; }
   public Timer              RegenTimer      { get; private set; }
   public Timer              RegenStartTimer { get; private set; }
@@ -41,15 +42,19 @@ public partial class Player : CharacterBody2D, IDamageable {
   public bool     Invincible     { get; private set; }
   public bool     CanAttack      { get; private set; }
   public int      Score          { get; private set; }
+  public float    Depth          { get; private set; }
   public int      CurrentBone    { get; private set; }
   public int      Difficulty     { get; private set; }
   public bool     DisableGravity { get; private set; }
   public bool     Ultimate       { get; private set; }
+  public int      Modifier       { get; private set; }
 
   private const    float      Gravity              = 980.0f;
+  private const    float      Meter                = 256.0f;
   private const    float      UltimateTime         = 10.0f;
-  private const    float      RegenStartTime       = 3.5f;
-  private const    float      RegenStartTimeReduce = 0.5f;
+  private const    float      ModifierTime         = 10.0f;
+  private const    float      RegenStartTime       = 2.5f;
+  private const    float      RegenStartTimeReduce = 0.25f;
   private const    float      RegenTime            = 0.2f;
   private const    int        RegenAmount          = 2;
   private const    int        AttackCost           = 5;
@@ -61,6 +66,7 @@ public partial class Player : CharacterBody2D, IDamageable {
     AnimationPlayer = GetNode<AnimationPlayer>("AnimationPlayer");
     StateMachine    = GetNode<PlayerStateMachine>("StateMachine");
     UltimateTimer   = GetNode<Timer>("UltimateTimer");
+    ModifierTimer   = GetNode<Timer>("ModifierTimer");
     AttackTimer     = GetNode<Timer>("AttackTimer");
     RegenTimer      = GetNode<Timer>("RegenTimer");
     RegenStartTimer = GetNode<Timer>("RegenStartTimer");
@@ -74,6 +80,7 @@ public partial class Player : CharacterBody2D, IDamageable {
     ConnectOnDifficultyIncreased();
     RegisterAttackPositions();
     SetUltimateTimer();
+    SetModifierTimer();
     SetAttackTimer();
     SetRegenTimer();
     SetRegenStartTimer(true);
@@ -82,6 +89,7 @@ public partial class Player : CharacterBody2D, IDamageable {
   }
 
   public override void _Process(double delta) {
+    UpdateUI();
     FlipSprite();
   }
 
@@ -92,20 +100,28 @@ public partial class Player : CharacterBody2D, IDamageable {
   }
 
   public void SetDefaultStats() {
-    CurrentHealth = Health;
-    Alive         = true;
-    Invincible    = false;
-    Jump          = true;
-    Direction     = Vector2.Right;
-    CanAttack     = true;
-    CurrentBone   = 0;
-    Difficulty    = 0;
+    CurrentHealth  = Health;
+    Alive          = true;
+    Invincible     = false;
+    Jump           = true;
+    Direction      = Vector2.Right;
+    CanAttack      = true;
+    Difficulty     = 0;
+    Score          = 0;
+    Depth          = 0.0f;
+    Ultimate       = false;
+    CurrentBone    = 0;
+    DisableGravity = false;
+
+    ResetModifier();
 
     DamageArea.SetDamage(int.MaxValue);
     DamageArea.Disable();
 
     PlayerUI.UpdateHealthbar();
     PlayerUI.UpdateSpecialbar();
+    PlayerUI.UpdateScore();
+    PlayerUI.UpdateDepth();
   }
 
   public Vector2 CollectDirectionalInput() {
@@ -199,6 +215,9 @@ public partial class Player : CharacterBody2D, IDamageable {
     RegenTimer.Stop();
     RegenStartTimer.Start();
 
+    ResetModifier();
+    ModifierTimer.Start();
+
     PlayerUI.UpdateHealthbar();
     PlayerUI.PlayAnimation("Hurt");
 
@@ -223,8 +242,8 @@ public partial class Player : CharacterBody2D, IDamageable {
     }
   }
 
-  public void AddScore(int value = 1) {
-    Score += value;
+  public void AddScore() {
+    Score += Modifier * ((Difficulty > 0) ? Difficulty : 1);
     PlayerUI.UpdateScore();
     PlayerUI.PlayAnimation("ScoreUp");
   }
@@ -243,6 +262,19 @@ public partial class Player : CharacterBody2D, IDamageable {
     }
 
     PlayerUI.UpdateSpecialbar();
+  }
+
+  private void IncreaseModifier() {
+    if (Modifier == 5) {
+      return;
+    }
+    Modifier += 1;
+    PlayerUI.UpdateScore();
+  }
+
+  private void ResetModifier() {
+    Modifier = 1;
+    PlayerUI.UpdateScore();
   }
 
   public void SetShaderActive(bool value) {
@@ -319,9 +351,18 @@ public partial class Player : CharacterBody2D, IDamageable {
     if (Ultimate) {
       DamageArea.GlobalPosition      = Camera.GlobalPosition;
       ParticleEmitter.GlobalPosition = Camera.GlobalPosition - new Vector2(0.0f, 1080.0f / 2.0f);
-      PlayerUI.UpdateSpecialbar();
     } else {
       DamageArea.Position = Vector2.Zero;
+    }
+  }
+
+  private void UpdateUI() {
+    if (Ultimate) {
+      PlayerUI.UpdateSpecialbar();
+    }
+    if (Depth < GlobalPosition.Y / Meter) {
+      Depth = GlobalPosition.Y / Meter;
+      PlayerUI.UpdateDepth();
     }
   }
 
@@ -371,6 +412,12 @@ public partial class Player : CharacterBody2D, IDamageable {
     UltimateTimer.WaitTime = UltimateTime;
     UltimateTimer.OneShot  = true;
     UltimateTimer.Timeout += () => { SetUltimate(false); };
+  }
+
+  private void SetModifierTimer() {
+    ModifierTimer.WaitTime = ModifierTime;
+    ModifierTimer.OneShot  = false;
+    ModifierTimer.Timeout += IncreaseModifier;
   }
 
   private void SetAttackTimer() {

@@ -220,7 +220,7 @@ public partial class Enemy : CharacterBody2D, IDamageable {
     var root = new Node2D { Name = "Raycasts" };
     AddChild(root);
 
-    var margin = new Vector2(10.0f, 50.0f);
+    var margin = new Vector2(30.0f, 50.0f);
     var offset = Collider.Shape switch {
       RectangleShape2D rect    => new Vector2(rect.Size.X / 2.0f, rect.Size.Y / 2.0f),
       CircleShape2D    circle  => new Vector2(circle.Radius, circle.Radius),

@@ -5,7 +5,7 @@ public partial class Fall : State<Player> {
   private Timer cayoteeTimer;
   private bool  cayotee;
 
-  private readonly float CayoteeTime = 0.25f;
+  private readonly float CayoteeTime = 0.20f;
 
   public override void _Ready() {
     SpawnTimer();

@@ -7,8 +7,11 @@ public partial class GameOverUI : CanvasLayer {
 
   public override void _Ready() {
     var player = (Player)GetTree().GetFirstNodeInGroup("Player");
-    var score  = GetNode<RichTextLabel>("HBoxContainer/CenterMargin/VBoxContainer/TextContainer/ScoreLabel");
+    var score  = GetNode<RichTextLabel>("HBoxContainer/CenterMargin/VBoxContainer/TextContainer/VBoxContainer/ScoreLabel");
+    var depth  = GetNode<RichTextLabel>("HBoxContainer/CenterMargin/VBoxContainer/TextContainer/VBoxContainer/DepthLabel");
+
     score.Text = $"Score: {player.Score}";
+    depth.Text = $"Depth: {player.Depth:F1}m";
 
     GetTree().GetFirstNodeInGroup("Game").CallDeferred("queue_free");
   }
