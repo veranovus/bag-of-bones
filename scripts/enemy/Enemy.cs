@@ -10,6 +10,7 @@ public partial class Enemy : CharacterBody2D, IDamageable {
   public RayCast2D[]       Raycasts         { get; private set; } = new RayCast2D[2];
   public Marker2D          ProjectileMarker { get; private set; }
   public Timer             AttackTimer      { get; private set; }
+  public CpuParticles2D    ParticleEmitter  { get; private set; }
 
   [Export] public int         Health     { get; private set; }
   [Export] public float       Speed      { get; private set; }
@@ -24,14 +25,15 @@ public partial class Enemy : CharacterBody2D, IDamageable {
   public bool    Invincible    { get; private set; }
   public bool    CanAttack     { get; private set; }
 
-  private const float Gravity    = 980.0f;
-  private const float AttackTime = 3.0f;
+  private const float Gravity          = 980.0f;
+  private const float AttackTime       = 3.0f;
 
   public override void _Ready() {
     Sprite2D         = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
     Collider         = GetNode<CollisionShape2D>("CollisionShape2D");
     StateMachine     = GetNode<EnemyStateMachine>("StateMachine");
     AnimationPlayer  = GetNode<AnimationPlayer>("AnimationPlayer");
+    ParticleEmitter  = GetNode<CpuParticles2D>("CPUParticles2D");
     Player           = (Player)GetTree().GetFirstNodeInGroup("Player");
     if (Projectile != null) {
       ProjectileMarker = GetNode<Marker2D>("Projectile");
@@ -89,6 +91,16 @@ public partial class Enemy : CharacterBody2D, IDamageable {
     StateMachine.ChangeState("Hurt");
 
     return Alive;
+  }
+
+  public void EmitPartciles() {
+    const int amount = 5;
+  
+    ParticleEmitter.Direction = HurtDirection;
+    ParticleEmitter.Amount    = amount;
+    ParticleEmitter.Emitting  = true;
+
+    Player.AddBone(amount);
   }
 
   public void DealDamage(Node2D node) {

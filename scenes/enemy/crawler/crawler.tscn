@@ -166,6 +166,20 @@ tracks/5/keys = {
 "method": &"PlayRandomAudio"
 }]
 }
+tracks/6/type = "method"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath(".")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"EmitPartciles"
+}]
+}
 
 [sub_resource type="Animation" id="Animation_hxeoq"]
 length = 0.001
@@ -208,11 +222,11 @@ visible = false
 rotation = 1.5707964
 shape = SubResource("CapsuleShape2D_wc2fe")
 
-[node name="EntityAudioManager" parent="." index="5"]
+[node name="EntityAudioManager" parent="." index="6"]
 max_polyphony = 3
 playlists = Array[Object]([ExtResource("5_wm14i"), ExtResource("6_iumu8"), ExtResource("7_uudm7")])
 
-[node name="StateMachine" parent="." index="6" node_paths=PackedStringArray("initialState")]
+[node name="StateMachine" parent="." index="7" node_paths=PackedStringArray("initialState")]
 initialState = NodePath("Wander")
 
 [node name="Wander" type="Node" parent="StateMachine" index="0"]

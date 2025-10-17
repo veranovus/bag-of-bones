@@ -21,6 +21,7 @@ public partial class Player : CharacterBody2D, IDamageable {
   [Export] public PackedScene Projectile    { get; private set; }
   [Export] public int         Damage        { get; private set; }
   [Export] public int         SpecialCharge { get; private set; }
+  // NOTE: Not an `[Export]` because it was resulting in circular dependencies.
            public PackedScene GameOverScene { get; private set; }
 
   public bool     Jump           { get; private set; }
@@ -116,6 +117,7 @@ public partial class Player : CharacterBody2D, IDamageable {
     if (Attack != null) {
       // TODO: Play an animation on healthbar and a sound effect here.
       if (!PayAttackCost(AttackCost)) {
+        AudioManager.PlayRandomAudio("LowHealth");
         return;
       }
 
@@ -189,6 +191,14 @@ public partial class Player : CharacterBody2D, IDamageable {
     Score += value;
     PlayerUI.UpdateScore();
     PlayerUI.PlayAnimation("ScoreUp");
+  }
+
+  public void AddBone(int value) {
+    CurrentBone += value;
+    if (CurrentBone > SpecialCharge) {
+      CurrentBone = SpecialCharge;
+    }
+    PlayerUI.UpdateSpecialbar();
   }
 
   public void SetShaderActive(bool value) {
