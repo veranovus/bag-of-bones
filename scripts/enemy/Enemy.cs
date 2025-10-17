@@ -32,7 +32,7 @@ public partial class Enemy : CharacterBody2D, IDamageable {
   public bool    FirstTime     { get; private set; } = true;
 
   private const float Gravity         = 980.0f;
-  private const float AttackTime      = 3.0f;
+  private const float AttackTime      = 2.5f;
   private const int   DamageIncrease  = 2;
   private const int   Bone            = 5;
   private const int   BoneIncrease    = 1;

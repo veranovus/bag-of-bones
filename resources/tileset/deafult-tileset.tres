@@ -59,9 +59,7 @@ texture_region_size = Vector2i(512, 512)
 [sub_resource type="TileSetScenesCollectionSource" id="TileSetScenesCollectionSource_lspqj"]
 resource_name = "Spawners"
 scenes/2/scene = ExtResource("2_xvfh2")
-scenes/2/display_placeholder = ExtResource("2_xvfh2")
 scenes/3/scene = ExtResource("3_23j56")
-scenes/3/display_placeholder = ExtResource("3_23j56")
 
 [resource]
 tile_size = Vector2i(512, 512)

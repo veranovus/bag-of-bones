@@ -33,7 +33,8 @@ public partial class PlayerUI : CanvasLayer {
   }
 
   public void UpdateScore() {
-    score.Text    = $"Score: {player.Score}[font_size=32]x{player.Modifier}[/font_size]";
+    var modifier = player.Modifier * ((player.Difficulty > 0) ? player.Difficulty : 1);
+    score.Text = $"Score: {player.Score}[font_size=32]x{modifier}[/font_size]";
   }
 
   public void UpdateDepth() {

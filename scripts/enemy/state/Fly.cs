@@ -29,7 +29,7 @@ public partial class Fly : State<Enemy> {
 
   private void SpawnTimer() {
     timer = new Timer {
-      Name     = "CayoteeTimer",
+      Name     = "DirectionTimer",
       WaitTime = TimerTime,
       OneShot  = false,
     };
