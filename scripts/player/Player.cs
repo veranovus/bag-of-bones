@@ -276,6 +276,7 @@ public partial class Player : CharacterBody2D, IDamageable {
   private void ResetModifier() {
     Modifier = 1;
     PlayerUI.UpdateScore();
+    ModifierTimer.Start();
   }
 
   public void SetShaderActive(bool value) {
