@@ -21,7 +21,7 @@ public partial class GlobalAudioManager : AudioStreamPlayer {
     SoundVolume = ratio;
   }
 
-  public void SetGameSoundVolume() {
+  public void EmitSoundVolumeChangedSignal() {
     EmitSignal(SignalName.SoundVolumeChanged, SoundVolume);
   }
 

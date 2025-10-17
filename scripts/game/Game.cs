@@ -16,7 +16,7 @@ public partial class Game : Node2D {
     difficultyTimer    = GetNode<Timer>("DifficultyTimer");
     globalAudioManager = (GlobalAudioManager)GetTree().GetFirstNodeInGroup("AudioManager");
 
-    globalAudioManager.SetGameSoundVolume();
+    globalAudioManager.EmitSoundVolumeChangedSignal();
     SetDifficultyTimer();
   }
 
