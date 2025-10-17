@@ -23,7 +23,6 @@ public partial class Game : Node2D {
     }
     Difficulty += 1;
     EmitSignal(SignalName.DifficultyIncreased, Difficulty);
-    GD.Print($"Difficulty: {Difficulty}");
   }
 
   private void SetDifficultyTimer() {
