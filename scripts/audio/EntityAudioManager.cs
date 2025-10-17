@@ -7,9 +7,13 @@ public partial class EntityAudioManager : AudioStreamPlayer {
 
   [Export] private Array<AudioPlaylistResource> playlists;
 
-  public override void _Ready() {
+  public override void _EnterTree() {
     globalAudioManager = (GlobalAudioManager)GetTree().GetFirstNodeInGroup("AudioManager");
     globalAudioManager.SoundVolumeChanged += OnSoundVolumeChanged;
+  }
+
+  public override void _ExitTree() {
+    globalAudioManager.SoundVolumeChanged -= OnSoundVolumeChanged;
   }
 
   public void PlayRandomAudio(string name) {

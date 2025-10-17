@@ -4,7 +4,8 @@ using System;
 public partial class Game : Node2D {
   [Signal] public delegate void DifficultyIncreasedEventHandler(int difficulty);
 
-  private Timer difficultyTimer;
+  private Timer              difficultyTimer;
+  private GlobalAudioManager globalAudioManager;
 
   public int Difficulty { get; private set; }
 
@@ -12,7 +13,10 @@ public partial class Game : Node2D {
   private const float DifficultyIncreaseTime = 30.0f;
 
   public override void _Ready() {
-    difficultyTimer = GetNode<Timer>("DifficultyTimer");
+    difficultyTimer    = GetNode<Timer>("DifficultyTimer");
+    globalAudioManager = (GlobalAudioManager)GetTree().GetFirstNodeInGroup("AudioManager");
+
+    globalAudioManager.SetGameSoundVolume();
     SetDifficultyTimer();
   }
 

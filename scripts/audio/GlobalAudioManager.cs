@@ -4,22 +4,25 @@ using System;
 public partial class GlobalAudioManager : AudioStreamPlayer {
   [Signal] public delegate void SoundVolumeChangedEventHandler(float volume);
 
-  private float musicVolume = 0.5f;
-  private float soundVolume = 0.5f;
+  public float MusicVolume { get; private set; } = 0.5f;
+  public float SoundVolume { get; private set; } = 0.5f;
 
   public override void _Ready() {
-    VolumeLinear = musicVolume;
+    VolumeLinear = MusicVolume;
     Play();
   }
 
   public void SetMusicVolume(float ratio) {
-    musicVolume  = ratio;
-    VolumeLinear = musicVolume;
+    MusicVolume  = ratio;
+    VolumeLinear = MusicVolume;
   }
 
   public void SetSoundVolume(float ratio) {
-    soundVolume = ratio;
-    EmitSignal(SignalName.SoundVolumeChanged, musicVolume);
+    SoundVolume = ratio;
+  }
+
+  public void SetGameSoundVolume() {
+    EmitSignal(SignalName.SoundVolumeChanged, SoundVolume);
   }
 
   public void OnStreamFinished() {
